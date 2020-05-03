@@ -1,0 +1,100 @@
+// import {getata} from '@/utils/demo-api';
+import { User, UserInfo } from '@/types';
+
+import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators';
+import store from '@/store';
+import { login } from '@/utils/demo-api';
+import { getUser, getToken, setToken, setUser, cleanSession } from '@/utils/app-util';
+
+export interface UserState {
+  callingAPI: boolean;
+  searching: string;
+  user: User;
+  token: string;
+  mode: string;
+  userInfo: UserInfo;
+  signedIn: boolean;
+}
+
+@Module({ store, dynamic: true, name: 'users'})
+class UserModule extends VuexModule implements UserState {
+  // const state = {
+  public callingAPI = false;
+  public searching = '';
+  user = getUser();
+  token = getToken();
+  public mode = '';
+  public userInfo = {} as UserInfo;
+  public signedIn = false;
+  // };updateUser
+  // const actions = {
+
+  get isSignedIn(): boolean {
+    return this.user.email && this.token ? true : false;
+  }
+
+  @Mutation
+  private loginLoading() {
+    this.callingAPI = !this.callingAPI;
+  }
+  @Mutation
+  private globalSearching() {
+    this.searching = this.searching === '' ? 'loading' : '';
+  }
+  @Mutation
+  private setUser(_user: User): void {
+    this.user = _user;
+  }
+  @Mutation
+  private setToken(_token: string) {
+    debugger;
+    this.token = _token;
+  }
+  @Mutation
+  private setUserInfo(_userInfo: UserInfo) {
+    this.userInfo = _userInfo;
+  }
+
+  @Action({ rawError: true })
+  updateUser({ user, token }: TODO) {
+    this.context.commit('setToken', token);
+    this.context.commit('setUser', user);
+    // this.setToken(token);
+    // this.setUser(user);
+  }
+
+  @Action({ rawError: true })
+  public async signIn(userInfo: { username: string; password: string }) {
+    const { username, password } = userInfo;
+    // username = _username.trim()
+    const { data } = await login('login', { username, password });
+    // debugger;
+    setToken(data.accessToken);
+    setUser(JSON.stringify(data.user));
+
+    this.setToken(data.accessToken);
+    this.setUser(data.user);
+    // this.SET_TOKEN(data.accessToken)
+
+  }
+
+  @Action({ rawError: true })
+  logout() {
+    // this.context.commit('setToken', '');
+    // this.context.commit('setUser', {} as User);
+    this.setToken('')
+    this.setUser({}as User);
+    cleanSession();
+  }
+  // };
+
+  // const mutations = {
+}
+
+export const userModule = getModule(UserModule);
+// {
+//   namespaced: false,
+
+//   actions,
+//   mutations
+// };

@@ -8,7 +8,7 @@
 
         <v-card hover raised>
           <v-card-media height="300px" class="pa-5 red lighten-1">
-            <div class="display-1 white--text text-xs-center">{{msg}}</div>
+            <div class="display-1 white--text text-xs-center">{{ msg }}</div>
           </v-card-media>
         </v-card>
       </v-flex>
@@ -19,10 +19,10 @@
 <script>
 export default {
   name: 'ErrorPage',
-  data () {
+  data() {
     return {
-      msg: 'Sorry, the page you\'re looking for doesn\'t exist.'
-    }
+      msg: "Sorry, the page you're looking for doesn't exist."
+    };
   }
-}
+};
 </script>
