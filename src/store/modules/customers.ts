@@ -1,6 +1,6 @@
 import { getData, putData, postData, deleteData } from '@/utils/demo-api';
 import { Customer, Order, Entity } from '@/types';
-import { sendSuccessNotice, sendErrorNotice, closeNotice, commitPagination, getDefaultPagination, getPagination } from '@/utils/store-util';
+import { sendSuccessNotice, sendErrorNotice, closeNotice, getDefaultPagination, getPagination } from '@/utils/store-util';
 
 import { get } from 'lodash';
 import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators';
@@ -14,14 +14,13 @@ export interface CustomerState {
   snackbar: boolean;
   notice: string;
   customer: Customer; //= new Customer() ;
-  customers: Customer[] ;
+  customers: Customer[];
   orders: Order[];
   orderList: Order[];
 }
 
 @Module({ store, dynamic: true, name: 'customerModule' })
 class CustomerModule extends VuexModule implements CustomerState {
-
   public items: Entity[] = [];
   public pagination = getDefaultPagination();
   public loading = true;
@@ -29,11 +28,11 @@ class CustomerModule extends VuexModule implements CustomerState {
   public snackbar = false;
   public notice = '';
   public customer = {} as Customer; //= new Customer() ;
-  public customers : Customer[] = [];
+  public customers: Customer[] = [];
   public orders: Order[] = [];
   public orderList: Order[] = [];
 
-  get getCustomers(){
+  get getCustomers() {
     return this.customers;
   }
 
@@ -45,39 +44,46 @@ class CustomerModule extends VuexModule implements CustomerState {
           c.value = c.id;
           return c;
         });
-        this.context.commit('setOrderList', orderList);
+        // this.context.commit('setOrderList', orderList);
+        this.setOrderList(orderList);
       }
     });
   }
   @Action getCustomerById(id: string): void {
-    this.context.commit('setLoading', { loading: true });
+    //this.context.commit('setLoading', { loading: true });
+    this.setLoading(true);
     if (id) {
       getData('customers/' + id).then(
         (res: TODO) => {
           const customer = res.data;
-          this.context.commit('setCustomer', { customer });
-          this.context.commit('setLoading', { loading: false });
+          // this.context.commit('setCustomer', { customer });
+          // this.context.commit('setLoading', { loading: false });
+          this.setCustomer(customer);
+          this.setLoading(false);
         },
         (err: TODO) => {
           console.log(err);
         }
       );
     } else {
-      this.context.commit('setCustomer', { customer: {} as Customer });
-      this.context.commit('setLoading', { loading: false });
+      // this.context.commit('setCustomer', { customer: {} as Customer });
+      // this.context.commit('setLoading', { loading: false });
+      this.setCustomer({} as Customer);
+      this.setLoading(false);
     }
   }
   @Action getAllCustomers(): void {
-    this.context.commit('setLoading', { loading: true });
+    // this.context.commit('setLoading', { loading: true });
+    this.setLoading(true);
     getData('customers?_embed=orders').then((res: TODO) => {
       const customers = res.data;
       customers.forEach((item: Customer) => {
-        item.orderAmount = item.orders&& item.orders?.length // : 0;
+        item.orderAmount = item.orders && item.orders?.length; // : 0;
       });
       const pagination = getPagination(customers);
-      this.setPagination(pagination)
-      this.setItems(customers)
-      this.setLoading(false)  
+      this.setPagination(pagination);
+      this.setItems(customers);
+      this.setLoading(false);
       // commitPagination(this.context.commit, customers);
       // this.context.commit('setLoading', { loading: false });
     });
@@ -88,10 +94,11 @@ class CustomerModule extends VuexModule implements CustomerState {
       customers.forEach((p: TODO) => {
         p.orderAmount = p.orders.length;
       });
-      commitPagination(this.context.commit, customers);
+      // commitPagination(this.context.commit, customers);
+      this.setItems(customers);
     });
   }
-  @Action quickSearch({ headers, qsFilter, pagination }: TODO): void {
+  @Action quickSearch(headers: TableHeader[], qsFilter: SeachQuery, pagination: Pagination): void {
     // TODO: Following solution should be replaced by DB full-text search for production
     getData('customers?_embed=orders').then((res: TODO) => {
       const customers = res.data.filter((r: TODO) =>
@@ -110,16 +117,20 @@ class CustomerModule extends VuexModule implements CustomerState {
       customers.forEach((item: TODO) => {
         item.orderAmount = item.orders.length;
       });
-      commitPagination(this.context.commit, customers);
+      // commitPagination(this.context.commit, customers);
+      this.setItems(customers);
     });
   }
-  @Action deleteCustomer(id: string): void {
+  @Action deleteCustomer(id: number): void {
     deleteData('customers/', id.toString())
       .then((res: TODO) => {
-        return new Promise((resolve, reject) => {
-          sendSuccessNotice(this.context.commit, 'Operation is done.');
-          resolve();
-        });
+        // return new Promise((resolve, reject) => {
+        //   sendSuccessNotice(this.context.commit, 'Operation is done.');
+
+        //   resolve();
+        // });
+        this.getAllCustomers();
+        sendSuccessNotice(this.context.commit, 'Operation is done.');
       })
       .catch((err: TODO) => {
         console.log(err);
@@ -132,8 +143,11 @@ class CustomerModule extends VuexModule implements CustomerState {
       postData('customers/', customer)
         .then((res: TODO) => {
           const customer = res.data;
-          this.context.commit('setCustomer', { customer });
-          sendSuccessNotice(this.context.commit, 'New customer has been added.');
+          // this.context.commit('setCustomer', { customer });
+          // sendSuccessNotice(this.context.commit, 'New customer has been added.');
+
+          this.setCustomer(customer);
+          this.setNotice('New customer has been added.');
         })
         .catch((err: TODO) => {
           console.log(err);
@@ -144,8 +158,10 @@ class CustomerModule extends VuexModule implements CustomerState {
       putData('customers/' + customer.id.toString(), customer)
         .then((res: TODO) => {
           const customer = res.data;
-          this.context.commit('setCustomer', { customer });
-          sendSuccessNotice(this.context.commit, 'Customer has been updated.');
+          // this.context.commit('setCustomer', { customer });
+          // sendSuccessNotice(this.context.commit, 'Customer has been updated.');
+          this.setCustomer(customer);
+          this.setNotice('Customer has been updated.');
         })
         .catch((err: TODO) => {
           console.log(err);
@@ -186,4 +202,3 @@ class CustomerModule extends VuexModule implements CustomerState {
 }
 
 export const customerModule = getModule(CustomerModule); // Customers;
-

@@ -18,25 +18,24 @@ import Vue from 'vue';
 @Component
 export default class ConfirmDialog extends Vue {
   // props: {
-  @Prop()    dialogText!:string;
-  @Prop()    dialogTitle!: string;
-  @Prop()    dialog!:string;
+  @Prop() dialogText!: string;
+  @Prop() dialogTitle!: string;
+  @Prop() dialog!: string;
   // },
   // data() {
   //   return {
-      mini= false;
-      isRootComponent= true;
-      // clipped: false,
-      drawer= true;
-      fixed= false;
-    // };
+  mini = false;
+  isRootComponent = true;
+  // clipped: false,
+  drawer = true;
+  fixed = false;
+  // };
   // }
   // methods: {
-    onConfirm() {}
-    onCancel() {}
+  onConfirm() {}
+  onCancel() {}
   // },
-  created() {
-  }
+  created() {}
   mounted() {}
-};
+}
 </script>

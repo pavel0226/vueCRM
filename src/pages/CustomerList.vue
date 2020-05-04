@@ -5,26 +5,26 @@
         <v-card-title>
           <span class="title"
             >Customers {{ pagination ? '(' + pagination.totalItems + ')' : '' }}
-            <v-text-field append-icon="search" label="Quick Search" single-line hide-details v-model="quickSearch"></v-text-field>
+            <v-text-field append-icon="mdi-magnify" label="Quick Search" single-line hide-details v-model="quickSearch"></v-text-field>
           </span>
           <v-spacer></v-spacer>
           <v-btn class="blue-grey" fab small dark @click.native.stop="rightDrawer = !rightDrawer">
-            <v-icon>search</v-icon>
+            <v-icon>mdi-magnify</v-icon>
           </v-btn>
           <v-btn class="brown lighten-1" fab small dark @click.native="reloadData()">
-            <v-icon>refresh</v-icon>
+            <v-icon>mdi-refresh</v-icon>
           </v-btn>
           <v-btn class="teal darken-2" fab small dark @click.native="print()">
-            <v-icon>print</v-icon>
+            <v-icon>mdi-printer</v-icon>
           </v-btn>
           <v-btn class="deep-orange darken-3" fab small dark @click.native="add">
-            <v-icon>add</v-icon>
+            <v-icon>mdi-plus</v-icon>
           </v-btn>
         </v-card-title>
         <Table v-if="loading === false" :headers="headers" :items="items" :pagination="pagination" @edit="edit" @remove="remove"></Table>
       </v-card>
     </v-flex>
-    <!-- <search-panel :rightDrawer="showSearchPanel" @cancelSearch="cancelSearch" @searchData="searchCustomers">
+    <search-panel :rightDrawer="showSearchPanel" @cancelSearch="cancelSearch" @searchData="searchCustomers">
       <v-layout row>
         <v-flex xs11 offset-xs1>
           <v-text-field name="input-1-3" label="Frist Name" light v-model="searchVm.contains.firstName"></v-text-field>
@@ -56,7 +56,7 @@
           <v-text-field type="number" light v-model="searchVm.between.rewards.latter"></v-text-field>
         </v-flex>
       </v-layout>
-    </search-panel> -->
+    </search-panel>
 
     <confirm-dialog
       :dialog="dialog"
@@ -78,19 +78,18 @@ import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import { debounce } from 'lodash';
 import { buildSearchFilters, buildJsonServerQuery, clearSearchFilters } from '@/utils/app-util';
 
-import { Component, Prop } from 'vue-property-decorator';
+import { Component, Prop, Emit } from 'vue-property-decorator';
 import store from '@/store';
 
 import Vue from 'vue';
-import { State, Getter, Action, Mutation, namespace } from 'vuex-class';
+// import { State, Getter, Action, Mutation, namespace } from 'vuex-class';
 import { Customer, Entity } from '../types';
 import { getDefaultPagination } from '@/utils/store-util';
 import { getData } from '@/utils/demo-api';
 import { userModule } from '../store/modules/user';
 // import { userModule } from '../store/modules/user';
 
-import {customerModule} from '@/store/modules/customers'
-
+import { customerModule } from '@/store/modules/customers';
 
 @Component({
   components: {
@@ -117,7 +116,8 @@ export default class CustomerList extends Vue {
     { text: 'Mobile', value: 'mobile' },
     { text: 'Reward', value: 'rewards' },
     { text: 'Previous Order(s)', value: 'orderAmount' },
-    { text: 'Membership', value: 'membership' }
+    { text: 'Membership', value: 'membership' },
+    { text: '', value: 'actions', sortable: false }
   ];
   // items: [],
   private searchVm = {
@@ -136,31 +136,38 @@ export default class CustomerList extends Vue {
   private color = '';
   private quickSearchFilter = '';
   private itemId = -1;
-  // private  quickSearch = '';
 
-  // private pagination = getDefaultPagination();
-  // };
-  // },
-  // methods: {
   print() {
     window.print();
   }
+
+  // @Emit()
   edit(item: Entity) {
     // this.$router.push({ name: 'Customer', params: { id: item.id } });
+    this.$router.push(`customer/${item.id}`);
   }
-  add() {
-    this.$router.push('NewCustomer');
-  }
+
+  // @Emit()
   remove(item: Entity) {
+    debugger;
     this.itemId = item.id;
     this.dialog = true;
   }
+
+  add() {
+    this.$router.push('NewCustomer');
+  }
+
+  //  remove(item: Entity) {
+  //   this.itemId = item.id;
+  //   this.dialog = true;
+  // }
   onConfirm() {
-    // Store.dispatch('customers/deleteCustomer', this.itemId).then(() => {
-    //   Store.dispatch('customers/searchCustomers', this.query); //, this.pagination);
-    //   Store.dispatch('customers/closeSnackBar', 2000);
+    customerModule.deleteCustomer(this.itemId); //.then(() => {
+    // Store.dispatch('customers/searchCustomers', this.query); //, this.pagination);
+    // Store.dispatch('customers/closeSnackBar', 2000);
     // });
-    // this.dialog = false;
+    this.dialog = false;
   }
   onCancel() {
     this.customerId = '';
@@ -176,7 +183,7 @@ export default class CustomerList extends Vue {
   }
 
   clearSearchFilters() {
-    this.rightDrawer = !this.showSearchPanel;
+    this.showSearchPanel = !this.showSearchPanel;
     clearSearchFilters(this.searchVm);
     getData('customers/').then(
       (res: TODO) => {
@@ -200,6 +207,7 @@ export default class CustomerList extends Vue {
   reloadData() {
     this.query = '';
     // Store.dispatch('customers/getAllCustomers');
+    this.getAllCustomers();
   }
 
   cancelSearch() {
@@ -219,20 +227,20 @@ export default class CustomerList extends Vue {
     //     qsFilter: this.quickSearchFilter.toLowerCase(),
     //     pagination: this.pagination
     //   });
+    customerModule.quickSearch(this.headers, this.quickSearchFilter, this.pagination);
   }, 300);
   // }
 
-  
-  public get items(){
+  public get items() {
     return customerModule.items;
   }
   get pagination() {
     return customerModule.pagination;
   }
-  get loading(){
+  get loading() {
     return customerModule.loading;
   }
-  get mode(){
+  get mode() {
     return customerModule.mode;
   }
   // @customerModule.State

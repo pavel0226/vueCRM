@@ -1,8 +1,6 @@
 import { DB } from './demo-data';
 import { Entity } from '@/types';
 
-// const ds = db; // Object.assign({}, db);
-
 const ds: TODO = DB;
 
 function getModel(action: string) {
@@ -30,19 +28,14 @@ function getExpand(action: string, model: string) {
     : undefined;
 }
 
-// function getEmbed(action) {
-//   return action.includes('?') ? action.substring(action.indexOf('/'), action.indexOf('?')) : action.substring(action.indexOf('/'));
-// }
-
 // export default{
 export function getData(action: string): Promise<TODO> {
   return new Promise(function(resolve, reject) {
     const model = getModel(action);
     const id = getId(action, model);
-    // const id :string = isNaN(idStr) ? undefined : parseInt(idStr);
     const exp = getExpand(action, model);
     const expandModel = exp ? (exp === 'category' ? 'categories' : exp + 's') : exp;
-    // const embed = getEmbed(action);
+
     console.log(model);
     let result;
     let expand, expandId: TODO;
@@ -50,7 +43,6 @@ export function getData(action: string): Promise<TODO> {
     if (model in ds) {
       if (id) {
         result = ds[model][ds[model].findIndex((d: { id: number }) => d.id === id)];
-
         if (expandModel) {
           expand = expandModel === 'categories' ? 'category' : expandModel.substr(0, expandModel.length - 1);
           expandId = result[expand + 'Id'];
@@ -70,6 +62,7 @@ export function getData(action: string): Promise<TODO> {
     setTimeout(resolve, 200, { data: result });
   });
 }
+
 export function postData(action: string, data: Entity): Promise<TODO> {
   return new Promise(function(resolve, reject) {
     const model = getModel(action);
@@ -78,6 +71,7 @@ export function postData(action: string, data: Entity): Promise<TODO> {
     setTimeout(resolve, 200, { data: data });
   });
 }
+
 export function putData(action: string, data: Entity): Promise<TODO> {
   return new Promise(function(resolve, reject) {
     const model = getModel(action);
@@ -86,6 +80,7 @@ export function putData(action: string, data: Entity): Promise<TODO> {
     setTimeout(resolve, 200, { data: data });
   });
 }
+
 export function deleteData(action: string, data: string): Promise<TODO> {
   return new Promise(function(resolve, reject) {
     const model = getModel(action);
@@ -96,8 +91,8 @@ export function deleteData(action: string, data: string): Promise<TODO> {
     setTimeout(resolve, 200, { status: 200 });
   });
 }
+
 export function login(action: string, data: TODO): Promise<TODO> {
-  // ds = ds || Object.assign({}, db);
   return new Promise(function(resolve, reject) {
     if (data.username === 'admin@test.com' && data.password === 'password') {
       const { accessToken: accessToken, user } = ds.token;
@@ -115,4 +110,3 @@ export function login(action: string, data: TODO): Promise<TODO> {
     }
   });
 }
-// };

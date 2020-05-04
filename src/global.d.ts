@@ -1,4 +1,4 @@
-declare module 'vue-cli-plugin-vuetify-preset-fortnightly/preset'
+declare module 'vue-cli-plugin-vuetify-preset-fortnightly/preset';
 
 type TODO = any;
 
@@ -19,4 +19,20 @@ type SearchFilterOps = {
   StartsWith: '_like';
   EndsWith: '_like';
   Between: '';
+};
+
+type TableHeader = {
+  text: string;
+  value: string;
+  left?: boolean;
+};
+
+type SeachQuery = {
+  contains?: {};
+  between?: {};
+  startsWith?: {};
+  endsWith?: {};
+  equals?: {};
+  lessThen: {};
+  greaterThan: {};
 };

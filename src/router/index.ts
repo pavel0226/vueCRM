@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import {userModule} from '@/store/modules/user';
+import { userModule } from '@/store/modules/user';
 import ErrorPage from '@/components/404.vue';
 
 import Dashboard from '@/pages/Dashboard.vue';
@@ -18,9 +18,8 @@ import ChangePassword from '@/components/ChangePassword.vue';
 // import App from '../App.vue';
 // import auth from '@/utils/auth';
 
-function requireAuth(to:TODO, from:TODO, next:TODO) {
-
-  console.log(`userModule.isSignedI ${userModule.isSignedIn}` );
+function requireAuth(to: TODO, from: TODO, next: TODO) {
+  console.log(`userModule.isSignedI ${userModule.isSignedIn}`);
   if (!userModule.isSignedIn) {
     next({
       path: '/login',

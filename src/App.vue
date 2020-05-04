@@ -1,16 +1,16 @@
 <template>
-  <v-app  id="vcrm">
+  <v-app id="vcrm">
     <!-- <vue-progress-bar> </vue-progress-bar> -->
     <template v-if="!signedIn">
       <router-view></router-view>
     </template>
-    <template v-if="signedIn" >
-      <v-navigation-drawer class="blue lighten-5" width="250" light :mini-variant.sync="mini" v-model="drawer" app>
+    <template v-if="signedIn">
+      <v-navigation-drawer class="blue lighten-5" mini-variant-width="70" width="250" light :mini-variant.sync="mini" v-model="drawer" app>
         <!-- mini-variant.sync="true" -->
         <v-list class="pa-0">
-          <v-list-item  tag="div">
+          <v-list-item tag="div" >
             <v-list-item-action>
-              <img src="/assets/img/avatar0.png" />
+              <v-img max-width="2.5em" class="avatar" src="@/assets/avatar0.png" />
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title>{{ user.firstName }}{{ user.lastName }}</v-list-item-title>
@@ -19,14 +19,14 @@
             <v-list-item-action style="min-width:30px;">
               <v-menu bottom right offset-y origin="bottom right" transition="v-slide-y-transition">
                 <template v-slot:activator="{ on }">
-                <v-btn icon light slot="activator" v-on="on"> 
-                  <v-icon>more_vert</v-icon>
-                </v-btn>
+                  <v-btn icon light slot="activator" v-on="on">
+                    <v-icon>mdi-dots-vertical</v-icon>
+                  </v-btn>
                 </template>
                 <v-list>
                   <v-list-item v-for="item in userMenus" :key="item.title" value="true" :to="item.link" router>
-                     <v-list-item-content>
-                    <v-list-item-title v-text="item.title"></v-list-item-title>
+                    <v-list-item-content>
+                      <v-list-item-title v-text="item.title"></v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
@@ -34,7 +34,7 @@
             </v-list-item-action>
             <v-list-item-action style="min-width:30px;">
               <v-btn icon @click.native.stop="mini = !mini">
-                <v-icon>chevron_left</v-icon>
+                <v-icon>mdi-chevron-left</v-icon>
               </v-btn>
             </v-list-item-action>
           </v-list-item>
@@ -42,12 +42,9 @@
         <v-list>
           <v-list-item v-for="item in items" :key="item.title" @click="clickMenu(item)" router>
             <v-list-item-action class="pr-1 pl-2 mr-1">
-              <v-icon
-                :class="activeMenuItem.includes(item.title) ? 'blue--text' : ''"
-                :title="item.title"
-                light
-                v-html="item.icon"
-              ></v-icon>
+              <v-icon :class="activeMenuItem.includes(item.title) ? 'blue--text' : ''" :title="item.title">
+                {{ item.icon }}
+              </v-icon>
             </v-list-item-action>
             <v-list-item-content :class="activeMenuItem.includes(item.title) ? 'blue--text' : ''">
               <v-list-item-title v-text="item.title"></v-list-item-title>
@@ -69,7 +66,7 @@
             <v-icon large color="grey">mail</v-icon>
           </v-badge>
         </div>
-       
+
         <v-btn light text href="https://github.com/harryho/vue2crm" target="_blank">
           <svg height="30" class="octicon octicon-mark-github" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true">
             <path
@@ -104,16 +101,16 @@ import { Component, Prop } from 'vue-property-decorator';
 import Vue from 'vue';
 import { State, Getter, Action, Mutation, namespace } from 'vuex-class';
 // import { Watch } from 'vue-property-decorator';
-import {userModule} from '@/store/modules/user';
+import { userModule } from '@/store/modules/user';
 import { User } from './types';
 
 @Component
 export default class App extends Vue {
-   get signedIn(){
-    return userModule.isSignedIn; 
-   }
+  get signedIn() {
+    return userModule.isSignedIn;
+  }
 
-  get user(){
+  get user() {
     return userModule.user;
   }
 
@@ -128,31 +125,31 @@ export default class App extends Vue {
   private fixed = false;
   private items: TODO = [
     {
-      icon: 'dashboard',
+      icon: 'mdi-view-dashboard',
       title: 'Dashboard',
       vertical: 'Dashboard',
       link: 'dashboard'
     },
     {
-      icon: 'shopping_cart',
+      icon: 'mdi-point-of-sale',
       title: 'Orders',
       vertical: 'Order',
       link: 'orders'
     },
     {
-      icon: 'perm_identity',
+      icon: 'mdi-account-group',
       title: 'Customers',
       vertical: 'Customer',
       link: 'customers'
     },
     {
-      icon: 'bubble_chart',
+      icon: 'mdi-book-multiple',
       title: 'Products',
       vertical: 'Product',
       link: 'products'
     },
     {
-      icon: 'thumbs_up_down',
+      icon: 'mdi-information-outline',
       title: 'About',
       vertical: 'About',
       link: 'about'
@@ -215,9 +212,6 @@ export default class App extends Vue {
   //     user: 'user'
   //   }),
 
-
-  
-
   // @State('user') user
   get auth() {
     // return auth;
@@ -241,5 +235,8 @@ export default class App extends Vue {
   }
 }
 </script>
-
-
+<style scoped>
+.avatar{
+border-radius: 50%;
+}
+</style>

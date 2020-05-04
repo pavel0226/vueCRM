@@ -102,10 +102,9 @@
     </v-flex>
   </v-container>
 </template>
-<script >
+<script>
 /* global Store */
 import { mapState, dispatch } from 'vuex';
-
 
 export default {
   data() {

@@ -3,20 +3,20 @@
 
 // export default Line.extend({
 
-  import {Component} from "vue-property-decorator";
-  import {mixins} from "vue-class-component";
-  
-  import { Line } from 'vue-chartjs';
-  
-    @Component({
-      name: "LineChart",
-  })
-  export default class LineChart extends mixins(Line) {
+import { Component } from 'vue-property-decorator';
+import { mixins } from 'vue-class-component';
+
+import { Line } from 'vue-chartjs';
+
+@Component({
+  name: 'LineChart'
+})
+export default class LineChart extends mixins(Line) {
   // data() {
-    // return {
-  public    gradient: TODO ;
-   public   gradient2: TODO ;
-    // };
+  // return {
+  public gradient: TODO;
+  public gradient2: TODO;
+  // };
   // }
 
   mounted() {

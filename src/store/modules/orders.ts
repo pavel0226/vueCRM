@@ -20,7 +20,7 @@ export interface OrderState {
   categories: Category[];
 }
 
-@Module({ store, dynamic:true, name: 'orders' })
+@Module({ store, dynamic: true, name: 'orders' })
 class OrderModule extends VuexModule implements OrderState {
   // const state = {
   public items: Entity[] = [];
@@ -275,6 +275,4 @@ class OrderModule extends VuexModule implements OrderState {
   }
 }
 
-export const orderModule = getModule(OrderModule) // Orders;
-
-
+export const orderModule = getModule(OrderModule); // Orders;

@@ -1,10 +1,10 @@
 import axios from 'axios';
-
+import { userModule } from '@/store/modules/user';
 const BASE_URL = 'http://localhost:5354/';
 
 const instance = axios.create({
   baseURL: BASE_URL,
-  timeout: false,
+  // timeout: false,
   params: {} // do not remove this, its added to add params later in the config
 });
 
@@ -12,7 +12,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
   function(config) {
     /* global window Store */
-    const { token } = store.state.userModule;
+    const token = userModule.token;
     console.log('token', token);
     if (token) {
       config.headers.common['Authorization'] = 'Bearer ' + token;

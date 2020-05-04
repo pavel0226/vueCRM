@@ -16,9 +16,8 @@ export interface UserState {
   signedIn: boolean;
 }
 
-@Module({ store, dynamic: true, name: 'userModule'})
+@Module({ store, dynamic: true, name: 'userModule' })
 class UserModule extends VuexModule implements UserState {
-
   public callingAPI = false;
   public searching = '';
   user = getUser();
@@ -74,13 +73,12 @@ class UserModule extends VuexModule implements UserState {
 
     this.setToken(data.accessToken);
     this.setUser(data.user);
-
   }
 
   @Action({ rawError: true })
   logout() {
-    this.setToken('')
-    this.setUser({}as User);
+    this.setToken('');
+    this.setUser({} as User);
     cleanSession();
   }
 }

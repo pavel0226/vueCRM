@@ -181,4 +181,4 @@ class ProductModule extends VuexModule implements ProductState {
   // };
 }
 
-export  const productModule = getModule(ProductModule); // default Products;
+export const productModule = getModule(ProductModule); // default Products;

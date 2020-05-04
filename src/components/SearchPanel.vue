@@ -30,29 +30,27 @@ import { State, Getter, Action, Mutation, namespace } from 'vuex-class';
 // import { User } from './types';
 
 // export default  {
-@Component(
-  {name: 'search-panel'}
-)
+@Component({ name: 'search-panel' })
 export default class SearchPanel extends Vue {
   // props: {
-  @Prop() rightDrawer = ''
+  @Prop() rightDrawer = '';
 
-  public  right = true;
-  public    searchVm: TODO = {
-        contains: {
-          productName: '',
-          category: ''
-        },
-        between: {
-          price: {
-            former: 0,
-            latter: 0
-          }
-        }
-      };
+  public right = true;
+  public searchVm: TODO = {
+    contains: {
+      productName: '',
+      category: ''
+    },
+    between: {
+      price: {
+        former: 0,
+        latter: 0
+      }
+    }
+  };
   // methods: {
-    cancelSearch() {}
-    searchData() {}
+  cancelSearch() {}
+  searchData() {}
   // },
 
   created() {}

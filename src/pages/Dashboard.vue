@@ -52,7 +52,7 @@ import { Component, Prop } from 'vue-property-decorator';
 import Vue from 'vue';
 
 @Component({
- name: 'Dashboard',
+  name: 'Dashboard',
   components: {
     BarChart,
     DoughnutChart,
@@ -63,8 +63,8 @@ export default class Dashboard extends Vue {
   // data() {
   //   return {
   // @Prop() readonly
-  monthlyStats = 
-    // monthlyStats: 
+  monthlyStats =
+    // monthlyStats:
     [
       {
         bgColor: 'cyan darken-3',
@@ -106,7 +106,7 @@ export default class Dashboard extends Vue {
           link: ''
         }
       }
-    ]
+    ];
   // };
   // mounted(){}
 }

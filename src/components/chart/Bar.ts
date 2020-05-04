@@ -18,17 +18,18 @@
 //     );
 //   }
 // });
-import {Component} from "vue-property-decorator";
-import {mixins} from "vue-class-component";
-import {Bar} from "vue-chartjs"; 
+import { Component } from 'vue-property-decorator';
+import { mixins } from 'vue-class-component';
+import { Bar } from 'vue-chartjs';
 
 @Component({
-    name: "BarChart",
+  name: 'BarChart'
 })
 export default class BarChart extends mixins(Bar) {
   mounted() {
-    this.renderChart({
-              labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    this.renderChart(
+      {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         datasets: [
           {
             label: 'Data One',
@@ -38,15 +39,13 @@ export default class BarChart extends mixins(Bar) {
         ]
       },
       { responsive: true, maintainAspectRatio: false }
-        // labels: ['1', '2', '3', '4', '5', '6'],
-        // datasets: [
-        //   {
-        //     label: 'Chart',
-        //     data: [300, 700, 500, 700, 200, 800],
-        //   }
-        // ]
-      
-    )
+      // labels: ['1', '2', '3', '4', '5', '6'],
+      // datasets: [
+      //   {
+      //     label: 'Chart',
+      //     data: [300, 700, 500, 700, 200, 800],
+      //   }
+      // ]
+    );
   }
 }
-

@@ -4,9 +4,7 @@ import { Entity } from '@/types';
 // import { Pagination } from '@/global';
 export const DEFAULT_ROW_PER_PAGE = 10;
 
-
-
-export function getDefaultPagination() :Pagination{
+export function getDefaultPagination(): Pagination {
   return {
     page: 1,
     totalItems: 0,
@@ -15,7 +13,7 @@ export function getDefaultPagination() :Pagination{
   };
 }
 
-export function sendSuccessNotice(commit:Commit, notice: string):void {
+export function sendSuccessNotice(commit: Commit, notice: string): void {
   commit('setNotice', {
     notice
   });
@@ -27,7 +25,7 @@ export function sendSuccessNotice(commit:Commit, notice: string):void {
   });
 }
 
-export function sendErrorNotice(commit:Commit, notice: string) :void{
+export function sendErrorNotice(commit: Commit, notice: string): void {
   commit('setNotice', {
     notice
   });
@@ -47,7 +45,7 @@ export function sendErrorNotice(commit:Commit, notice: string) :void{
  * @param {*} rowsPerPage -- rows to display per pages
  * @param {*} pages -- total pages
  */
-export function setPagination(commit:Commit, page: number, totalItems:Entity[], pages:number, rowsPerPage:number) {
+export function setPagination(commit: Commit, page: number, totalItems: Entity[], pages: number, rowsPerPage: number) {
   commit('setPagination', {
     page,
     totalItems,
@@ -56,7 +54,7 @@ export function setPagination(commit:Commit, page: number, totalItems:Entity[], 
   });
 }
 
-export function closeNotice(commit:Commit, timeout:number) {
+export function closeNotice(commit: Commit, timeout: number) {
   setTimeout(() => {
     console.log(' time out .... ', timeout);
     commit('setSnackbar', {
@@ -76,7 +74,7 @@ export function closeNotice(commit:Commit, timeout:number) {
  * @param {*} commit -- commit funciton pass from caller
  * @param {*} items -- search result
  */
-export function commitPagination(commit:Commit, items: Entity[]) {
+export function commitPagination(commit: Commit, items: Entity[]) {
   const totalItems = items ? items.length : 0;
   const pages = Math.ceil(totalItems / DEFAULT_ROW_PER_PAGE);
 
@@ -84,8 +82,7 @@ export function commitPagination(commit:Commit, items: Entity[]) {
   commit('setPagination', { totalItems, pages, page: 1, rowsPerPage: DEFAULT_ROW_PER_PAGE });
 }
 
-
-export function getPagination( items: Entity[]) {
+export function getPagination(items: Entity[]) {
   const totalItems = items ? items.length : 0;
   const pages = Math.ceil(totalItems / DEFAULT_ROW_PER_PAGE);
   return { totalItems, pages, page: 1, rowsPerPage: DEFAULT_ROW_PER_PAGE };

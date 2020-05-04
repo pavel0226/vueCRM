@@ -55,12 +55,11 @@
 
 import { Component } from 'vue-property-decorator';
 import Vue from 'vue';
-import {userModule} from '@/store/modules/user';
+import { userModule } from '@/store/modules/user';
 // import router from '@/router';
 
 @Component
 export default class Login extends Vue {
-
   private email = 'admin@test.com';
   private pass = 'password';
   private error = false;
@@ -70,7 +69,7 @@ export default class Login extends Vue {
     this.$router.push('/');
   }
 
-  public callback = (loggedIn: boolean ,err?: string) => {
+  public callback = (loggedIn: boolean, err?: string) => {
     if (err) {
       console.log('login', err);
       this.error = true;
@@ -82,16 +81,14 @@ export default class Login extends Vue {
     } else {
       console.log(loggedIn, err);
       //this.$router.push(this.$route.query.redirect || '/')
-   //   this.gotoDashboard();
+      //   this.gotoDashboard();
     }
   };
   public async login() {
     // debugger;
-    await userModule.signIn({username:this.email, password:this.pass} 
-              );
+    await userModule.signIn({ username: this.email, password: this.pass });
 
     this.$router.push('/');
-
   }
   // }
 }
