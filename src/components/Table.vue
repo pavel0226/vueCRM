@@ -6,7 +6,7 @@
       v-bind:items="items"
       v-bind:search="search"
       v-bind:pagination="pagination"
-      hide-actions
+      hide-default-footer
     >
       <template slot="headers" slot-scope="props">
         <tr>
@@ -50,50 +50,49 @@
   </div>
 </template>
 <script lang="ts">
-
 import Vue from 'vue';
-import {Entity} from '@/types'
-import {
-  State,
-  Getter,
-  Action,
-  Mutation,
-  namespace
-} from 'vuex-class';
+import { Entity } from '@/types';
+// import { State, Getter, Action, Mutation, namespace } from 'vuex-class';
 import { Component, Prop } from 'vue-property-decorator';
 import { getDefaultPagination } from '@/utils/store-util';
+
+type NewType=Entity;
 
 @Component
 export default class Table extends Vue {
   // props: {
-  @Prop() readonly headers: TODO[]=[];
-  @Prop() readonly   items: Entity[]=[];
-  @Prop() readonly   pagination: Pagination = getDefaultPagination();
+  @Prop() readonly headers: TODO[]; //=[];
+  @Prop() readonly items: NewType[]; //=[];
+  @Prop() readonly pagination: Pagination; //= getDefaultPagination();
   // },
   // data() {
-    // return {
-   public   search= '';
-    // };
+  // return {
+  public search = '';
+  // };
   // },
   // methods: {
-    renderData = (item:TODO, header:TODO) => {
-      let val = '';
-      if (header.value.includes('.')) {
-        const vals = header.value.split('.');
-        val = vals.reduce((acc:TODO, val:TODO) => acc[val], item);
-      } else {
-        val = item[header.value];
-      }
-      if (typeof val === 'boolean') {
-        val = val ? 'Yes' : 'No';
-      }
-      return val;
+  renderData = (item: TODO, header: TODO) => {
+    let val = '';
+    if (header.value.includes('.')) {
+      const vals = header.value.split('.');
+      val = vals.reduce((acc: TODO, val: TODO) => acc[val], item);
+    } else {
+      val = item[header.value];
     }
+    if (typeof val === 'boolean') {
+      val = val ? 'Yes' : 'No';
+    }
+    return val;
+  };
   // },
   // computed: {
-    isNotEmpty() {
-      return this.items && this.items.length > 0;
-    }
+  isNotEmpty() {
+    return this.items && this.items.length > 0;
+  }
+
+  hasHeader(header: TODO) {
+    return header?.value ? true : false;
+  }
   // }
-};
+}
 </script>

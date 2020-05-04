@@ -4,11 +4,11 @@
     <template v-if="!signedIn">
       <router-view></router-view>
     </template>
-    <template v-if="signedIn">
+    <template v-if="signedIn" >
       <v-navigation-drawer class="blue lighten-5" width="250" light :mini-variant.sync="mini" v-model="drawer" app>
         <!-- mini-variant.sync="true" -->
         <v-list class="pa-0">
-          <v-list-item avatar tag="div">
+          <v-list-item  tag="div">
             <v-list-item-action>
               <img src="/assets/img/avatar0.png" />
             </v-list-item-action>
@@ -18,9 +18,11 @@
             <v-spacer></v-spacer>
             <v-list-item-action style="min-width:30px;">
               <v-menu bottom right offset-y origin="bottom right" transition="v-slide-y-transition">
-                <v-btn icon light slot="activator">
+                <template v-slot:activator="{ on }">
+                <v-btn icon light slot="activator" v-on="on"> 
                   <v-icon>more_vert</v-icon>
                 </v-btn>
+                </template>
                 <v-list>
                   <v-list-item v-for="item in userMenus" :key="item.title" value="true" :to="item.link" router>
                      <v-list-item-content>
@@ -67,6 +69,7 @@
             <v-icon large color="grey">mail</v-icon>
           </v-badge>
         </div>
+       
         <v-btn light text href="https://github.com/harryho/vue2crm" target="_blank">
           <svg height="30" class="octicon octicon-mark-github" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true">
             <path

@@ -36,10 +36,8 @@ import { State, Getter, Action, Mutation, namespace } from 'vuex-class';
 export default class SearchPanel extends Vue {
   // props: {
   @Prop() rightDrawer = ''
-  // },
-  // data() {
-  //   return {
- public  right = true;
+
+  public  right = true;
   public    searchVm: TODO = {
         contains: {
           productName: '',
@@ -52,8 +50,6 @@ export default class SearchPanel extends Vue {
           }
         }
       };
-  //   };
-  // },
   // methods: {
     cancelSearch() {}
     searchData() {}

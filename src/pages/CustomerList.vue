@@ -24,7 +24,7 @@
         <Table v-if="loading === false" :headers="headers" :items="items" :pagination="pagination" @edit="edit" @remove="remove"></Table>
       </v-card>
     </v-flex>
-    <search-panel :rightDrawer="rightDrawer" @cancelSearch="cancelSearch" @searchData="searchCustomers">
+    <!-- <search-panel :rightDrawer="showSearchPanel" @cancelSearch="cancelSearch" @searchData="searchCustomers">
       <v-layout row>
         <v-flex xs11 offset-xs1>
           <v-text-field name="input-1-3" label="Frist Name" light v-model="searchVm.contains.firstName"></v-text-field>
@@ -56,7 +56,7 @@
           <v-text-field type="number" light v-model="searchVm.between.rewards.latter"></v-text-field>
         </v-flex>
       </v-layout>
-    </search-panel>
+    </search-panel> -->
 
     <confirm-dialog
       :dialog="dialog"
@@ -72,13 +72,11 @@
   </v-container>
 </template>
 <script lang="ts">
-/* globals Store */
 import Table from '@/components/Table.vue';
 import SearchPanel from '@/components/SearchPanel.vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
-// import { mapState } from 'vuex';
 import { debounce } from 'lodash';
-import { buildSearchFilters, buildJsonServerQuery, clearSearchFilters} from '@/utils/app-util';
+import { buildSearchFilters, buildJsonServerQuery, clearSearchFilters } from '@/utils/app-util';
 
 import { Component, Prop } from 'vue-property-decorator';
 import store from '@/store';
@@ -87,13 +85,12 @@ import Vue from 'vue';
 import { State, Getter, Action, Mutation, namespace } from 'vuex-class';
 import { Customer, Entity } from '../types';
 import { getDefaultPagination } from '@/utils/store-util';
-// import api from '@/utils/demo-api';
 import { getData } from '@/utils/demo-api';
+import { userModule } from '../store/modules/user';
+// import { userModule } from '../store/modules/user';
 
 import {customerModule} from '@/store/modules/customers'
 
-const Store: TODO = store;
-const customers = namespace('customers');
 
 @Component({
   components: {
@@ -103,13 +100,13 @@ const customers = namespace('customers');
   }
 })
 export default class CustomerList extends Vue {
-  private dialog = false;
-  private dialogTitle = 'Customer Delete Dialog';
-  private dialogText = 'Do you want to delete this customer?';
-  private rightDrawer = false;
-  private right = true;
-  private search = '';
-  private headers = [
+  public dialog = false;
+  public dialogTitle = 'Customer Delete Dialog';
+  public dialogText = 'Do you want to delete this customer?';
+  public showSearchPanel = false;
+  public right = true;
+  public search = '';
+  public headers = [
     {
       text: 'First Name',
       left: true,
@@ -141,7 +138,7 @@ export default class CustomerList extends Vue {
   private itemId = -1;
   // private  quickSearch = '';
 
-  private pagination = getDefaultPagination();
+  // private pagination = getDefaultPagination();
   // };
   // },
   // methods: {
@@ -159,11 +156,11 @@ export default class CustomerList extends Vue {
     this.dialog = true;
   }
   onConfirm() {
-    Store.dispatch('customers/deleteCustomer', this.itemId).then(() => {
-      Store.dispatch('customers/searchCustomers', this.query); //, this.pagination);
-      Store.dispatch('customers/closeSnackBar', 2000);
-    });
-    this.dialog = false;
+    // Store.dispatch('customers/deleteCustomer', this.itemId).then(() => {
+    //   Store.dispatch('customers/searchCustomers', this.query); //, this.pagination);
+    //   Store.dispatch('customers/closeSnackBar', 2000);
+    // });
+    // this.dialog = false;
   }
   onCancel() {
     this.customerId = '';
@@ -171,15 +168,15 @@ export default class CustomerList extends Vue {
   }
 
   searchCustomers() {
-    this.rightDrawer = !this.rightDrawer;
+    this.showSearchPanel = !this.showSearchPanel;
     buildSearchFilters(this.searchVm);
     this.query = buildJsonServerQuery(this.searchVm);
     this.quickSearch = '';
-    Store.dispatch('customers/searchCustomers', this.query); //, this.pagination);
+    // Store.dispatch('customers/searchCustomers', this.query); //, this.pagination);
   }
 
   clearSearchFilters() {
-    this.rightDrawer = !this.rightDrawer;
+    this.rightDrawer = !this.showSearchPanel;
     clearSearchFilters(this.searchVm);
     getData('customers/').then(
       (res: TODO) => {
@@ -202,16 +199,16 @@ export default class CustomerList extends Vue {
 
   reloadData() {
     this.query = '';
-    Store.dispatch('customers/getAllCustomers');
+    // Store.dispatch('customers/getAllCustomers');
   }
 
   cancelSearch() {
-    this.rightDrawer = false;
+    this.showSearchPanel = false;
   }
 
   closeSnackbar() {
-    Store.commit('customers/setSnackbar', { snackbar: false });
-    Store.commit('customers/setNotice', { notice: '' });
+    // Store.commit('customers/setSnackbar', { snackbar: false });
+    // Store.commit('customers/setNotice', { notice: '' });
   }
 
   quickSearchCustomers = debounce(function() {
@@ -225,15 +222,43 @@ export default class CustomerList extends Vue {
   }, 300);
   // }
 
-  // @customers.State
+  
   public get items(){
-    // Entity[] = [];
-    return customerModule.getCustomers;
+    return customerModule.items;
   }
-  public loading = 'loading';
-  public mode = 'mode';
+  get pagination() {
+    return customerModule.pagination;
+  }
+  get loading(){
+    return customerModule.loading;
+  }
+  get mode(){
+    return customerModule.mode;
+  }
+  // @customerModule.State
+  // public items: Entity[];
+  // @customerModule.State
+  // public pagination: Pagination;
+  // @customerModule.State
+  // public loading: boolean;
+
+  // public loading = 'loading';
+  // public mode = 'mode';
   public snackbar = 'snackbar';
   public notice = 'notice';
+
+  get rightDrawer() {
+    return this.showSearchPanel;
+  }
+
+  set rightDrawer(showSearchPanel: boolean) {
+    this.showSearchPanel = showSearchPanel;
+  }
+
+  // @customerModule.Action
+  public getAllCustomers() {
+    customerModule.getAllCustomers();
+  }
 
   // computed: {
   // ...mapState('  ', {
@@ -256,11 +281,12 @@ export default class CustomerList extends Vue {
   // }
 
   created() {
-    Store.dispatch('customers/getAllCustomers');
+    // Store.dispatch('customers/getAllCustomers');
+    this.getAllCustomers();
   }
 
   mounted() {
-    // this.getCustomers()
+    //  this.getCustomers()
   }
 }
 </script>

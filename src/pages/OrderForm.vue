@@ -140,7 +140,7 @@
               <v-flex xs12 v-if="order.products && order.products.length > 0">
                 <v-list class="transparent elevation-0" two-line>
                   <v-list-item
-                    avatar
+                    
                     ripple
                     v-for="(item, index) in order.products"
                     v-if="item !== null && item !== undefined"

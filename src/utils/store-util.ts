@@ -83,3 +83,10 @@ export function commitPagination(commit:Commit, items: Entity[]) {
   commit('setItems', items);
   commit('setPagination', { totalItems, pages, page: 1, rowsPerPage: DEFAULT_ROW_PER_PAGE });
 }
+
+
+export function getPagination( items: Entity[]) {
+  const totalItems = items ? items.length : 0;
+  const pages = Math.ceil(totalItems / DEFAULT_ROW_PER_PAGE);
+  return { totalItems, pages, page: 1, rowsPerPage: DEFAULT_ROW_PER_PAGE };
+}

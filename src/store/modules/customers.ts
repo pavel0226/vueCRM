@@ -1,6 +1,6 @@
 import { getData, putData, postData, deleteData } from '@/utils/demo-api';
 import { Customer, Order, Entity } from '@/types';
-import { sendSuccessNotice, sendErrorNotice, closeNotice, commitPagination, getDefaultPagination } from '@/utils/store-util';
+import { sendSuccessNotice, sendErrorNotice, closeNotice, commitPagination, getDefaultPagination, getPagination } from '@/utils/store-util';
 
 import { get } from 'lodash';
 import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators';
@@ -19,7 +19,7 @@ export interface CustomerState {
   orderList: Order[];
 }
 
-@Module({ store, dynamic: true, name: 'customers' })
+@Module({ store, dynamic: true, name: 'customerModule' })
 class CustomerModule extends VuexModule implements CustomerState {
 
   public items: Entity[] = [];
@@ -72,10 +72,14 @@ class CustomerModule extends VuexModule implements CustomerState {
     getData('customers?_embed=orders').then((res: TODO) => {
       const customers = res.data;
       customers.forEach((item: Customer) => {
-        item.orderAmount = item.orders.length; //? item.orders.length : 0;
+        item.orderAmount = item.orders&& item.orders?.length // : 0;
       });
-      commitPagination(this.context.commit, customers);
-      this.context.commit('setLoading', { loading: false });
+      const pagination = getPagination(customers);
+      this.setPagination(pagination)
+      this.setItems(customers)
+      this.setLoading(false)  
+      // commitPagination(this.context.commit, customers);
+      // this.context.commit('setLoading', { loading: false });
     });
   }
   searchCustomers(searchQuery: string, pagination: TODO): void {

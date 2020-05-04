@@ -34,11 +34,7 @@ class OrderModule extends VuexModule implements OrderState {
   public products: Product[] = [];
   public customers: Customer[] = [];
   public categories: Category[] = [];
-  // };
 
-  // const getters = {};
-
-  // const actions = {
   @Action
   getCustomers() {
     getData('customers/').then((res: TODO) => {
@@ -277,15 +273,8 @@ class OrderModule extends VuexModule implements OrderState {
   setOrder(order: Order) {
     this.order = order;
   }
-  // };
 }
 
 export const orderModule = getModule(OrderModule) // Orders;
 
-// {
-//   namespaced: false,
-//   state,
-//   actions,
-//   mutations,
-//   getters
-// };
+

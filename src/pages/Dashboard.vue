@@ -15,7 +15,7 @@
                   </v-flex>
                   <v-flex d-flex xs12>
                     <div class="silver--text display-1">{{ stat.data }}</div>
-                    <v-btn outline class="darkgrey--text darken-1" right flat small>{{ stat.action.label }}</v-btn>
+                    <v-btn outlined class="darkgrey--text darken-1" right text small>{{ stat.action.label }}</v-btn>
                   </v-flex>
                 </v-layout>
               </v-flex>
@@ -52,7 +52,7 @@ import { Component, Prop } from 'vue-property-decorator';
 import Vue from 'vue';
 
 @Component({
-  // name: 'Dashboard',
+ name: 'Dashboard',
   components: {
     BarChart,
     DoughnutChart,

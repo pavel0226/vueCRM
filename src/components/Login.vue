@@ -60,15 +60,12 @@ import {userModule} from '@/store/modules/user';
 
 @Component
 export default class Login extends Vue {
-  // data() {
-  //   return {
+
   private email = 'admin@test.com';
   private pass = 'password';
   private error = false;
   private text = '';
-  //   };
-  // },
-  // methods: {
+
   public gotoDashboard() {
     this.$router.push('/');
   }
