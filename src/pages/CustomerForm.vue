@@ -21,7 +21,7 @@
             <!-- <v-img   class="profile" eager=true :src="customer.avatar"/> -->
            {{customer.avatar}}
             <img :src="customer.avatar" />
-            <img src="../../assets/img/avatar1.png">
+            <img src="../assets/img/avatar1.png">
               </v-flex>
               <v-flex md9 sm12>
                 <v-container fluid grid-list-sm>
