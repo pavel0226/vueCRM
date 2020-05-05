@@ -10,11 +10,11 @@
 
       <v-layout class="pl-1 pt-3 ml-1" row>
         <v-btn class="purple" fab small @click.native="$emit('searchData')">
-          <v-icon dark="">search</v-icon>
+          <v-icon dark="">mdi-magnify</v-icon>
         </v-btn>
         <!-- <v-btn class="grey" fab small @click.native="rightDrawer = !rightDrawer"> searchData-->
         <v-btn class="grey" fab small @click.native="$emit('cancelSearch')">
-          <v-icon dark="">clear</v-icon>
+          <v-icon dark="">mdi-close-circle-outline</v-icon>
         </v-btn>
       </v-layout>
     </v-list>
@@ -49,8 +49,8 @@ export default class SearchPanel extends Vue {
     }
   };
   // methods: {
-  cancelSearch() {}
-  searchData() {}
+  // cancelSearch() {}
+  // searchData() {}
   // },
 
   created() {}

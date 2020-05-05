@@ -5,19 +5,23 @@
         <v-card-title class="title">
           {{ title }}
           <v-spacer></v-spacer>
-          <v-btn fab small class="grey" @click.native="cancel()">
-            <v-icon>cancel</v-icon>
+          <v-btn fab small class="grey mr-2" @click.native="cancel()">
+            <v-icon dark="">mdi-close-circle-outline</v-icon>
           </v-btn>
           &nbsp;
-          <v-btn fab small class="purple" @click.native="save()">
-            <v-icon>save</v-icon>
+          <v-btn fab small class="blue" @click.native="save()">
+            <v-icon>mdi-content-save-all</v-icon>
           </v-btn>
         </v-card-title>
         <v-card-text v-if="loading !== true">
           <v-container fluid grid-list-sm>
             <v-layout row wrap>
               <v-flex md3 sm12>
-                <img v-if="customer.avatar" class="profile" v-bind:src="customer.avatar" />
+                <!-- <v-img   class="profile" eager=true :src="customer.avatar"/></v-img> -->
+            <!-- <v-img   class="profile" eager=true :src="customer.avatar"/> -->
+           {{customer.avatar}}
+            <img :src="customer.avatar" />
+            <img src="../../assets/img/avatar1.png">
               </v-flex>
               <v-flex md9 sm12>
                 <v-container fluid grid-list-sm>
@@ -102,68 +106,87 @@
     </v-flex>
   </v-container>
 </template>
-<script>
-/* global Store */
-import { mapState, dispatch } from 'vuex';
+<script lang="ts">
+import Table from '@/components/Table.vue';
+import SearchPanel from '@/components/SearchPanel.vue';
+import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import { debounce } from 'lodash';
+import { buildSearchFilters, buildJsonServerQuery, clearSearchFilters } from '@/utils/app-util';
+import { Component, Prop, Emit } from 'vue-property-decorator';
+import store from '@/store';
+import Vue from 'vue';
+import { Customer, Entity } from '../types';
+import { getDefaultPagination } from '@/utils/store-util';
+import { getData } from '@/utils/demo-api';
+import { userModule } from '../store/modules/user';
+import { customerModule } from '@/store/modules/customers';
+import { appModule } from '@/store/modules/app';
+import { isValidEmail, isValidRewards } from '@/utils/app-util';
 
-export default {
-  data() {
-    return {
-      title: '',
-      rules: {
-        rewards: [
-          () => {
-            if (this.customer && (this.customer.rewards < 0 || this.customer.rewards > 9999)) {
-              return 'Reward is required. It must be bewteen 0 and 9999';
-            }
-            return true;
-          }
-        ],
-        email: [
-          () => {
-            /* eslint-disable no-useless-escape */
-            const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            if (this.customer && !re.test(this.customer.email)) return 'Email is invalid.';
-            return true;
-          }
-        ]
-      }
-    };
-  },
-  computed: {
-    ...mapState('customers', {
-      orders: 'orders',
-      customer: 'customer',
-      loading: 'loading',
-      mode: 'mode',
-      snackbar: 'snackbar',
-      notice: 'notice'
-    })
-  },
-  methods: {
-    save() {
-      const customer = { ...this.customer };
-      // delete order.customer
-      console.log(customer);
-      Store.dispatch('customers/saveCustomer', customer).then(() => {
-        Store.dispatch('customers/closeSnackBar', 2000);
-      });
-    },
-    cancel() {
-      this.$router.push({ name: 'Customers' });
-    },
-    closeSnackbar() {
-      Store.commit('customers/setSnackbar', { snackbar: false });
-      Store.commit('customers/setNotice', { notice: '' });
-    }
-  },
+@Component
+export default class CustomerForm extends Vue {
+  title = '';
+  rules = {
+    rewards: [() => isValidRewards(this.customer.rewards)],
+    email: [() => isValidEmail(this.customer.email)]
+  };
+  // customerAvatar = customerModule.customer.avatar;
+
+  get customerAvatar() {
+    return { src: require(customerModule.customer.avatar)};
+  }
+
+  get customer() {
+    console.log(customerModule.customer);
+    return customerModule.customer;
+  }
+
+  get orders() {
+    return customerModule.getOrders();
+  }
+
+  get pagination() {
+    return customerModule.pagination;
+  }
+  get loading() {
+    return appModule.loading;
+  }
+  get mode() {
+    return appModule.mode;
+  }
+  get snackbar() {
+    return appModule.snackbar;
+  }
+  get notice() {
+    return appModule.notice;
+  }
+
+  save() {
+    // const customer = { ...this.customer };
+    // delete order.customer
+    // console.log(customer);
+    // Store.dispatch('customers/saveCustomer', customer).then(() => {
+    //   Store.dispatch('customers/closeSnackBar', 2000);
+    // });
+    customerModule.saveCustomer(this.customer);
+  }
+  cancel() {
+    this.$router.push({ name: 'Customers' });
+  }
+
+  closeSnackbar() {
+    appModule.closeNotice();
+  }
   created() {
-    Store.dispatch('customers/getCustomerById', this.$route.params.id);
-  },
+    // Store.dispatch('customers/getCustomerById', this.$route.params.id);
+    customerModule.getCustomerById(this.$route.params.id);
+  }
   mounted() {
     if (this.$route.params.id) {
       this.title = 'Edit Customer';
     } else this.title = 'New Customer';
+    // this.customerAvatar =customerModule.customer.avatar
   }
-};
+}
 </script>
+ 

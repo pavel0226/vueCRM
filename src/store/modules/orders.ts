@@ -1,7 +1,7 @@
 import { getData, putData, postData, deleteData } from '@/utils/demo-api';
 import { Customer, Order, Entity, Product, Category } from '@/types';
-import { sendSuccessNotice, sendErrorNotice, closeNotice, commitPagination, getDefaultPagination } from '@/utils/store-util';
-
+import { getDefaultPagination, getPagination } from '@/utils/store-util';
+import {appModule} from './app'
 import { get } from 'lodash';
 import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators';
 import store from '@/store';
@@ -10,9 +10,6 @@ export interface OrderState {
   items: Entity[];
   pagination: Pagination;
   loading: boolean;
-  mode: string;
-  snackbar: boolean;
-  notice: string;
   order: Order;
   customer: string;
   products: Product[];
@@ -22,39 +19,33 @@ export interface OrderState {
 
 @Module({ store, dynamic: true, name: 'orders' })
 class OrderModule extends VuexModule implements OrderState {
-  // const state = {
   public items: Entity[] = [];
   public pagination = getDefaultPagination();
   public loading = false;
-  public mode = '';
-  public snackbar = false;
-  public notice = '';
   public order = {} as Order;
   public customer = '';
   public products: Product[] = [];
   public customers: Customer[] = [];
   public categories: Category[] = [];
 
-  @Action
-  getCustomers() {
-    getData('customers/').then((res: TODO) => {
-      if (res.data) {
-        const customers = res.data.map((c: Customer) => {
-          c.text = c.firstName + ' ' + c.lastName;
-          c.value = c.id;
-          return c;
-        });
-        this.context.commit('setCustomers', customers);
-      }
-    });
-  }
+  // @Action
+  // getCustomers() {
+  //   getData('customers/').then((res: TODO) => {
+  //     if (res.data) {
+  //       const customers = res.data.map((c: Customer) => {
+  //         c.text = c.firstName + ' ' + c.lastName;
+  //         c.value = c.id;
+  //         return c;
+  //       });
+  //       this.context.commit('setCustomers', customers);
+  //     }
+  //   });
+  // }
   @Action
   getCategories() {
     getData('categories/').then((res: TODO) => {
       if (res.data && res.data.length > 0) {
         const categories = res.data.map((c: Category) => {
-          // c.text = c.firstName + " " + c.lastName;
-          // c.value = c.id;
           c.text = c.categoryName;
           c.value = c.id;
           return c;
@@ -102,7 +93,7 @@ class OrderModule extends VuexModule implements OrderState {
   }
   @Action
   getAllOrders() {
-    this.context.commit('setLoading', { loading: true });
+     this.setLoading(true);
     getData('orders?_expand=customer').then((res: TODO) => {
       const orders = res.data;
 
@@ -111,8 +102,8 @@ class OrderModule extends VuexModule implements OrderState {
         item.quantity = item.products.length;
         item.customer = item.customer ? item.customer.firstName + ' ' + item.customer.lastName : '';
       });
-      commitPagination(this.context.commit, orders);
-      this.context.commit('setLoading', { loading: false });
+      this.setDataTable(orders);
+      this.setLoading(false);
     });
   }
   @Action
@@ -124,11 +115,12 @@ class OrderModule extends VuexModule implements OrderState {
         item.quantity = item.products.length;
         item.customer = item.customer ? item.customer.firstName + ' ' + item.customer.lastName : '';
       });
-      commitPagination(this.context.commit, orders);
+      this.setDataTable(orders);
+      this.setLoading(false);
     });
   }
-  @Action
-  quickSearch({ headers, qsFilter, pagination }: TODO) {
+
+  @Action quickSearch(headers: TableHeader[], qsFilter: SeachQuery, pagination: Pagination): void {
     // TODO: Following solution should be replaced by DB full-text search for production
     getData('orders?_expand=customer').then((res: TODO) => {
       const orders = res.data.filter((r: TODO) =>
@@ -153,23 +145,26 @@ class OrderModule extends VuexModule implements OrderState {
         item.quantity = item.products.length;
         item.customer = item.customer ? item.customer.firstName + ' ' + item.customer.lastName : '';
       });
-      commitPagination(this.context.commit, orders);
+      // this.setItems(orders);
+      this.setDataTable(orders);
+      this.setLoading(false);
+
     });
   }
   @Action
-  deleteOrder({ state, commit, dispatch }: TODO, id: number) {
+  deleteOrder( id: number) {
     deleteData('orders/', id.toString())
       .then((res: TODO) => {
         return new Promise((resolve, reject) => {
-          sendSuccessNotice(this.context.commit, 'Operation is done.');
+          appModule.sendSuccessNotice('Operation is done.');
 
           resolve();
         });
       })
       .catch((err: TODO) => {
         console.log(err);
-        sendErrorNotice(this.context.commit, 'Operation failed! Please try again later. ');
-        closeNotice(this.context.commit, 1500);
+        appModule.sendErrorNotice('Operation failed! Please try again later. ');
+        appModule.closeNoticeWithDelay(1500);
       });
   }
   @Action
@@ -192,41 +187,42 @@ class OrderModule extends VuexModule implements OrderState {
       this.context.commit('setOrderProducts', products);
     }
   }
-  saveOrder(order: Order) {
+  @Action saveOrder(order: Order) {
     // delete order;
     if (!order.id) {
       postData('orders/', order)
         .then((res: TODO) => {
           const order = res.data;
           this.context.commit('setOrder', { order });
-          sendSuccessNotice(this.context.commit, 'New order has been added.');
+          appModule.sendSuccessNotice('New order has been added.');
         })
         .catch((err: TODO) => {
           console.log(err);
-          sendErrorNotice(this.context.commit, 'Operation failed! Please try again later. ');
-          closeNotice(this.context.commit, 1500);
+          appModule.sendErrorNotice('Operation failed! Please try again later. ');
+          appModule.closeNoticeWithDelay(1500);
         });
     } else {
       putData('orders/' + order.id.toString(), order)
         .then((res: TODO) => {
           const order = res.data;
           this.context.commit('setOrder', { order });
-          sendSuccessNotice(this.context.commit, 'Order has been updated.');
+          appModule.sendSuccessNotice('Order has been updated.');
         })
         .catch((err: TODO) => {
           console.log(err);
-          sendErrorNotice(this.context.commit, 'Operation failed! Please try again later. ');
-          closeNotice(this.context.commit, 1500);
+          appModule.sendErrorNotice('Operation failed! Please try again later. ');
+          appModule.closeNoticeWithDelay(1500);
         });
     }
   }
-  @Action
-  closeSnackBar(timeout: number) {
-    closeNotice(this.context.commit, timeout);
-  }
-  // };
 
-  // const mutations = {
+
+  @Action setDataTable(items: Order[]) {
+    const pagination = getPagination(items);
+    this.setPagination(pagination);
+    this.setItems(items);
+  }
+
   @Mutation
   setCustomers(customers: Customer[]) {
     this.customers = customers;
@@ -255,19 +251,6 @@ class OrderModule extends VuexModule implements OrderState {
   @Mutation
   setLoading(loading: boolean) {
     this.loading = loading;
-  }
-  @Mutation
-  setNotice(notice: string) {
-    console.log(' notice .... ', notice);
-    this.notice = notice;
-  }
-  @Mutation
-  setSnackbar(snackbar: boolean) {
-    this.snackbar = snackbar;
-  }
-  @Mutation
-  setMode(mode: string) {
-    this.mode = mode;
   }
   @Mutation
   setOrder(order: Order) {

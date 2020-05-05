@@ -1,6 +1,4 @@
-// import {getata} from '@/utils/demo-api';
 import { User, UserInfo } from '@/types';
-
 import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators';
 import store from '@/store';
 import { login } from '@/utils/demo-api';
@@ -40,15 +38,17 @@ class UserModule extends VuexModule implements UserState {
   private globalSearching() {
     this.searching = this.searching === '' ? 'loading' : '';
   }
+
   @Mutation
   private setUser(_user: User): void {
     this.user = _user;
   }
+
   @Mutation
   private setToken(_token: string) {
-    debugger;
     this.token = _token;
   }
+
   @Mutation
   private setUserInfo(_userInfo: UserInfo) {
     this.userInfo = _userInfo;

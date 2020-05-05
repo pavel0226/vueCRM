@@ -1,7 +1,6 @@
 // import { Commit } from 'vuex-module-decorators'
 import { Commit } from 'vuex';
 import { Entity } from '@/types';
-// import { Pagination } from '@/global';
 export const DEFAULT_ROW_PER_PAGE = 10;
 
 export function getDefaultPagination(): Pagination {
@@ -13,29 +12,6 @@ export function getDefaultPagination(): Pagination {
   };
 }
 
-export function sendSuccessNotice(commit: Commit, notice: string): void {
-  commit('setNotice', {
-    notice
-  });
-  commit('setSnackbar', {
-    snackbar: true
-  });
-  commit('setMode', {
-    mode: 'success'
-  });
-}
-
-export function sendErrorNotice(commit: Commit, notice: string): void {
-  commit('setNotice', {
-    notice
-  });
-  commit('setSnackbar', {
-    snackbar: true
-  });
-  commit('setMode', {
-    mode: 'error'
-  });
-}
 
 /**
  * Set pagination to the store
@@ -52,21 +28,6 @@ export function setPagination(commit: Commit, page: number, totalItems: Entity[]
     pages,
     rowsPerPage: rowsPerPage || DEFAULT_ROW_PER_PAGE
   });
-}
-
-export function closeNotice(commit: Commit, timeout: number) {
-  setTimeout(() => {
-    console.log(' time out .... ', timeout);
-    commit('setSnackbar', {
-      snackbar: false
-    });
-    commit('setNotice', {
-      notice: ''
-    });
-    commit('setMode', {
-      mode: ''
-    });
-  }, timeout);
 }
 
 /**

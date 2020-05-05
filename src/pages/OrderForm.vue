@@ -7,15 +7,15 @@
           <v-spacer></v-spacer>
           <!--<v-text-field append-icon="search" label="Search" single-line hide-details v-model="search"></v-text-field>-->
           <v-btn fab small class="grey" @click.native="cancel()">
-            <v-icon>cancel</v-icon>
+            <v-icon dark="">mdi-close-circle-outline</v-icon>
           </v-btn>
           &nbsp;
           <v-btn fab small class="purple" @click.native="save()">
-            <v-icon>save</v-icon>
+            <v-icon>mdi-content-save-all</v-icon>
           </v-btn>
           &nbsp;
           <v-btn fab small class="blue" @click.native="addProduct()">
-            <v-icon>add</v-icon>
+            <v-icon>mdi-plus</v-icon>
           </v-btn>
         </v-card-title>
         <v-card-text>

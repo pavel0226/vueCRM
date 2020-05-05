@@ -63,50 +63,48 @@ export default class Dashboard extends Vue {
   // data() {
   //   return {
   // @Prop() readonly
-  monthlyStats =
-    // monthlyStats:
-    [
-      {
-        bgColor: 'cyan darken-3',
-        icon: 'card_membership',
-        title: 'New Order',
-        data: '120',
-        action: {
-          label: 'More Info',
-          link: ''
-        }
-      },
-      {
-        bgColor: 'deep-orange  lighten-3',
-        icon: 'card_membership',
-        title: 'User Registrationsr',
-        data: '780',
-        action: {
-          label: 'More Info',
-          link: ''
-        }
-      },
-      {
-        bgColor: 'blue-grey darken-1',
-        icon: 'card_membership',
-        title: 'Unique Visitors',
-        data: '78',
-        action: {
-          label: 'More Info',
-          link: ''
-        }
-      },
-      {
-        bgColor: 'pink  lighten-4',
-        icon: 'card_membership',
-        title: 'Bounce Rate',
-        data: '53%',
-        action: {
-          label: 'More Info',
-          link: ''
-        }
+  monthlyStats = [
+    {
+      bgColor: 'cyan darken-3',
+      icon: 'card_membership',
+      title: 'New Order',
+      data: '120',
+      action: {
+        label: 'More Info',
+        link: ''
       }
-    ];
+    },
+    {
+      bgColor: 'deep-orange  lighten-3',
+      icon: 'card_membership',
+      title: 'User Registrationsr',
+      data: '780',
+      action: {
+        label: 'More Info',
+        link: ''
+      }
+    },
+    {
+      bgColor: 'blue-grey darken-1',
+      icon: 'card_membership',
+      title: 'Unique Visitors',
+      data: '78',
+      action: {
+        label: 'More Info',
+        link: ''
+      }
+    },
+    {
+      bgColor: 'pink  lighten-4',
+      icon: 'card_membership',
+      title: 'Bounce Rate',
+      data: '53%',
+      action: {
+        label: 'More Info',
+        link: ''
+      }
+    }
+  ];
   // };
   // mounted(){}
 }
