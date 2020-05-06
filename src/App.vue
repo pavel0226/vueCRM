@@ -58,12 +58,12 @@
         <div class="text-xs-center pr-3">
           <v-badge left="">
             <span slot="badge">6</span>
-            <v-icon large color="grey lighten-1">shopping_cart</v-icon>
+            <v-icon large color="grey lighten-1">mdi-bell-outline</v-icon>
           </v-badge>
 
           <v-badge color="red">
             <span slot="badge">!</span>
-            <v-icon large color="grey">mail</v-icon>
+            <v-icon large color="grey">mdi-email-outline</v-icon>
           </v-badge>
         </div>
 

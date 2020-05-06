@@ -99,7 +99,8 @@ export default class ProductList extends Vue {
     { text: 'Product', left: true, value: 'productName' },
     { text: 'Category', value: 'category.categoryName' },
     { text: 'Price', value: 'unitPrice' },
-    { text: 'In Stock', value: 'unitInStock' }
+    { text: 'In Stock', value: 'unitInStock' },
+    { text: '', value: 'actions', sortable: false }
   ];
   searchVm= {
     contains: {

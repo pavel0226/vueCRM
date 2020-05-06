@@ -112,7 +112,8 @@ export default class OrderList extends Vue {
     { text: 'Amount', value: 'amount' },
     { text: 'Customer', value: 'customer' },
     { text: 'Order Date', value: 'orderDate' },
-    { text: 'Shipping Date', value: 'shippedDate' }
+    { text: 'Shipping Date', value: 'shippedDate' },
+    { text: '', value: 'actions', sortable: false }
   ];
   private searchVm = {
     contains: {

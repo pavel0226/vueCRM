@@ -66,7 +66,7 @@ export default class Dashboard extends Vue {
   monthlyStats = [
     {
       bgColor: 'cyan darken-3',
-      icon: 'card_membership',
+      icon: 'mdi-wallet-membership',
       title: 'New Order',
       data: '120',
       action: {
@@ -76,7 +76,7 @@ export default class Dashboard extends Vue {
     },
     {
       bgColor: 'deep-orange  lighten-3',
-      icon: 'card_membership',
+      icon: 'mdi-wallet-giftcard',
       title: 'User Registrationsr',
       data: '780',
       action: {
@@ -86,7 +86,7 @@ export default class Dashboard extends Vue {
     },
     {
       bgColor: 'blue-grey darken-1',
-      icon: 'card_membership',
+      icon: 'mdi-wallet-travel',
       title: 'Unique Visitors',
       data: '78',
       action: {
@@ -96,7 +96,7 @@ export default class Dashboard extends Vue {
     },
     {
       bgColor: 'pink  lighten-4',
-      icon: 'card_membership',
+      icon: 'mdi-wall',
       title: 'Bounce Rate',
       data: '53%',
       action: {
