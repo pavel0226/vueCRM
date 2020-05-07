@@ -201,8 +201,6 @@ export default class OrderList extends Vue {
   };
   private orderId = "";
   private query = "";
-  private snackbarStatus = false;
-  private timeout = 2000;
   private color = "";
   private quickSearchFilter = "";
   private itemId = -1;

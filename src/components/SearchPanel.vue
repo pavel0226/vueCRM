@@ -1,10 +1,5 @@
 <template>
-  <v-navigation-drawer
-    right
-    v-model="rightDrawer"
-    :disable-resize-watcher="true"
-    fixed
-  >
+  <v-navigation-drawer right v-model="rightDrawerVal" :disable-resize-watcher="true" fixed>
     <v-list>
       <!-- <v-list-item-title>&nbsp;</v-list-item-title> -->
       <v-list-item class="my-2">
@@ -17,7 +12,7 @@
         <v-btn class="purple" fab small @click.native="$emit('searchData')">
           <v-icon dark="">mdi-magnify</v-icon>
         </v-btn>
-        <!-- <v-btn class="grey" fab small @click.native="rightDrawer = !rightDrawer"> searchData-->
+        <!-- <v-btn class="grey" fab small @click.native="rightDrawer = !rightDrawer"> searchData-->  
         <v-btn class="grey" fab small @click.native="$emit('cancelSearch')">
           <v-icon dark="">mdi-close-circle-outline</v-icon>
         </v-btn>
@@ -27,24 +22,25 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
-import Vue from "vue";
-import { State, Getter, Action, Mutation, namespace } from "vuex-class";
-// import { Watch } from 'vue-property-decorator';
-// import {userModule} from '@/store/modules/user';
-// import { User } from './types';
+import { Component, Prop } from 'vue-property-decorator';
+import Vue from 'vue';
 
-// export default  {
-@Component({ name: "search-panel" })
+@Component
 export default class SearchPanel extends Vue {
-  // props: {
-  @Prop() rightDrawer: boolean;
+  @Prop({ required: true }) rightDrawer: boolean;
+
+  get rightDrawerVal() {
+    return this.rightDrawer;
+  }
+  set rightDrawerVal(r: boolean) {
+    this.rightDrawer = r;
+  }
 
   public right = true;
   public searchVm: TODO = {
     contains: {
-      productName: "",
-      category: ""
+      productName: '',
+      category: ''
     },
     between: {
       price: {
@@ -53,12 +49,10 @@ export default class SearchPanel extends Vue {
       }
     }
   };
-  // methods: {
-  // cancelSearch() {}
-  // searchData() {}
-  // },
 
-  created() {}
+  created() {
+    // this.rightDrawer = true
+  }
   mounted() {
     this.$nextTick(() => {});
   }

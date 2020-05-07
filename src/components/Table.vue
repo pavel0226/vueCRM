@@ -22,51 +22,41 @@
       </template>
       <template slot="no-data">
         <span>
-          <p class="pt-2 blue--text subheading">
-            <v-icon medium class="blue--text">mdi-info</v-icon>Sorry, nothing to
-            display here :(
-          </p>
+          <p class="pt-2 blue--text subheading"><v-icon medium class="blue--text">mdi-info</v-icon>Sorry, nothing to display here :(</p>
         </span>
       </template>
     </v-data-table>
     <div class="text-xs-center pt-2" v-if="isNotEmpty">
-      <v-pagination
-        v-model="pagination.page"
-        :length="pagination.pages"
-        :total-visible="5"
-        circle
-      ></v-pagination>
+      <v-pagination v-model="pagination.page" :length="pagination.pages" :total-visible="5" circle></v-pagination>
     </div>
   </div>
 </template>
 <script lang="ts">
-import Vue from "vue";
-import { Entity } from "@/types";
-import { Component, Prop, Emit } from "vue-property-decorator";
-import { getDefaultPagination } from "@/utils/store-util";
+import Vue from 'vue';
+import { Entity } from '@/types';
+import { Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class Table extends Vue {
-  @Prop() readonly headers: TableHeader[]; //=[];
-  @Prop() readonly items: Entity[]; //=[];
-  @Prop() readonly pagination: Pagination; //= getDefaultPagination();
-
-  search = "";
+  @Prop() readonly headers: TableHeader[];
+  @Prop() readonly items: Entity[];
+  @Prop() readonly pagination: Pagination;
+  search = '';
 
   editItem() {}
 
   deleteItem() {}
 
   renderData = (item: TODO, header: TODO) => {
-    let val = "";
-    if (header.value.includes(".")) {
-      const vals = header.value.split(".");
+    let val = '';
+    if (header.value.includes('.')) {
+      const vals = header.value.split('.');
       val = vals.reduce((acc: TODO, val: TODO) => acc[val], item);
     } else {
       val = item[header.value];
     }
-    if (typeof val === "boolean") {
-      val = val ? "Yes" : "No";
+    if (typeof val === 'boolean') {
+      val = val ? 'Yes' : 'No';
     }
     return val;
   };

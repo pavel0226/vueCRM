@@ -1,8 +1,8 @@
 <template>
   <v-container fill-height justify-center align-center>
     <!-- <v-layout row > -->
-    <v-flex xs12 sm5 md4 lg3>
-      <v-card class="mt-0 pt-0">
+    <v-flex xs12 sm6 md5 lg4>
+      <v-card class="mt-0 pt-0"   elevation="2" >
         <v-card-title class="blue darken-1">
           <h4 style="color:white">Vue-CRM 2.0</h4>
         </v-card-title>
@@ -14,7 +14,7 @@
               </v-flex>
               <v-flex xs12 md8>
                 <v-text-field
-                  class="input-group--focused"
+                  class="input-group--focused mr-2"
                   name="email"
                   v-model="email"
                   label="email"
@@ -28,7 +28,7 @@
               </v-flex>
               <v-flex xs12 md8>
                 <v-text-field
-                  class="input-group--focused"
+                  class="input-group--focused mr-2"
                   name="password"
                   type="password"
                   v-model="pass"

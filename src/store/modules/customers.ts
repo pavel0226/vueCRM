@@ -1,17 +1,11 @@
-import { getData, putData, postData, deleteData } from "@/utils/demo-api";
-import { Customer, Order, Entity } from "@/types";
-import { appModule } from "./app";
-import { getDefaultPagination, getPagination } from "@/utils/store-util";
+import { getData, putData, postData, deleteData } from '@/utils/demo-api';
+import { Customer, Order, Entity } from '@/types';
+import { appModule } from './app';
+import { getDefaultPagination, getPagination } from '@/utils/store-util';
 
-import { get } from "lodash";
-import {
-  VuexModule,
-  Module,
-  Mutation,
-  Action,
-  getModule,
-} from "vuex-module-decorators";
-import store from "@/store";
+import { get } from 'lodash';
+import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators';
+import store from '@/store';
 
 export interface CustomerState {
   items: Entity[];
@@ -23,7 +17,7 @@ export interface CustomerState {
   orderList: Order[];
 }
 
-@Module({ store, dynamic: true, name: "customerModule" })
+@Module({ store, dynamic: true, name: 'customerModule' })
 class CustomerModule extends VuexModule implements CustomerState {
   public items: Entity[] = [];
   public pagination = getDefaultPagination();
@@ -38,10 +32,10 @@ class CustomerModule extends VuexModule implements CustomerState {
   }
 
   @Action getOrders(): void {
-    getData("orders/").then((res: TODO) => {
+    getData('orders/').then((res: TODO) => {
       if (res.data && res.data.length > 0) {
         const orderList = res.data.map((c: TODO) => {
-          c.text = c.firstName + " " + c.lastName;
+          c.text = c.firstName + ' ' + c.lastName;
           c.value = c.id;
           return c;
         });
@@ -53,13 +47,10 @@ class CustomerModule extends VuexModule implements CustomerState {
     //this.context.commit('setLoading', { loading: true });
     this.setLoading(true);
     if (id) {
-      getData("customers/" + id).then(
+      getData('customers/' + id).then(
         (res: TODO) => {
           const customer = Object.assign({}, res.data);
           customer.avatar = `@${customer.avatar}`;
-
-          //  customer.avatar = "../../assets/img/avatar1.png"
-          //'https://github.com/harryho/vue-crm/blob/master/assets/img/avatar1.png' //
           this.setCustomer(customer);
           this.setLoading(false);
         },
@@ -76,7 +67,7 @@ class CustomerModule extends VuexModule implements CustomerState {
   @Action getAllCustomers(): void {
     // this.context.commit('setLoading', { loading: true });
     this.setLoading(true);
-    getData("customers?_embed=orders").then((res: TODO) => {
+    getData('customers?_embed=orders').then((res: TODO) => {
       const customers = res.data;
       customers.forEach((item: Customer) => {
         item.orderAmount = item.orders && item.orders?.length; // : 0;
@@ -87,10 +78,10 @@ class CustomerModule extends VuexModule implements CustomerState {
   }
 
   @Action searchCustomers(searchQuery: string): void {
-    getData("customers?_embed=orders&" + searchQuery).then((res: TODO) => {
+    getData('customers?_embed=orders&' + searchQuery).then((res: TODO) => {
       const customers = res.data;
       customers.forEach((p: TODO) => {
-        p.orderAmount = p.orders.length;
+        p.orderAmount = p.orders?.length;
       });
       this.setDataTable(customers);
       this.setLoading(false);
@@ -99,7 +90,7 @@ class CustomerModule extends VuexModule implements CustomerState {
 
   @Action quickSearch(headers: TableHeader[], qsFilter: SeachQuery): void {
     // TODO: Following solution should be replaced by DB full-text search for production
-    getData("customers?_embed=orders").then((res: TODO) => {
+    getData('customers?_embed=orders').then((res: TODO) => {
       const customers = res.data.filter((r: TODO) =>
         headers.some((header: TODO) => {
           const val = get(r, [header.value]);
@@ -122,47 +113,43 @@ class CustomerModule extends VuexModule implements CustomerState {
   }
 
   @Action deleteCustomer(id: number): void {
-    deleteData("customers/", id.toString())
+    deleteData('customers/', id.toString())
       .then((res: TODO) => {
         this.getAllCustomers();
-        appModule.sendSuccessNotice("Operation is done.");
+        appModule.sendSuccessNotice('Operation is done.');
       })
       .catch((err: TODO) => {
         console.log(err);
-        appModule.sendErrorNotice("Operation failed! Please try again later. ");
+        appModule.sendErrorNotice('Operation failed! Please try again later. ');
         appModule.closeNoticeWithDelay(1500);
       });
   }
 
   @Action saveCustomer(customer: Customer): void {
     if (!customer.id) {
-      postData("customers/", customer)
+      postData('customers/', customer)
         .then((res: TODO) => {
           const customer = res.data;
           this.setCustomer(customer);
-          appModule.sendSuccessNotice("New customer has been added.");
+          appModule.sendSuccessNotice('New customer has been added.');
           appModule.closeNoticeWithDelay(1500);
         })
         .catch((err: TODO) => {
           console.log(err);
-          appModule.sendErrorNotice(
-            "Operation failed! Please try again later. "
-          );
+          appModule.sendErrorNotice('Operation failed! Please try again later. ');
           appModule.closeNoticeWithDelay(1500);
         });
     } else {
-      putData("customers/" + customer.id.toString(), customer)
+      putData('customers/' + customer.id.toString(), customer)
         .then((res: TODO) => {
           const customer = res.data;
           this.setCustomer(customer);
-          appModule.sendSuccessNotice("Customer has been updated.");
+          appModule.sendSuccessNotice('Customer has been updated.');
           appModule.closeNoticeWithDelay(1500);
         })
         .catch((err: TODO) => {
           console.log(err);
-          appModule.sendErrorNotice(
-            "Operation failed! Please try again later. "
-          );
+          appModule.sendErrorNotice('Operation failed! Please try again later. ');
           appModule.closeNoticeWithDelay(1500);
         });
     }

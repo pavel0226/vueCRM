@@ -1,5 +1,4 @@
 /* eslint-disable */
-/* tslint-disable */
 // @ts-ignore
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib';
@@ -16,8 +15,5 @@ export default new Vuetify({
     theme: {
         dark: false,
         default: 'light'
-    },
-    // icons: {
-    //     iconfont: 'mdi', // default - only for display purposes
-    //   },
+        }
 });
