@@ -1,185 +1,145 @@
-// import {TODO} from '@/types'
+import { User, SearchFilter } from "@/types";
 
-import { User } from '@/types';
-
-/* eslint-disable */
 const SearchFilterOps = {
-  Equals: '',
-  GreaterThan: '_gte',
-  LessThan: '_lte',
-  GreaterThanOrEqual: '_gte',
-  LessThanOrEqual: '_lte',
-  Contains: '_like',
-  StartsWith: '_like',
-  EndsWith: '_like',
-  Between: ''
+  equals: "",
+  greaterThan: "_gt",
+  lessThan: "_lt",
+  greaterThanOrEqual: "_gte",
+  lessThanOrEqual: "_lte",
+  contains: "_like",
+  startsWith: "_startsWith",
+  endsWith: "_endsWith",
+  between: "_between",
 };
 
 const SESSION_TOKEN_KEY = "vue-crm-token";
 const SESSION_USER_KEY = "vue-crm-user";
 
-
-// export default {
-export function setToken(token: string) :void{
-  // localStorage;
-  if (sessionStorage){
-      sessionStorage.setItem(SESSION_TOKEN_KEY , token);
+export function setToken(token: string): void {
+  if (sessionStorage) {
+    sessionStorage.setItem(SESSION_TOKEN_KEY, token);
   }
 }
 
-export function setUser(userData: string) :void{
-  // localStorage;
-  if (sessionStorage){
-    sessionStorage.setItem(SESSION_USER_KEY , userData);
+export function setUser(userData: string): void {
+  if (sessionStorage) {
+    sessionStorage.setItem(SESSION_USER_KEY, userData);
   }
 }
 
-
-export function getToken() :string{
+export function getToken(): string {
   let token = "";
-  if (sessionStorage){
-     const _token  =  sessionStorage.getItem(SESSION_TOKEN_KEY);
-     token = _token ? _token :token;
+  if (sessionStorage) {
+    const _token = sessionStorage.getItem(SESSION_TOKEN_KEY);
+    token = _token ? _token : token;
   }
   return token;
 }
 
-export function getUser() :User{
+export function getUser(): User {
   let user = {} as User;
-  if (sessionStorage){
-    const userData = sessionStorage.getItem(SESSION_USER_KEY)
-    user =  userData? JSON.parse(userData) as User: {} as User;
+  if (sessionStorage) {
+    const userData = sessionStorage.getItem(SESSION_USER_KEY);
+    user = userData ? (JSON.parse(userData) as User) : ({} as User);
   }
   return user;
 }
 
-export function cleanSession(){
-  if (sessionStorage){
-    sessionStorage.removeItem(SESSION_TOKEN_KEY)
-    sessionStorage.removeItem(SESSION_USER_KEY)
+export function cleanSession() {
+  if (sessionStorage) {
+    sessionStorage.removeItem(SESSION_TOKEN_KEY);
+    sessionStorage.removeItem(SESSION_USER_KEY);
   }
 }
 
 export function capFirstLetter(s: string) {
   return s && s[0].toUpperCase() + s.slice(1);
 }
-export function clearSearchFilters(searchVm: TODO) {
+
+export function clearSearchFilters(searchVm: SearchFilter) {
   if (searchVm) {
     if (searchVm.filters) delete searchVm.filters;
 
-    Object.keys(searchVm).forEach(K => {
-      if (searchVm[K]) {
-        if (K !== 'between') {
-          Object.keys(searchVm[K]).forEach(prop => {
-            searchVm[K][prop] = null;
+    Object.keys(searchVm).forEach(filter => {
+      if (searchVm[filter]) {
+        if (filter !== "between") {
+          Object.keys(searchVm[filter]).forEach(prop => {
+            searchVm[filter][prop] = null;
           });
         } else {
-          Object.keys(searchVm[K]).forEach(prop => {
-            searchVm[K][prop]['former'] = 0;
-            searchVm[K][prop]['latter'] = 0;
+          Object.keys(searchVm[filter]).forEach(prop => {
+            searchVm[filter][prop]["former"] = 0;
+            searchVm[filter][prop]["latter"] = 0;
           });
         }
       }
     });
   }
 }
+
 export function buildSearchFilters(searchVm: TODO) {
   if (searchVm) {
     searchVm.filters = [];
-    if (searchVm.contains) {
-      Object.keys(searchVm.contains).forEach(k => {
-        if (searchVm.contains.hasOwnProperty(k) && searchVm.contains[k]) {
-          searchVm.filters.push({
-            property: k,
-            op: SearchFilterOps.Contains,
-            val: searchVm.contains[k]
-          });
-        }
-      });
-    }
 
-    if (searchVm.equals) {
-      Object.keys(searchVm.equals).forEach(k => {
-        if (searchVm.equals.hasOwnProperty(k) && searchVm.equals[k]) {
-          searchVm.filters.push({
-            property: k,
-            op: SearchFilterOps.Equals,
-            val: searchVm.equals[k]
-          });
-        }
-      });
-    }
-
-    if (searchVm.startsWith) {
-      Object.keys(searchVm.startsWith).forEach(k => {
-        if (searchVm.startsWith.hasOwnProperty(k) && searchVm.startsWith[k]) {
-          searchVm.filters.push({
-            property: k,
-            op: SearchFilterOps.StartsWith,
-            val: searchVm.startsWith[k]
-          });
-        }
-      });
-    }
-
-    if (searchVm.endsWith) {
-      Object.keys(searchVm.endsWith).forEach(k => {
-        if (searchVm.endsWith.hasOwnProperty(k) && searchVm.endsWith[k]) {
-          searchVm.filters.push({
-            property: k,
-            op: SearchFilterOps.EndsWith,
-            val: searchVm.endsWith[k]
-          });
-        }
-      });
-    }
-
-    if (searchVm.between) {
-      Object.keys(searchVm.between).forEach(k => {
-        if (searchVm.between.hasOwnProperty(k) && searchVm.between[k]) {
-          if (searchVm.between[k]['former'] > 0 || searchVm.between[k]['latter'] > 0) {
-            if (searchVm.between[k]['former'] < searchVm.between[k]['latter']) {
+    Object.keys(searchVm).forEach((filter) => {
+      if (filter === "between") {
+        Object.keys(searchVm[filter]).forEach(propName => {
+          if (
+            searchVm.between[propName]["former"] > 0 ||
+            searchVm.between[propName]["latter"] > 0
+          ) {
+            if (searchVm.between[propName]["former"] < searchVm.between[propName]["latter"]) {
               searchVm.filters.push({
-                property: k,
-                op: SearchFilterOps.GreaterThanOrEqual,
-                val: searchVm.between[k]['former']
+                property: propName,
+                op: SearchFilterOps.greaterThanOrEqual,
+                val: searchVm.between[propName]["former"],
               });
               searchVm.filters.push({
-                property: k,
-                op: SearchFilterOps.LessThanOrEqual,
-                val: searchVm.between[k]['latter']
+                property: propName,
+                op: SearchFilterOps.lessThanOrEqual,
+                val: searchVm.between[propName]["latter"],
               });
             } else {
               searchVm.filters.push({
-                property: k,
-                op: SearchFilterOps.LessThanOrEqual,
-                val: searchVm.between[k]['former']
+                property: propName,
+                op: SearchFilterOps.lessThanOrEqual,
+                val: searchVm.between[propName]["former"],
               });
               searchVm.filters.push({
-                property: k,
-                op: SearchFilterOps.GreaterThanOrEqual,
-                val: searchVm.between[k]['latter']
+                property: propName,
+                op: SearchFilterOps.greaterThanOrEqual,
+                val: searchVm.between[propName]["latter"],
               });
             }
           }
-        }
-      });
-    }
+        });
+      } else {
+        Object.keys(searchVm[filter]).forEach(propName => {
+          searchVm.filters.push({
+            property: propName,
+            op: SearchFilterOps[filter],
+            val: searchVm[filter][propName],
+          });
+        });
+      }
+    });
   }
 }
+
 export function buildJsonServerQuery(searchVm: TODO) {
-  let filterQuery = '';
+  let filterQuery = "";
   if (searchVm && searchVm.filters) {
     searchVm.filters.forEach((f: TODO) => {
       filterQuery += f.property;
       filterQuery += f.op;
-      filterQuery += '=';
+      filterQuery += "=";
       filterQuery += f.val;
-      filterQuery += '&';
+      filterQuery += "&";
     });
   }
   return filterQuery;
 }
+
 export function getRootComponent(vueComponent: TODO): any {
   const root = null;
   if (vueComponent && vueComponent._isVue) {
@@ -195,21 +155,16 @@ export function getRootComponent(vueComponent: TODO): any {
   }
 }
 
-
-export function isValidRewards(rewards: number){
+export function isValidRewards(rewards: number) {
   if (rewards < 0 || rewards > 9999) {
-    return 'Reward is required. It must be bewteen 0 and 9999';
+    return "Reward is required. It must be bewteen 0 and 9999";
   }
   return true;
 }
 
-export function isValidEmail( email : string ){
-   /* eslint-disable no-useless-escape */
-   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-   if(email && !re.test(email)) return 'Email is invalid.';
-   return true;
+export function isValidEmail(email: string) {
+  /* eslint-disable no-useless-escape */
+  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if (email && !re.test(email)) return "Email is invalid.";
+  return true;
 }
-
-
-
-

@@ -117,22 +117,13 @@
   </v-container>
 </template>
 <script lang="ts">
-import Table from "@/components/Table.vue";
-import SearchPanel from "@/components/SearchPanel.vue";
-import ConfirmDialog from "@/components/ConfirmDialog.vue";
+
+
 import { debounce } from "lodash";
-import {
-  buildSearchFilters,
-  buildJsonServerQuery,
-  clearSearchFilters,
-} from "@/utils/app-util";
-import { Component, Prop, Emit } from "vue-property-decorator";
+import { Component } from "vue-property-decorator";
 import store from "@/store";
 import Vue from "vue";
 import { Customer, Entity } from "@/types";
-import { getDefaultPagination } from "@/utils/store-util";
-import { getData } from "@/utils/demo-api";
-import { userModule } from "../store/modules/user";
 import { customerModule } from "@/store/modules/customers";
 import { appModule } from "@/store/modules/app";
 import { isValidEmail, isValidRewards } from "@/utils/app-util";
@@ -142,9 +133,8 @@ export default class CustomerForm extends Vue {
   title = "";
   rules = {
     rewards: [() => isValidRewards(this.customer.rewards)],
-    email: [() => isValidEmail(this.customer.email)],
+    email: [() => isValidEmail(this.customer.email)]
   };
-  // customerAvatar = customerModule.customer.avatar;
 
   customerAvatar() {
     console.log(`${this.customer.avatar}`);

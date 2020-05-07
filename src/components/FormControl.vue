@@ -1,20 +1,20 @@
 <script>
-import Vue from 'vue';
+import Vue from "vue";
 const templateRenderFns = [];
 
 export default {
-  name: 'form-control',
+  name: "form-control",
   props: {
-    fieldLabel: ''
+    fieldLabel: ""
   },
   data() {
     return {
       templateRender: null,
-      vm: ''
+      vm: ""
     };
   },
   render(h) {
-    return h('div', [this.templateRender ? this.templateRender() : '']);
+    return h("div", [this.templateRender ? this.templateRender() : ""]);
   },
   staticRenderFns: templateRenderFns,
   mounted() {

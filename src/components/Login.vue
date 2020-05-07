@@ -13,7 +13,13 @@
                 <v-subheader>User ID</v-subheader>
               </v-flex>
               <v-flex xs12 md8>
-                <v-text-field class="input-group--focused" name="email" v-model="email" label="email" value="Input text"></v-text-field>
+                <v-text-field
+                  class="input-group--focused"
+                  name="email"
+                  v-model="email"
+                  label="email"
+                  value="Input text"
+                ></v-text-field>
               </v-flex>
             </v-layout>
             <v-layout row wrap>
@@ -41,7 +47,9 @@
               v-model="error"
             >
               {{ text }}
-              <v-btn class="pink--text" text @click.native="error = false">Close</v-btn>
+              <v-btn class="pink--text" text @click.native="error = false"
+                >Close</v-btn
+              >
             </v-snackbar>
           </form>
         </v-card-text>
@@ -53,31 +61,31 @@
 <script lang="ts">
 // import auth from '../utils/auth';
 
-import { Component } from 'vue-property-decorator';
-import Vue from 'vue';
-import { userModule } from '@/store/modules/user';
+import { Component } from "vue-property-decorator";
+import Vue from "vue";
+import { userModule } from "@/store/modules/user";
 // import router from '@/router';
 
 @Component
 export default class Login extends Vue {
-  private email = 'admin@test.com';
-  private pass = 'password';
+  private email = "admin@test.com";
+  private pass = "password";
   private error = false;
-  private text = '';
+  private text = "";
 
   public gotoDashboard() {
-    this.$router.push('/');
+    this.$router.push("/");
   }
 
   public callback = (loggedIn: boolean, err?: string) => {
     if (err) {
-      console.log('login', err);
+      console.log("login", err);
       this.error = true;
       this.text = err;
     } else if (loggedIn === false) {
-      console.log('login', loggedIn);
+      console.log("login", loggedIn);
       this.error = true;
-      this.text = 'Bad login information';
+      this.text = "Bad login information";
     } else {
       console.log(loggedIn, err);
       //this.$router.push(this.$route.query.redirect || '/')
@@ -88,7 +96,7 @@ export default class Login extends Vue {
     // debugger;
     await userModule.signIn({ username: this.email, password: this.pass });
 
-    this.$router.push('/');
+    this.$router.push("/");
   }
   // }
 }

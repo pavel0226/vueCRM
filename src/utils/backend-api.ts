@@ -1,6 +1,6 @@
-import axios from 'axios';
-import { userModule } from '@/store/modules/user';
-const API_URL = 'http://localhost:5354/';
+import axios from "axios";
+import { userModule } from "@/store/modules/user";
+const API_URL = "http://localhost:5354/";
 
 const instance = axios.create({
   baseURL: API_URL,
@@ -11,15 +11,16 @@ const instance = axios.create({
 // Add a request interceptor
 instance.interceptors.request.use(
   function(config) {
-    /* global window Store */
+    
     const token = userModule.token;
-    console.log('token', token);
+    console.log("token", token);
     if (token) {
-      config.headers.common['Authorization'] = 'Bearer ' + token;
-      config.headers.common['Access-Control-Allow-Origin'] = '*';
+      config.headers.common["Authorization"] = "Bearer " + token;
+      config.headers.common["Access-Control-Allow-Origin"] = "*";
     } else {
       // Use application/x-www-form-urlencoded for login
-      config.headers.common['Content-Type'] = 'application/x-www-form-urlencoded';
+      config.headers.common["Content-Type"] =
+        "application/x-www-form-urlencoded";
     }
     return config;
   },

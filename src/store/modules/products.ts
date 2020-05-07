@@ -8,7 +8,7 @@ import {
   Module,
   Mutation,
   Action,
-  getModule,
+  getModule
 } from "vuex-module-decorators";
 import store from "@/store";
 
@@ -31,8 +31,7 @@ class ProductModule extends VuexModule implements ProductState {
   @Action
   getCategories() {
     getData("categories/").then((res: TODO) => {
-      // const categories = [];
-      const categories =   res.data.forEach((c: TODO) => {
+      const categories = res.data.forEach((c: TODO) => {
         const category = { ...c };
         category.text = c.categoryName;
         category.value = c.id;
@@ -44,23 +43,19 @@ class ProductModule extends VuexModule implements ProductState {
   @Action getProductById(id: string) {
     this.setLoading(true);
     if (id) {
-      // this.setLoading( { loading: true });
       getData("products/" + id + "?_expand=category").then(
         (res: TODO) => {
           const product = res.data;
-          // this.setProduct( { product });
-
           this.setProduct(product);
           this.setLoading(false);
         },
         (err: TODO) => {
           console.log(err);
+          this.setLoading(false);
         }
       );
-      // this.setLoading( { loading: false });
     } else {
       this.setProduct({} as Product);
-
       this.setLoading(false);
     }
   }
@@ -76,7 +71,7 @@ class ProductModule extends VuexModule implements ProductState {
     });
   }
 
-  @Action searchProducts(searchQuery: string, pagination: Pagination) {
+  @Action searchProducts(searchQuery: string) {
     getData("products?_expand=category&" + searchQuery).then((res: TODO) => {
       const products = res.data;
       products.forEach((p: Product) => {
@@ -87,11 +82,7 @@ class ProductModule extends VuexModule implements ProductState {
     });
   }
 
-  @Action quickSearch(
-    headers: TableHeader[],
-    qsFilter: SeachQuery,
-    pagination: Pagination
-  ): void {
+  @Action quickSearch(headers: TableHeader[], qsFilter: SeachQuery): void {
     // TODO: Following solution should be replaced by DB full-text search for production
     getData("products?_expand=category").then((res: TODO) => {
       const products = res.data.filter((r: TODO) =>
@@ -192,4 +183,4 @@ class ProductModule extends VuexModule implements ProductState {
   }
 }
 
-export const productModule = getModule(ProductModule); // default Products;
+export const productModule = getModule(ProductModule); 

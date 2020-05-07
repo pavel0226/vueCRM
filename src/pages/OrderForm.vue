@@ -261,22 +261,9 @@
   </v-container>
 </template>
 <script lang="ts">
-import Table from "@/components/Table.vue";
-import SearchPanel from "@/components/SearchPanel.vue";
 import ConfirmDialog from "@/components/ConfirmDialog.vue";
-import { debounce } from "lodash";
-import {
-  buildSearchFilters,
-  buildJsonServerQuery,
-  clearSearchFilters,
-} from "@/utils/app-util";
-import { Component, Prop, Emit } from "vue-property-decorator";
-import store from "@/store";
+import { Component } from "vue-property-decorator";
 import Vue from "vue";
-import { Customer, Entity } from "@/types";
-import { getDefaultPagination } from "@/utils/store-util";
-import { getData } from "@/utils/demo-api";
-import { userModule } from "../store/modules/user";
 import { customerModule } from "@/store/modules/customers";
 import { orderModule } from "@/store/modules/orders";
 import { appModule } from "@/store/modules/app";
@@ -300,25 +287,14 @@ export default class OrderForm extends Vue {
   private errors = [];
   private title = "";
   private productId = null;
-  // private snackbarStatus = false;
-  // private timeout = 3000;
   private color = "";
   private selectedProduct: null;
-
-  //  order: 'order',
-  //  customers: 'customers',
-  //  categories: 'categories',
-  //  products: 'products',
-  //  loading: 'loading',
-  //  mode: 'mode',
-  //  snackbar: 'snackbar',
-  //  notice: 'notice'
 
   get customers() {
     console.log(customerModule.customer);
     return orderModule.customers;
   }
-  
+
   get order() {
     return orderModule.order;
   }
@@ -353,11 +329,8 @@ export default class OrderForm extends Vue {
 
   save() {
     const order = { ...this.order };
-    // delete order.customer;
+    delete order.customer;
     console.log(order);
-    // Store.dispatch('orders/saveOrder', order).then(() => {
-    //   Store.dispatch('orders/closeSnackBar', 2000);
-    // });
     orderModule.saveOrder(this.order);
   }
 
@@ -366,14 +339,8 @@ export default class OrderForm extends Vue {
   }
 
   getOrderById() {
-    // Store.dispatch('orders/getOrderById', this.$route.params.id);
     orderModule.getOrderById(this.$route.params.id);
   }
-
-  // getCustomers() {
-  //   // Store.dispatch('orders/getCustomers');
-  //   orderModule.getCustomers();
-  // }
 
   cancel() {
     this.$router.push({ name: "Orders" });
@@ -385,33 +352,36 @@ export default class OrderForm extends Vue {
   }
 
   onConfirm() {
-    //     Store.dispatch('orders/deleteProduct', Object.assign({}, this.selectedProduct));
+    orderModule.deleteProduct(this.selectedProduct);
     this.selectedProduct = null;
     this.dialog = false;
   }
+
   onCancel() {
     this.selectedProduct = null;
     this.dialog = false;
   }
+
   addProduct() {
     this.addProductModal = true;
   }
+
   saveProduct() {
-    // Store.dispatch('orders/addProductToOrder', this.productId);
+    orderModule.addProductToOrder(this.productId);
     this.productId = null;
     this.addProductModal = false;
   }
+
   cancelAddProduct() {
     this.addProductModal = false;
   }
+
   getCategories() {
-    //Store.dispatch('orders/getCategories');
     orderModule.getCategories();
   }
-  getProductsByCategory() {
-    //   this.categoryId && Store.dispatch('orders/getProductsByCategory', this.categoryId);
-    orderModule.getProductsByCategory( this.categoryId);
 
+  getProductsByCategory() {
+    orderModule.getProductsByCategory(this.categoryId);
   }
 
   closeSnackbar() {
@@ -421,7 +391,7 @@ export default class OrderForm extends Vue {
   created() {
     // this.getCustomers();
     orderModule.getCustomers();
-    this.getCategories(); 
+    this.getCategories();
     this.getOrderById();
   }
 

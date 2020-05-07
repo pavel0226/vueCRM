@@ -43,7 +43,7 @@ class OrderModule extends VuexModule implements OrderState {
           c.value = c.id;
           return c;
         });
-        console.log(customers.length)
+        console.log(customers.length);
         this.setCustomers(customers);
       }
     });
@@ -72,14 +72,14 @@ class OrderModule extends VuexModule implements OrderState {
           order.products.filter((p: Product) => p !== null && p !== undefined);
           order.customerId = order.customer.id;
           // this.setOrder(order);
-          this.setOrder(order)
+          this.setOrder(order);
         },
         (err: TODO) => {
           console.log(err);
         }
       );
     } else {
-      this.setOrder( {} as Order );
+      this.setOrder({} as Order);
     }
   }
 
@@ -125,7 +125,7 @@ class OrderModule extends VuexModule implements OrderState {
   }
 
   @Action
-  searchOrders(searchQuery: string, pagination: TODO) {
+  searchOrders(searchQuery: string) {
     getData("orders?_expand=customer&" + searchQuery).then((res: TODO) => {
       const orders = res.data;
       orders.forEach((item: TODO) => {
@@ -143,11 +143,7 @@ class OrderModule extends VuexModule implements OrderState {
     });
   }
 
-  @Action quickSearch(
-    headers: TableHeader[],
-    qsFilter: SeachQuery,
-    pagination: Pagination
-  ): void {
+  @Action quickSearch(headers: TableHeader[], qsFilter: SeachQuery): void {
     // TODO: Following solution should be replaced by DB full-text search for production
     getData("orders?_expand=customer").then((res: TODO) => {
       const orders = res.data.filter((r: TODO) =>

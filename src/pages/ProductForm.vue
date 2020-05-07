@@ -83,23 +83,8 @@
   </v-container>
 </template>
 <script lang="ts">
-import Table from "@/components/Table.vue";
-import SearchPanel from "@/components/SearchPanel.vue";
-import ConfirmDialog from "@/components/ConfirmDialog.vue";
-import { debounce } from "lodash";
-import {
-  buildSearchFilters,
-  buildJsonServerQuery,
-  clearSearchFilters,
-} from "@/utils/app-util";
-import { Component, Prop, Emit } from "vue-property-decorator";
-import store from "@/store";
+import { Component} from "vue-property-decorator";
 import Vue from "vue";
-import { Customer, Entity } from "@/types";
-import { getDefaultPagination } from "@/utils/store-util";
-import { getData } from "@/utils/demo-api";
-import { userModule } from "../store/modules/user";
-import { customerModule } from "@/store/modules/customers";
 import { productModule } from "@/store/modules/products";
 import { appModule } from "@/store/modules/app";
 import { isValidEmail, isValidRewards } from "@/utils/app-util";
@@ -110,8 +95,8 @@ export default class ProductForm extends Vue {
   title = "";
   color = "";
   rules = {
-    name: [(val) => (val || "").length > 0 || "This field is required"],
-    category: [(val) => typeof val === "number" || "This field is required"],
+    name: [val => (val || "").length > 0 || "This field is required"],
+    category: [val => typeof val === "number" || "This field is required"]
   };
 
   save() {

@@ -1,28 +1,26 @@
-import Vue from 'vue';
-import VueRouter, { RouteConfig } from 'vue-router';
-import { userModule } from '@/store/modules/user';
-import ErrorPage from '@/components/404.vue';
+import Vue from "vue";
+import VueRouter, { RouteConfig } from "vue-router";
+import { userModule } from "@/store/modules/user";
+import ErrorPage from "@/components/404.vue";
 
-import Dashboard from '@/pages/Dashboard.vue';
-import OrderList from '@/pages/OrderList.vue';
-import OrderForm from '@/pages/OrderForm.vue';
-import About from '@/pages/About.vue';
-import CustomerList from '@/pages/CustomerList.vue';
-import CustomerForm from '@/pages/CustomerForm.vue';
-import Products from '@/pages/ProductList.vue';
-import ProductForm from '@/pages/ProductForm.vue';
+import Dashboard from "@/pages/Dashboard.vue";
+import OrderList from "@/pages/OrderList.vue";
+import OrderForm from "@/pages/OrderForm.vue";
+import About from "@/pages/About.vue";
+import CustomerList from "@/pages/CustomerList.vue";
+import CustomerForm from "@/pages/CustomerForm.vue";
+import Products from "@/pages/ProductList.vue";
+import ProductForm from "@/pages/ProductForm.vue";
 
-import Login from '@/components/Login.vue';
-import ChangePassword from '@/components/ChangePassword.vue';
-// import Home from '../views/Home.vue';
-// import App from '../App.vue';
-// import auth from '@/utils/auth';
+import Login from "@/components/Login.vue";
+import ChangePassword from "@/components/ChangePassword.vue";
+
 
 function requireAuth(to: TODO, from: TODO, next: TODO) {
   console.log(`userModule.isSignedI ${userModule.isSignedIn}`);
   if (!userModule.isSignedIn) {
     next({
-      path: '/login',
+      path: "/login",
       query: { redirect: to.fullPath }
     });
   } else {
@@ -33,39 +31,80 @@ function requireAuth(to: TODO, from: TODO, next: TODO) {
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
-  // {
-  //   path: '/',
-  //   name: 'App',
-  //   component: App
-  // },
-  // {
-  //   path: '/about',
-  //   name: 'About',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  // },
-  { path: '/404', component: ErrorPage, name: 'ErrorPage' },
-  { path: '/dashboard', component: Dashboard, name: 'Dashboard', beforeEnter: requireAuth },
-  { path: '/about', component: About, name: 'About', beforeEnter: requireAuth },
-  { path: '/orders', component: OrderList, name: 'Orders', beforeEnter: requireAuth },
-  { path: '/neworder', component: OrderForm, name: 'NewOrder', beforeEnter: requireAuth },
-  { path: '/order/:id', component: OrderForm, name: 'Order', beforeEnter: requireAuth },
-  { path: '/customers', component: CustomerList, name: 'Customers', beforeEnter: requireAuth },
-  { path: '/newcustomer', component: CustomerForm, name: 'NewCustomer', beforeEnter: requireAuth },
-  { path: '/customer/:id', component: CustomerForm, name: 'Customer', beforeEnter: requireAuth },
-  { path: '/product/:id', component: ProductForm, name: 'Product', beforeEnter: requireAuth },
-  { path: '/products', component: Products, name: 'Products', beforeEnter: requireAuth },
-  { path: '/newproduct', component: ProductForm, name: 'NewProduct', beforeEnter: requireAuth },
-  { path: '/login', component: Login, name: 'Login' },
-  { path: '/changePassword', component: ChangePassword, name: 'ChangePassword' },
-  { path: '/', redirect: '/dashboard' },
-  { path: '*', redirect: '/404' }
+  { path: "/404", component: ErrorPage, name: "ErrorPage" },
+  {
+    path: "/dashboard",
+    component: Dashboard,
+    name: "Dashboard",
+    beforeEnter: requireAuth
+  },
+  { path: "/about", component: About, name: "About", beforeEnter: requireAuth },
+  {
+    path: "/orders",
+    component: OrderList,
+    name: "Orders",
+    beforeEnter: requireAuth
+  },
+  {
+    path: "/neworder",
+    component: OrderForm,
+    name: "NewOrder",
+    beforeEnter: requireAuth
+  },
+  {
+    path: "/order/:id",
+    component: OrderForm,
+    name: "Order",
+    beforeEnter: requireAuth
+  },
+  {
+    path: "/customers",
+    component: CustomerList,
+    name: "Customers",
+    beforeEnter: requireAuth
+  },
+  {
+    path: "/newcustomer",
+    component: CustomerForm,
+    name: "NewCustomer",
+    beforeEnter: requireAuth
+  },
+  {
+    path: "/customer/:id",
+    component: CustomerForm,
+    name: "Customer",
+    beforeEnter: requireAuth
+  },
+  {
+    path: "/product/:id",
+    component: ProductForm,
+    name: "Product",
+    beforeEnter: requireAuth
+  },
+  {
+    path: "/products",
+    component: Products,
+    name: "Products",
+    beforeEnter: requireAuth
+  },
+  {
+    path: "/newproduct",
+    component: ProductForm,
+    name: "NewProduct",
+    beforeEnter: requireAuth
+  },
+  { path: "/login", component: Login, name: "Login" },
+  {
+    path: "/changePassword",
+    component: ChangePassword,
+    name: "ChangePassword"
+  },
+  { path: "/", redirect: "/dashboard" },
+  { path: "*", redirect: "/404" }
 ];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
   routes
 });

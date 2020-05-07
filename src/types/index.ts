@@ -1,5 +1,3 @@
-// export type TODO = any;
-
 export interface Entity {
   id: number;
   text?: string;
@@ -7,7 +5,6 @@ export interface Entity {
 }
 
 export interface Category extends Entity {
-  // id:  number;
   categoryName: string;
   parentId: string;
 }
@@ -19,7 +16,6 @@ export interface UserInfo extends Entity {
 }
 
 export interface User extends Entity {
-  // id : string;
   firstName: string;
   lastName: string;
   email: string;
@@ -44,7 +40,6 @@ export interface Address extends Entity {
 }
 
 export interface Order extends Entity {
-  // id : string;
   reference: string;
   customerId: string;
   customer: Customer;
@@ -56,7 +51,6 @@ export interface Order extends Entity {
 }
 
 export interface Product extends Entity {
-  // id : string;
   productName: string;
   categoryId: string;
   unitInStock: string;
@@ -75,4 +69,19 @@ export interface State extends Entity {
   customer: Customer;
   orders: Order[];
   orderList: Order[];
+}
+
+
+export type SearchFilter = {
+  equals?: TODO,
+  contains?: TODO,
+  startsWith?: TODO,
+  endsWith?: TODO,
+  lessThan?: TODO,
+  greaterThan?: TODO,
+  lessThanOrEqual?: TODO,
+  greaterThanOrEqual?: TODO,
+  between?: TODO,
+  filters?: TODO
+
 }

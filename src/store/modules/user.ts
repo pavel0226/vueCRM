@@ -1,26 +1,38 @@
-import { User, UserInfo } from '@/types';
-import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators';
-import store from '@/store';
-import { login } from '@/utils/demo-api';
-import { getUser, getToken, setToken, setUser, cleanSession } from '@/utils/app-util';
+import { User, UserInfo } from "@/types";
+import {
+  VuexModule,
+  Module,
+  Mutation,
+  Action,
+  getModule
+} from "vuex-module-decorators";
+import store from "@/store";
+import { login } from "@/utils/demo-api";
+import {
+  getUser,
+  getToken,
+  setToken,
+  setUser,
+  cleanSession
+} from "@/utils/app-util";
 
 export interface UserState {
   callingAPI: boolean;
   searching: string;
   user: User;
   token: string;
-  mode: string;
+  // mode: string;
   userInfo: UserInfo;
   signedIn: boolean;
 }
 
-@Module({ store, dynamic: true, name: 'userModule' })
+@Module({ store, dynamic: true, name: "userModule" })
 class UserModule extends VuexModule implements UserState {
   public callingAPI = false;
-  public searching = '';
+  public searching = "";
   user = getUser();
   token = getToken();
-  public mode = '';
+  // public mode = "";
   public userInfo = {} as UserInfo;
   public signedIn = false;
   // };updateUser
@@ -36,7 +48,7 @@ class UserModule extends VuexModule implements UserState {
   }
   @Mutation
   private globalSearching() {
-    this.searching = this.searching === '' ? 'loading' : '';
+    this.searching = this.searching === "" ? "loading" : "";
   }
 
   @Mutation
@@ -56,8 +68,8 @@ class UserModule extends VuexModule implements UserState {
 
   @Action({ rawError: true })
   updateUser({ user, token }: TODO) {
-    this.context.commit('setToken', token);
-    this.context.commit('setUser', user);
+    this.context.commit("setToken", token);
+    this.context.commit("setUser", user);
     // this.setToken(token);
     // this.setUser(user);
   }
@@ -66,7 +78,7 @@ class UserModule extends VuexModule implements UserState {
   public async signIn(userInfo: { username: string; password: string }) {
     const { username, password } = userInfo;
     // username = _username.trim()
-    const { data } = await login('login', { username, password });
+    const { data } = await login("login", { username, password });
     // debugger;
     setToken(data.accessToken);
     setUser(JSON.stringify(data.user));
@@ -77,7 +89,7 @@ class UserModule extends VuexModule implements UserState {
 
   @Action({ rawError: true })
   logout() {
-    this.setToken('');
+    this.setToken("");
     this.setUser({} as User);
     cleanSession();
   }

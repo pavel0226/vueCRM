@@ -1,5 +1,11 @@
-import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators';
-import store from '@/store';
+import {
+  VuexModule,
+  Module,
+  Mutation,
+  Action,
+  getModule
+} from "vuex-module-decorators";
+import store from "@/store";
 
 export interface AppState {
   loading: boolean;
@@ -8,27 +14,26 @@ export interface AppState {
   notice: string;
 }
 
-const SUCCESS = 'success';
-const ERROR = 'error';
+const SUCCESS = "success";
+const ERROR = "error";
 
-@Module({ store, dynamic: true, name: 'appModule' })
+@Module({ store, dynamic: true, name: "appModule" })
 class AppModule extends VuexModule implements AppState {
   public loading = true;
-  public mode = '';
+  public mode = "";
   public snackbar = false;
-  public notice = '';
+  public notice = "";
 
   @Action closeNotice(): void {
-      this.setNotice('');
-      this.setMode('');
-      this.setSnackbar(false);
-
+    this.setNotice("");
+    this.setMode("");
+    this.setSnackbar(false);
   }
 
   @Action closeNoticeWithDelay(timeout = 2000): void {
     setTimeout(() => {
-      this.setNotice('');
-      this.setMode('');
+      this.setNotice("");
+      this.setMode("");
       this.setSnackbar(false);
     }, timeout);
   }
@@ -37,7 +42,6 @@ class AppModule extends VuexModule implements AppState {
     this.setNotice(notice);
     this.setMode(SUCCESS);
     this.setSnackbar(true);
-
   }
 
   @Action sendErrorNotice(notice: string): void {
@@ -51,7 +55,7 @@ class AppModule extends VuexModule implements AppState {
   }
 
   @Mutation setNotice(notice: string): void {
-    console.log(' notice .... ', notice);
+    console.log(" notice .... ", notice);
     this.notice = notice;
   }
 

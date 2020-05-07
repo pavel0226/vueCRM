@@ -1,4 +1,4 @@
-declare module 'vue-cli-plugin-vuetify-preset-fortnightly/preset';
+declare module "vue-cli-plugin-vuetify-preset-fortnightly/preset";
 
 type TODO = any;
 
@@ -10,15 +10,15 @@ type Pagination = {
 };
 
 type SearchFilterOps = {
-  Equals: '';
-  GreaterThan: '_gte';
-  LessThan: '_lte';
-  GreaterThanOrEqual: '_gte';
-  LessThanOrEqual: '_lte';
-  Contains: '_like';
-  StartsWith: '_like';
-  EndsWith: '_like';
-  Between: '';
+  Equals: "";
+  GreaterThan: "_gte";
+  LessThan: "_lte";
+  GreaterThanOrEqual: "_gte";
+  LessThanOrEqual: "_lte";
+  Contains: "_like";
+  StartsWith: "_like";
+  EndsWith: "_like";
+  Between: "";
 };
 
 type TableHeader = {

@@ -1,5 +1,10 @@
 <template>
-  <v-navigation-drawer right v-model="rightDrawer" :disable-resize-watcher="true" fixed>
+  <v-navigation-drawer
+    right
+    v-model="rightDrawer"
+    :disable-resize-watcher="true"
+    fixed
+  >
     <v-list>
       <!-- <v-list-item-title>&nbsp;</v-list-item-title> -->
       <v-list-item class="my-2">
@@ -22,24 +27,24 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator';
-import Vue from 'vue';
-import { State, Getter, Action, Mutation, namespace } from 'vuex-class';
+import { Component, Prop } from "vue-property-decorator";
+import Vue from "vue";
+import { State, Getter, Action, Mutation, namespace } from "vuex-class";
 // import { Watch } from 'vue-property-decorator';
 // import {userModule} from '@/store/modules/user';
 // import { User } from './types';
 
 // export default  {
-@Component({ name: 'search-panel' })
+@Component({ name: "search-panel" })
 export default class SearchPanel extends Vue {
   // props: {
-  @Prop() rightDrawer :boolean;
+  @Prop() rightDrawer: boolean;
 
   public right = true;
   public searchVm: TODO = {
     contains: {
-      productName: '',
-      category: ''
+      productName: "",
+      category: ""
     },
     between: {
       price: {

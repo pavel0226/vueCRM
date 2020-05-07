@@ -1,12 +1,12 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import createPersistedState from 'vuex-persistedstate';
+import Vue from "vue";
+import Vuex from "vuex";
+import createPersistedState from "vuex-persistedstate";
 
-import { UserState } from './modules/user';
-import { OrderState } from './modules/orders';
-import { CustomerState } from './modules/customers';
-import { ProductState } from './modules/products';
-import { AppState } from './modules/app';
+import { UserState } from "./modules/user";
+import { OrderState } from "./modules/orders";
+import { CustomerState } from "./modules/customers";
+import { ProductState } from "./modules/products";
+import { AppState } from "./modules/app";
 
 Vue.use(Vuex);
 

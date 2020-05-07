@@ -4,30 +4,76 @@
       <v-card>
         <v-card-title>
           <span class="title"
-            >Products {{ pagination ? '(' + pagination.totalItems + ')' : '' }}
-            <v-text-field append-icon="mdi-magnify" label="Quick Search" single-line hide-details v-model="quickSearch"></v-text-field>
+            >Products {{ pagination ? "(" + pagination.totalItems + ")" : "" }}
+            <v-text-field
+              append-icon="mdi-magnify"
+              label="Quick Search"
+              single-line
+              hide-details
+              v-model="quickSearch"
+            ></v-text-field>
           </span>
           <v-spacer></v-spacer>
-          <v-btn class="blue-grey  mr-2" fab small dark @click.native.stop="rightDrawer = !rightDrawer">
+          <v-btn
+            class="blue-grey  mr-2"
+            fab
+            small
+            dark
+            @click.native.stop="rightDrawer = !rightDrawer"
+          >
             <v-icon>mdi-magnify</v-icon>
           </v-btn>
-          <v-btn class="brown lighten-1  mr-2" fab small dark @click.native="reloadData()">
+          <v-btn
+            class="brown lighten-1  mr-2"
+            fab
+            small
+            dark
+            @click.native="reloadData()"
+          >
             <v-icon>mdi-refresh</v-icon>
           </v-btn>
-          <v-btn class="teal darken-2  mr-2" fab small dark @click.native="print()">
+          <v-btn
+            class="teal darken-2  mr-2"
+            fab
+            small
+            dark
+            @click.native="print()"
+          >
             <v-icon>mdi-printer</v-icon>
           </v-btn>
-          <v-btn class="deep-orange darken-3" fab small dark @click.native="add">
+          <v-btn
+            class="deep-orange darken-3"
+            fab
+            small
+            dark
+            @click.native="add"
+          >
             <v-icon>mdi-plus</v-icon>
           </v-btn>
         </v-card-title>
-        <Table v-if="loading === false" :headers="headers" :items="items" :pagination="pagination" @edit="edit" @remove="remove"></Table>
+        <Table
+          v-if="loading === false"
+          :headers="headers"
+          :items="items"
+          :pagination="pagination"
+          @edit="edit"
+          @remove="remove"
+        ></Table>
       </v-card>
     </v-flex>
-    <search-panel :rightDrawer="rightDrawer" @cancelSearch="cancelSearch" @searchData="searchProducts">
+    <search-panel
+      :rightDrawer="rightDrawer"
+      @cancelSearch="cancelSearch"
+      @searchData="searchProducts"
+    >
       <v-layout row>
         <v-flex xs11 offset-xs1>
-          <v-text-field name="productName" label="Product" light v-model="searchVm.contains.productName"></v-text-field>
+          <v-text-field
+            name="productName"
+            label="Product"
+            light
+            v-model="searchVm.contains.productName"
+          ></v-text-field>
         </v-flex>
       </v-layout>
       <v-layout row>
@@ -37,18 +83,38 @@
       </v-layout>
       <v-layout row>
         <v-flex xs8 offset-xs1>
-          <v-slider class="text-xs-central" label="Price 1" light v-bind:max="100" v-model="searchVm.between.unitPrice.former"></v-slider>
+          <v-slider
+            class="text-xs-central"
+            label="Price 1"
+            light
+            v-bind:max="100"
+            v-model="searchVm.between.unitPrice.former"
+          ></v-slider>
         </v-flex>
         <v-flex xs3>
-          <v-text-field type="number" light v-model="searchVm.between.unitPrice.former"></v-text-field>
+          <v-text-field
+            type="number"
+            light
+            v-model="searchVm.between.unitPrice.former"
+          ></v-text-field>
         </v-flex>
       </v-layout>
       <v-layout row>
         <v-flex xs8 offset-xs1>
-          <v-slider class="text-xs-central" label="Price 2" light v-bind:max="999" v-model="searchVm.between.unitPrice.latter"></v-slider>
+          <v-slider
+            class="text-xs-central"
+            label="Price 2"
+            light
+            v-bind:max="999"
+            v-model="searchVm.between.unitPrice.latter"
+          ></v-slider>
         </v-flex>
         <v-flex xs3>
-          <v-text-field type="number" light v-model="searchVm.between.unitPrice.latter"></v-text-field>
+          <v-text-field
+            type="number"
+            light
+            v-model="searchVm.between.unitPrice.latter"
+          ></v-text-field>
         </v-flex>
       </v-layout>
     </search-panel>
@@ -59,27 +125,32 @@
       @onConfirm="onConfirm"
       @onCancel="onCancel"
     ></confirm-dialog>
-    <v-snackbar v-if="loading === false" :right="true" :timeout="timeout" :color="mode" v-model="snackbar">
+    <v-snackbar
+      v-if="loading === false"
+      :right="true"
+      :timeout="timeout"
+      :color="mode"
+      v-model="snackbar"
+    >
       {{ notice }}
       <v-btn dark text @click.native="closeSnackbar">Close</v-btn>
     </v-snackbar>
   </v-container>
 </template>
 <script lang="ts">
-import Table from '@/components/Table.vue';
-import SearchPanel from '@/components/SearchPanel.vue';
-import ConfirmDialog from '@/components/ConfirmDialog.vue';
-import { debounce } from 'lodash';
-import { buildSearchFilters, buildJsonServerQuery, clearSearchFilters } from '@/utils/app-util';
-import { Component, Prop, Emit } from 'vue-property-decorator';
-import store from '@/store';
-import Vue from 'vue';
-import { Customer, Entity } from '../types';
-import { getDefaultPagination } from '@/utils/store-util';
-import { getData } from '@/utils/demo-api';
-import { userModule } from '../store/modules/user';
-import { productModule } from '@/store/modules/products';
-import { appModule } from '@/store/modules/app';
+import Table from "@/components/Table.vue";
+import SearchPanel from "@/components/SearchPanel.vue";
+import ConfirmDialog from "@/components/ConfirmDialog.vue";
+import { debounce } from "lodash";
+import {
+  buildSearchFilters,
+  buildJsonServerQuery,
+  clearSearchFilters,
+} from "@/utils/app-util";
+import { Component } from "vue-property-decorator";
+import Vue from "vue";
+import { productModule } from "@/store/modules/products";
+import { appModule } from "@/store/modules/app";
 
 @Component({
   components: {
@@ -90,48 +161,48 @@ import { appModule } from '@/store/modules/app';
 })
 export default class ProductList extends Vue {
   dialog = false;
-  dialogTitle = 'Customer Delete Dialog';
-  dialogText = 'Do you want to delete this customer?';
-  _rightDrawer = false;
+  dialogTitle = "Customer Delete Dialog";
+  dialogText = "Do you want to delete this customer?";
+  showSearchPanel = false;
   right = true;
-  search = '';
+  search = "";
   headers = [
-    { text: 'Product', left: true, value: 'productName' },
-    { text: 'Category', value: 'category.categoryName' },
-    { text: 'Price', value: 'unitPrice' },
-    { text: 'In Stock', value: 'unitInStock' },
-    { text: '', value: 'actions', sortable: false }
+    { text: "Product", left: true, value: "productName" },
+    { text: "Category", value: "category.categoryName" },
+    { text: "Price", value: "unitPrice" },
+    { text: "In Stock", value: "unitInStock" },
+    { text: "", value: "actions", sortable: false }
   ];
-  searchVm= {
+  searchVm = {
     contains: {
-      productName: '',
-      category: '',
+      productName: "",
+      category: ""
     },
     between: {
       unitPrice: {
         former: 0,
-        latter: 0
+        latter: 0,
       }
     }
   };
-  private productId = '';
-  private query = '';
+  private productId = "";
+  private query = "";
   private snackbarStatus = false;
   private timeout = 2000;
-  private color = '';
-  private quickSearchFilter = '';
+  private color = "";
+  private quickSearchFilter = "";
   private itemId = -1;
   print() {
     window.print();
   }
   edit(item) {
     this.$router.push({
-      name: 'Product',
+      name: "Product",
       params: { id: item.id }
     });
   }
   add() {
-    this.$router.push('NewProduct');
+    this.$router.push("NewProduct");
   }
   remove(item) {
     this.productId = item.id;
@@ -143,30 +214,30 @@ export default class ProductList extends Vue {
     this.dialog = false;
   }
   onCancel() {
-    this.productId = '';
+    this.productId = "";
     this.dialog = false;
   }
   searchProducts() {
-    this.rightDrawer = !this._rightDrawer;
+    this.showSearchPanel = !this.showSearchPanel;
     buildSearchFilters(this.searchVm);
     this.query = buildJsonServerQuery(this.searchVm);
-    this.quickSearch = '';
-    productModule.searchProducts(this.query, this.pagination);
+    this.quickSearch = "";
+    productModule.searchProducts(this.query);
   }
 
   clearSearchFilters() {
-    this.rightDrawer = !this._rightDrawer;
+    this.showSearchPanel = !this.showSearchPanel;
     clearSearchFilters(this.searchVm);
     productModule.getAllProducts();
   }
 
   reloadData() {
-    this.query = '';
+    this.query = "";
     productModule.getAllProducts();
   }
 
   cancelSearch() {
-    this.rightDrawer = false;
+    this.showSearchPanel = false;
   }
 
   closeSnackbar() {
@@ -174,7 +245,7 @@ export default class ProductList extends Vue {
   }
 
   quickSearchCustomers = debounce(function() {
-    productModule.quickSearch(this.headers, this.quickSearchFilter, this.pagination);
+    productModule.quickSearch(this.headers, this.quickSearchFilter);
   }, 500);
 
   get items() {
@@ -197,11 +268,11 @@ export default class ProductList extends Vue {
   }
 
   get rightDrawer() {
-    return this._rightDrawer;
+    return this.showSearchPanel;
   }
 
   set rightDrawer(rightDrawer: boolean) {
-    this._rightDrawer = rightDrawer;
+    this.showSearchPanel = rightDrawer;
   }
 
   get quickSearch() {
