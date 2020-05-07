@@ -62,8 +62,7 @@ export default class Table extends Vue {
     }
     return val;
   };
-  // },
-  // computed: {
+
   isNotEmpty() {
     return this.items && this.items.length > 0;
   }
@@ -71,6 +70,6 @@ export default class Table extends Vue {
   hasHeader(header: TODO) {
     return header?.value ? true : false;
   }
-  // }
+
 }
 </script>

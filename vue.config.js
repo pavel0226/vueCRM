@@ -1,5 +1,5 @@
 // const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
-const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin');
+// const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin');
 const { VuetifyProgressiveModule } = require('vuetify-loader');
 
 module.exports = {
@@ -33,7 +33,7 @@ module.exports = {
       .oneOf('imagesOther')
       .merge({
         loader: 'url-loader',
-        options: { limit: 8000, fallback: { loader: 'file-loader', options: { name: 'img/[name].[hash:8].[ext]' } } }
+       options: { limit: 8000, fallback: { loader: 'file-loader', options: { name: 'img/[name].[hash:8].[ext]' } } }
       });
   }
 };

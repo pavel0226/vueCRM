@@ -1,3 +1,4 @@
+/* eslint-disable */
 export const DB = {
   token: {
     accessToken: 'fake-token-12345789-abcdefgh',

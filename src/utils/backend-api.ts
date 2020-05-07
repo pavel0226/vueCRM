@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { userModule } from '@/store/modules/user';
-const BASE_URL = 'http://localhost:5354/';
+const API_URL = 'http://localhost:5354/';
 
 const instance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: API_URL,
   // timeout: false,
   params: {} // do not remove this, its added to add params later in the config
 });
@@ -39,27 +39,27 @@ instance.interceptors.response.use(
 
 export default {
   getData(action) {
-    let url = `${BASE_URL}`;
+    let url = `${API_URL}`;
     url += action;
     return instance.get(url);
   },
   postData(action, data) {
-    let url = `${BASE_URL}`;
+    let url = `${API_URL}`;
     url += action;
     return instance.post(url, data);
   },
   putData(action, data) {
-    let url = `${BASE_URL}`;
+    let url = `${API_URL}`;
     url += action;
     return instance.put(url, data);
   },
   deleteData(action) {
-    let url = `${BASE_URL}`;
+    let url = `${API_URL}`;
     url += action;
     return instance.delete(url);
   },
   login(action, data) {
-    let url = `${BASE_URL}`;
+    let url = `${API_URL}`;
     url += action;
     return instance.get(url, data);
   }

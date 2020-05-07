@@ -1,10 +1,16 @@
-import { getData, putData, postData, deleteData } from '@/utils/demo-api';
-import {  Entity, Product, Category } from '@/types';
-import { getDefaultPagination, getPagination } from '@/utils/store-util';
-import { appModule } from './app';
-import { get } from 'lodash';
-import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators';
-import store from '@/store';
+import { getData, putData, postData, deleteData } from "@/utils/demo-api";
+import { Entity, Product, Category } from "@/types";
+import { getDefaultPagination, getPagination } from "@/utils/store-util";
+import { appModule } from "./app";
+import { get } from "lodash";
+import {
+  VuexModule,
+  Module,
+  Mutation,
+  Action,
+  getModule,
+} from "vuex-module-decorators";
+import store from "@/store";
 
 export interface ProductState {
   items: Entity[];
@@ -14,7 +20,7 @@ export interface ProductState {
   categories: Category[];
 }
 
-@Module({ store, dynamic: true, name: 'products' })
+@Module({ store, dynamic: true, name: "products" })
 class ProductModule extends VuexModule implements ProductState {
   public items: Entity[] = [];
   public pagination = getDefaultPagination();
@@ -24,37 +30,43 @@ class ProductModule extends VuexModule implements ProductState {
 
   @Action
   getCategories() {
-    getData('categories/').then((res: TODO) => {
+    getData("categories/").then((res: TODO) => {
       // const categories = [];
-      res.data.forEach((c: TODO) => {
+      const categories =   res.data.forEach((c: TODO) => {
         const category = { ...c };
         category.text = c.categoryName;
         category.value = c.id;
         this.categories.push(category);
       });
-      this.context.commit('setCategories', this.categories);
+      this.setCategories(categories);
     });
   }
-  @Action getProductById(id: number) {
+  @Action getProductById(id: string) {
+    this.setLoading(true);
     if (id) {
-      this.context.commit('setLoading', { loading: true });
-      getData('products/' + id + '?_expand=category').then(
+      // this.setLoading( { loading: true });
+      getData("products/" + id + "?_expand=category").then(
         (res: TODO) => {
           const product = res.data;
-          this.context.commit('setProduct', { product });
+          // this.setProduct( { product });
+
+          this.setProduct(product);
+          this.setLoading(false);
         },
         (err: TODO) => {
           console.log(err);
         }
       );
-      this.context.commit('setLoading', { loading: false });
+      // this.setLoading( { loading: false });
     } else {
-      this.context.commit('setProduct', { product: {} as Product });
+      this.setProduct({} as Product);
+
+      this.setLoading(false);
     }
   }
   @Action getAllProducts() {
-    this.context.commit('setLoading', { loading: true });
-    getData('products?_expand=category').then((res: TODO) => {
+    this.setLoading(true);
+    getData("products?_expand=category").then((res: TODO) => {
       const products = res.data;
       products.forEach((p: Product) => {
         p.categoryName = p.category.categoryName;
@@ -63,8 +75,9 @@ class ProductModule extends VuexModule implements ProductState {
       this.setLoading(false);
     });
   }
+
   @Action searchProducts(searchQuery: string, pagination: Pagination) {
-    getData('products?_expand=category&' + searchQuery).then((res: TODO) => {
+    getData("products?_expand=category&" + searchQuery).then((res: TODO) => {
       const products = res.data;
       products.forEach((p: Product) => {
         p.categoryName = p.category.categoryName;
@@ -73,9 +86,14 @@ class ProductModule extends VuexModule implements ProductState {
       this.setLoading(false);
     });
   }
-  @Action quickSearch(headers: TableHeader[], qsFilter: SeachQuery, pagination: Pagination): void {
+
+  @Action quickSearch(
+    headers: TableHeader[],
+    qsFilter: SeachQuery,
+    pagination: Pagination
+  ): void {
     // TODO: Following solution should be replaced by DB full-text search for production
-    getData('products?_expand=category').then((res: TODO) => {
+    getData("products?_expand=category").then((res: TODO) => {
       const products = res.data.filter((r: TODO) =>
         headers.some((header: TODO) => {
           const val = get(r, [header.value]);
@@ -96,69 +114,79 @@ class ProductModule extends VuexModule implements ProductState {
       this.setLoading(false);
     });
   }
+
   @Action deleteProduct(id: number) {
-    deleteData('products/', id.toString())
+    deleteData("products/", id.toString())
       .then((res: TODO) => {
         return new Promise((resolve, reject) => {
-          appModule.sendSuccessNotice('Operation is done.');
+          appModule.sendSuccessNotice("Operation is done.");
           resolve();
         });
       })
       .catch((err: TODO) => {
         console.log(err);
-        appModule.sendErrorNotice('Operation failed! Please try again later. ');
+        appModule.sendErrorNotice("Operation failed! Please try again later. ");
         appModule.closeNoticeWithDelay(1500);
       });
   }
+
   @Action saveProduct(product: Product) {
     delete product.category;
     if (!product.id) {
-      postData('products/', product)
+      postData("products/", product)
         .then((res: TODO) => {
           const product = res.data;
-          this.context.commit('setProduct', { product });
-          appModule.sendSuccessNotice('New product has been added.');
+          this.setProduct(product);
+          appModule.sendSuccessNotice("New product has been added.");
           appModule.closeNoticeWithDelay(1500);
         })
         .catch((err: TODO) => {
           console.log(err);
-          appModule.sendErrorNotice('Operation failed! Please try again later. ');
+          appModule.sendErrorNotice(
+            "Operation failed! Please try again later. "
+          );
           appModule.closeNoticeWithDelay(1500);
         });
     } else {
-      putData('products/' + product.id.toString(), product)
+      putData("products/" + product.id.toString(), product)
         .then((res: TODO) => {
           const product = res.data;
-          this.context.commit('setProduct', { product });
-          appModule.sendSuccessNotice('Product has been updated.');
+          this.setProduct(product);
+          appModule.sendSuccessNotice("Product has been updated.");
           appModule.closeNoticeWithDelay(1500);
         })
         .catch((err: TODO) => {
           console.log(err);
-          appModule.sendErrorNotice('Operation failed! Please try again later. ');
+          appModule.sendErrorNotice(
+            "Operation failed! Please try again later. "
+          );
           appModule.closeNoticeWithDelay(1500);
         });
     }
   }
+
   @Action setDataTable(items: Product[]) {
     const pagination = getPagination(items);
     this.setPagination(pagination);
     this.setItems(items);
   }
-  
 
   @Mutation setCategories(categories: Category[]) {
     this.categories = categories;
   }
+
   @Mutation setItems(products: Product[]) {
     this.items = products;
   }
+
   @Mutation setPagination(pagination: Pagination) {
     this.pagination = pagination;
   }
+
   @Mutation setLoading(loading: boolean) {
     this.loading = loading;
   }
+
   @Mutation setProduct(product: Product) {
     this.product = product;
   }

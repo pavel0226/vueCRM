@@ -20,8 +20,9 @@
                 <!-- <v-img   class="profile" eager=true :src="customer.avatar"/></v-img> -->
             <!-- <v-img   class="profile" eager=true :src="customer.avatar"/> -->
            {{customer.avatar}}
-            <img :src="customer.avatar" />
-            <img src="../assets/img/avatar1.png">
+            <img   :src="this.customer.avatar"  />
+     
+           
               </v-flex>
               <v-flex md9 sm12>
                 <v-container fluid grid-list-sm>
@@ -100,6 +101,16 @@
                 </v-container>
               </v-flex>
             </v-layout>
+            <v-snackbar
+              v-if="loading === false"
+              :right="true"
+              :timeout="timeout"
+              :color="mode"
+              v-model="snackbar"
+            >
+              {{ notice }}
+              <v-btn dark text @click.native="closeSnackbar">Close</v-btn>
+            </v-snackbar>
           </v-container>
         </v-card-text>
       </v-card>
@@ -115,7 +126,7 @@ import { buildSearchFilters, buildJsonServerQuery, clearSearchFilters } from '@/
 import { Component, Prop, Emit } from 'vue-property-decorator';
 import store from '@/store';
 import Vue from 'vue';
-import { Customer, Entity } from '../types';
+import { Customer, Entity } from '@/types';
 import { getDefaultPagination } from '@/utils/store-util';
 import { getData } from '@/utils/demo-api';
 import { userModule } from '../store/modules/user';
@@ -132,8 +143,9 @@ export default class CustomerForm extends Vue {
   };
   // customerAvatar = customerModule.customer.avatar;
 
-  get customerAvatar() {
-    return { src: require(customerModule.customer.avatar)};
+  customerAvatar() {
+  console.log(`${this.customer.avatar}`)
+    return this.customer.avatar;
   }
 
   get customer() {
@@ -174,18 +186,26 @@ export default class CustomerForm extends Vue {
     this.$router.push({ name: 'Customers' });
   }
 
+
+
   closeSnackbar() {
     appModule.closeNotice();
   }
   created() {
+      console.log(  'CCCCCCCCCCCC' ) 
     // Store.dispatch('customers/getCustomerById', this.$route.params.id);
     customerModule.getCustomerById(this.$route.params.id);
+
   }
   mounted() {
+      console.log(  'MMMMMMMMMMM' ) 
     if (this.$route.params.id) {
+          console.log(  'MMMMMMMMMMM  11111' ) 
       this.title = 'Edit Customer';
+      this.customerAvatar();
     } else this.title = 'New Customer';
     // this.customerAvatar =customerModule.customer.avatar
+
   }
 }
 </script>

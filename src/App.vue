@@ -16,7 +16,7 @@
               <v-list-item-title>{{ user.firstName }}{{ user.lastName }}</v-list-item-title>
             </v-list-item-content>
             <v-spacer></v-spacer>
-            <v-list-item-action style="min-width:30px;">
+            <v-list-item-action style="min-width:10px;">
               <v-menu bottom right offset-y origin="bottom right" transition="v-slide-y-transition">
                 <template v-slot:activator="{ on }">
                   <v-btn icon light slot="activator" v-on="on">

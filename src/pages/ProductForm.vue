@@ -5,8 +5,7 @@
         <v-card-title class="title">
           {{ title }}
           <v-spacer></v-spacer>
-          <!--<v-text-field append-icon="search" label="Search" single-line hide-details v-model="search"></v-text-field>-->
-          <v-btn fab small class="grey" @click.native="cancel()">
+          <v-btn fab small class="grey mr-2" @click.native="cancel()">
             <v-icon dark="">mdi-close-circle-outline</v-icon>
           </v-btn>
           &nbsp;
@@ -71,63 +70,105 @@
     </v-snackbar>
   </v-container>
 </template>
-<script>
-import { Product } from '../models';
-import { mapState, dispatch } from 'vuex';
-/* global Store */
-export default {
-  data() {
-    return {
-      errors: [],
-      title: '',
-      snackbarStatus: false,
-      timeout: 3000,
-      color: '',
-      rules: {
+<script lang="ts">
+import Table from '@/components/Table.vue';
+import SearchPanel from '@/components/SearchPanel.vue';
+import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import { debounce } from 'lodash';
+import { buildSearchFilters, buildJsonServerQuery, clearSearchFilters } from '@/utils/app-util';
+import { Component, Prop, Emit } from 'vue-property-decorator';
+import store from '@/store';
+import Vue from 'vue';
+import { Customer, Entity } from '@/types';
+import { getDefaultPagination } from '@/utils/store-util';
+import { getData } from '@/utils/demo-api';
+import { userModule } from '../store/modules/user';
+import { customerModule } from '@/store/modules/customers';
+import { productModule } from '@/store/modules/products';
+import { appModule } from '@/store/modules/app';
+import { isValidEmail, isValidRewards } from '@/utils/app-util';
+
+@Component
+export default class ProductForm extends Vue {
+
+      errors= []
+      title= ''
+      // snackbarStatus= false
+      // timeout= 3000
+      color= ''
+      rules= {
         name: [val => (val || '').length > 0 || 'This field is required'],
         category: [val => typeof val === 'number' || 'This field is required']
       }
-    };
-  },
-  methods: {
+ 
+
     save() {
       const product = Object.assign({}, this.product);
       delete product.category;
 
-      Store.dispatch('products/saveProduct', product).then(() => {
-        Store.dispatch('products/closeSnackBar', 2000);
-      });
-    },
+   //   Store.dispatch('products/saveProduct', product).then(() => {
+   //     Store.dispatch('products/closeSnackBar', 2000);
+   //   });
+
+
+    }
     selectCategory(item) {
       this.product.categoryId = item.value;
-    },
+    }
     getProduct() {
-      Store.dispatch('products/getProductById', this.$route.params.id);
-    },
+    //  Store.dispatch('products/getProductById', this.$route.params.id);
+  productModule.getProductById(this.$route.params.id);
+
+    }
     getCategories() {
-      Store.dispatch('products/getCategories');
-    },
+    //  Store.dispatch('products/getCategories');
+    }
     cancel() {
       this.$router.push({ name: 'Products' });
     }
-  },
-  computed: {
-    ...mapState('products', {
-      product: 'product',
-      categories: 'categories',
-      loading: 'loading',
-      mode: 'mode',
-      snackbar: 'snackbar',
-      notice: 'notice'
-    }),
+  
+
+ //   ...mapState('products', {
+ //     product: 'product',
+ //     categories: 'categories',
+ //     loading: 'loading',
+ //     mode: 'mode',
+ //     snackbar: 'snackbar',
+ //     notice: 'notice'
+ // 
+   get product() {
+    // console.log(productModule.customer);
+    return productModule.product;
+  }
+
+
+  get pagination() {
+    return productModule.pagination;
+  }
+  get loading() {
+    return productModule.loading;
+  }
+  get mode() {
+    return appModule.mode;
+  }
+  get snackbar() {
+    return appModule.snackbar;
+  }
+  get notice() {
+    return appModule.notice;
+  }
+    get categories() {
+    return productModule.categories;
+  }
+   
     isValid() {
       return this.product && this.product.categoryId && this.product.productName;
     }
-  },
+
   created() {
     this.getCategories();
     this.getProduct();
-  },
+  }
   mounted() {
     if (this.$route.params.id) {
       this.title = 'Edit Product';

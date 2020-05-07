@@ -8,13 +8,13 @@
             <v-text-field append-icon="mdi-magnify" label="Quick Search" single-line hide-details v-model="quickSearch"></v-text-field>
           </span>
           <v-spacer></v-spacer>
-          <v-btn class="blue-grey" fab small dark @click.native.stop="rightDrawer = !rightDrawer">
+          <v-btn class="blue-grey mr-2" fab small dark @click.native.stop="rightDrawer === true">
             <v-icon>mdi-magnify</v-icon>
           </v-btn>
-          <v-btn class="brown lighten-1" fab small dark @click.native="reloadData()">
+          <v-btn class="brown lighten-1  mr-2" fab small dark @click.native="reloadData()">
             <v-icon>mdi-refresh</v-icon>
           </v-btn>
-          <v-btn class="teal darken-2" fab small dark @click.native="print()">
+          <v-btn class="teal darken-2  mr-2" fab small dark @click.native="print()">
             <v-icon>mdi-printer</v-icon>
           </v-btn>
           <v-btn class="deep-orange darken-3" fab small dark @click.native="add">
@@ -24,7 +24,7 @@
         <Table v-if="loading === false" :headers="headers" :items="items" :pagination="pagination" @edit="edit" @remove="remove"></Table>
       </v-card>
     </v-flex>
-    <search-panel :rightDrawer="showSearchPanel" @cancelSearch="cancelSearch" @searchData="searchCustomers">
+    <search-panel :rightDrawer="rightDrawer" @cancelSearch="cancelSearch" @searchData="searchCustomers">
       <v-layout row>
         <v-flex xs11 offset-xs1>
           <v-text-field name="input-1-3" label="Frist Name" light v-model="searchVm.contains.firstName"></v-text-field>
@@ -99,7 +99,7 @@ export default class CustomerList extends Vue {
   public dialog = false;
   public dialogTitle = 'Customer Delete Dialog';
   public dialogText = 'Do you want to delete this customer?';
-  public showSearchPanel = false;
+  private showSearchPanel = false;
   public right = true;
   public search = '';
   public headers = [
@@ -215,8 +215,8 @@ export default class CustomerList extends Vue {
     return this.showSearchPanel;
   }
 
-  set rightDrawer(showSearchPanel: boolean) {
-    this.showSearchPanel = showSearchPanel;
+  set rightDrawer(_showSearchPanel: boolean) {
+    this.showSearchPanel = _showSearchPanel;
   }
 
   get quickSearch() {

@@ -52,7 +52,8 @@ class CustomerModule extends VuexModule implements CustomerState {
           const customer=Object.assign({},res.data);
           customer.avatar = `@${customer.avatar}`
           
-           customer.avatar = "../../assets/img/avatar1.png" //'https://github.com/harryho/vue-crm/blob/master/assets/img/avatar1.png' // 
+          //  customer.avatar = "../../assets/img/avatar1.png" 
+          //'https://github.com/harryho/vue-crm/blob/master/assets/img/avatar1.png' // 
           this.setCustomer(customer);
           this.setLoading(false);
         },
@@ -135,6 +136,7 @@ class CustomerModule extends VuexModule implements CustomerState {
           const customer = res.data;
           this.setCustomer(customer);
           appModule.sendSuccessNotice('New customer has been added.');
+          appModule.closeNoticeWithDelay(1500);
         })
         .catch((err: TODO) => {
           console.log(err);
@@ -147,6 +149,7 @@ class CustomerModule extends VuexModule implements CustomerState {
           const customer = res.data;
           this.setCustomer(customer);
           appModule.sendSuccessNotice('Customer has been updated.');
+          appModule.closeNoticeWithDelay(1500);
         })
         .catch((err: TODO) => {
           console.log(err);

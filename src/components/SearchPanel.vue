@@ -33,7 +33,7 @@ import { State, Getter, Action, Mutation, namespace } from 'vuex-class';
 @Component({ name: 'search-panel' })
 export default class SearchPanel extends Vue {
   // props: {
-  @Prop() rightDrawer = '';
+  @Prop() rightDrawer :boolean;
 
   public right = true;
   public searchVm: TODO = {
