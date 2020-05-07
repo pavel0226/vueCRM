@@ -183,13 +183,10 @@ export default class CustomerForm extends Vue {
     customerModule.getCustomerById(this.$route.params.id);
   }
   mounted() {
-    console.log("MMMMMMMMMMM");
     if (this.$route.params.id) {
-      console.log("MMMMMMMMMMM  11111");
       this.title = "Edit Customer";
       this.customerAvatar();
     } else this.title = "New Customer";
-    // this.customerAvatar =customerModule.customer.avatar
   }
 }
 </script>

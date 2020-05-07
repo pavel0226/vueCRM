@@ -158,7 +158,6 @@
                   <v-list-item
                     ripple
                     v-for="(item, index) in order.products"
-                    v-if="item !== null && item !== undefined"
                     v-bind:key="index"
                     class="grey lighten-2 mt-2 mb-2 "
                   >
