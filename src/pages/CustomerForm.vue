@@ -17,12 +17,7 @@
           <v-container fluid grid-list-sm>
             <v-layout row wrap>
               <v-flex md3 sm12>
-                <!-- <v-img   class="profile" eager=true :src="customer.avatar"/></v-img> -->
-            <!-- <v-img   class="profile" eager=true :src="customer.avatar"/> -->
-           {{customer.avatar}}
-            <img   :src="this.customer.avatar"  />
-     
-           
+                <img :src="this.customer.avatar" />
               </v-flex>
               <v-flex md9 sm12>
                 <v-container fluid grid-list-sm>
@@ -95,7 +90,11 @@
                       ></v-text-field>
                     </v-flex>
                     <v-flex md6 sm12 class="mx-1 px-0">
-                      <v-switch label="Membership" v-model="customer.membership" light></v-switch>
+                      <v-switch
+                        label="Membership"
+                        v-model="customer.membership"
+                        light
+                      ></v-switch>
                     </v-flex>
                   </v-layout>
                 </v-container>
@@ -118,33 +117,37 @@
   </v-container>
 </template>
 <script lang="ts">
-import Table from '@/components/Table.vue';
-import SearchPanel from '@/components/SearchPanel.vue';
-import ConfirmDialog from '@/components/ConfirmDialog.vue';
-import { debounce } from 'lodash';
-import { buildSearchFilters, buildJsonServerQuery, clearSearchFilters } from '@/utils/app-util';
-import { Component, Prop, Emit } from 'vue-property-decorator';
-import store from '@/store';
-import Vue from 'vue';
-import { Customer, Entity } from '@/types';
-import { getDefaultPagination } from '@/utils/store-util';
-import { getData } from '@/utils/demo-api';
-import { userModule } from '../store/modules/user';
-import { customerModule } from '@/store/modules/customers';
-import { appModule } from '@/store/modules/app';
-import { isValidEmail, isValidRewards } from '@/utils/app-util';
+import Table from "@/components/Table.vue";
+import SearchPanel from "@/components/SearchPanel.vue";
+import ConfirmDialog from "@/components/ConfirmDialog.vue";
+import { debounce } from "lodash";
+import {
+  buildSearchFilters,
+  buildJsonServerQuery,
+  clearSearchFilters,
+} from "@/utils/app-util";
+import { Component, Prop, Emit } from "vue-property-decorator";
+import store from "@/store";
+import Vue from "vue";
+import { Customer, Entity } from "@/types";
+import { getDefaultPagination } from "@/utils/store-util";
+import { getData } from "@/utils/demo-api";
+import { userModule } from "../store/modules/user";
+import { customerModule } from "@/store/modules/customers";
+import { appModule } from "@/store/modules/app";
+import { isValidEmail, isValidRewards } from "@/utils/app-util";
 
 @Component
 export default class CustomerForm extends Vue {
-  title = '';
+  title = "";
   rules = {
     rewards: [() => isValidRewards(this.customer.rewards)],
-    email: [() => isValidEmail(this.customer.email)]
+    email: [() => isValidEmail(this.customer.email)],
   };
   // customerAvatar = customerModule.customer.avatar;
 
   customerAvatar() {
-  console.log(`${this.customer.avatar}`)
+    console.log(`${this.customer.avatar}`);
     return this.customer.avatar;
   }
 
@@ -174,39 +177,29 @@ export default class CustomerForm extends Vue {
   }
 
   save() {
-    // const customer = { ...this.customer };
-    // delete order.customer
-    // console.log(customer);
-    // Store.dispatch('customers/saveCustomer', customer).then(() => {
-    //   Store.dispatch('customers/closeSnackBar', 2000);
-    // });
     customerModule.saveCustomer(this.customer);
   }
+
   cancel() {
-    this.$router.push({ name: 'Customers' });
+    this.$router.push({ name: "Customers" });
   }
-
-
 
   closeSnackbar() {
     appModule.closeNotice();
   }
   created() {
-      console.log(  'CCCCCCCCCCCC' ) 
+    console.log("CCCCCCCCCCCC");
     // Store.dispatch('customers/getCustomerById', this.$route.params.id);
     customerModule.getCustomerById(this.$route.params.id);
-
   }
   mounted() {
-      console.log(  'MMMMMMMMMMM' ) 
+    console.log("MMMMMMMMMMM");
     if (this.$route.params.id) {
-          console.log(  'MMMMMMMMMMM  11111' ) 
-      this.title = 'Edit Customer';
+      console.log("MMMMMMMMMMM  11111");
+      this.title = "Edit Customer";
       this.customerAvatar();
-    } else this.title = 'New Customer';
+    } else this.title = "New Customer";
     // this.customerAvatar =customerModule.customer.avatar
-
   }
 }
 </script>
- 

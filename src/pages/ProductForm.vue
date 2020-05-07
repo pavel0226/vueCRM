@@ -9,7 +9,13 @@
             <v-icon dark="">mdi-close-circle-outline</v-icon>
           </v-btn>
           &nbsp;
-          <v-btn fab small class="purple" @click.native="save()" :disabled="!isValid">
+          <v-btn
+            fab
+            small
+            class="purple"
+            @click.native="save()"
+            :disabled="!isValid"
+          >
             <v-icon>mdi-content-save-all</v-icon>
           </v-btn>
         </v-card-title>
@@ -64,83 +70,71 @@
         </v-card-text>
       </v-card>
     </v-flex>
-    <v-snackbar v-if="loading === false" :right="true" :timeout="timeout" :color="mode" v-model="snackbar">
+    <v-snackbar
+      v-if="loading === false"
+      :right="true"
+      :timeout="timeout"
+      :color="mode"
+      v-model="snackbar"
+    >
       {{ notice }}
       <v-btn dark text @click.native="closeSnackbar">Close</v-btn>
     </v-snackbar>
   </v-container>
 </template>
 <script lang="ts">
-import Table from '@/components/Table.vue';
-import SearchPanel from '@/components/SearchPanel.vue';
-import ConfirmDialog from '@/components/ConfirmDialog.vue';
-import { debounce } from 'lodash';
-import { buildSearchFilters, buildJsonServerQuery, clearSearchFilters } from '@/utils/app-util';
-import { Component, Prop, Emit } from 'vue-property-decorator';
-import store from '@/store';
-import Vue from 'vue';
-import { Customer, Entity } from '@/types';
-import { getDefaultPagination } from '@/utils/store-util';
-import { getData } from '@/utils/demo-api';
-import { userModule } from '../store/modules/user';
-import { customerModule } from '@/store/modules/customers';
-import { productModule } from '@/store/modules/products';
-import { appModule } from '@/store/modules/app';
-import { isValidEmail, isValidRewards } from '@/utils/app-util';
+import Table from "@/components/Table.vue";
+import SearchPanel from "@/components/SearchPanel.vue";
+import ConfirmDialog from "@/components/ConfirmDialog.vue";
+import { debounce } from "lodash";
+import {
+  buildSearchFilters,
+  buildJsonServerQuery,
+  clearSearchFilters,
+} from "@/utils/app-util";
+import { Component, Prop, Emit } from "vue-property-decorator";
+import store from "@/store";
+import Vue from "vue";
+import { Customer, Entity } from "@/types";
+import { getDefaultPagination } from "@/utils/store-util";
+import { getData } from "@/utils/demo-api";
+import { userModule } from "../store/modules/user";
+import { customerModule } from "@/store/modules/customers";
+import { productModule } from "@/store/modules/products";
+import { appModule } from "@/store/modules/app";
+import { isValidEmail, isValidRewards } from "@/utils/app-util";
 
 @Component
 export default class ProductForm extends Vue {
+  errors = [];
+  title = "";
+  color = "";
+  rules = {
+    name: [(val) => (val || "").length > 0 || "This field is required"],
+    category: [(val) => typeof val === "number" || "This field is required"],
+  };
 
-      errors= []
-      title= ''
-      // snackbarStatus= false
-      // timeout= 3000
-      color= ''
-      rules= {
-        name: [val => (val || '').length > 0 || 'This field is required'],
-        category: [val => typeof val === 'number' || 'This field is required']
-      }
- 
-
-    save() {
-      const product = Object.assign({}, this.product);
-      delete product.category;
-
-   //   Store.dispatch('products/saveProduct', product).then(() => {
-   //     Store.dispatch('products/closeSnackBar', 2000);
-   //   });
-
-
-    }
-    selectCategory(item) {
-      this.product.categoryId = item.value;
-    }
-    getProduct() {
-    //  Store.dispatch('products/getProductById', this.$route.params.id);
-  productModule.getProductById(this.$route.params.id);
-
-    }
-    getCategories() {
-    //  Store.dispatch('products/getCategories');
-    }
-    cancel() {
-      this.$router.push({ name: 'Products' });
-    }
-  
-
- //   ...mapState('products', {
- //     product: 'product',
- //     categories: 'categories',
- //     loading: 'loading',
- //     mode: 'mode',
- //     snackbar: 'snackbar',
- //     notice: 'notice'
- // 
-   get product() {
-    // console.log(productModule.customer);
-    return productModule.product;
+  save() {
+    const product = Object.assign({}, this.product);
+    delete product.category;
+    productModule.saveProduct(this.product);
+  }
+  selectCategory(item) {
+    this.product.categoryId = item.value;
+  }
+  getProduct() {
+    productModule.getProductById(this.$route.params.id);
+  }
+  getCategories() {
+    productModule.getCategories();
+  }
+  cancel() {
+    this.$router.push({ name: "Products" });
   }
 
+  get product() {
+    return productModule.product;
+  }
 
   get pagination() {
     return productModule.pagination;
@@ -157,13 +151,13 @@ export default class ProductForm extends Vue {
   get notice() {
     return appModule.notice;
   }
-    get categories() {
+  get categories() {
     return productModule.categories;
   }
-   
-    isValid() {
-      return this.product && this.product.categoryId && this.product.productName;
-    }
+
+  isValid() {
+    return this.product && this.product.categoryId && this.product.productName;
+  }
 
   created() {
     this.getCategories();
@@ -171,8 +165,8 @@ export default class ProductForm extends Vue {
   }
   mounted() {
     if (this.$route.params.id) {
-      this.title = 'Edit Product';
-    } else this.title = 'New Product';
+      this.title = "Edit Product";
+    } else this.title = "New Product";
   }
-};
+}
 </script>

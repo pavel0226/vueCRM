@@ -60,9 +60,6 @@ import Vue from 'vue';
   }
 })
 export default class Dashboard extends Vue {
-  // data() {
-  //   return {
-  // @Prop() readonly
   monthlyStats = [
     {
       bgColor: 'cyan darken-3',

@@ -152,7 +152,6 @@ export default class ProductList extends Vue {
     this.query = buildJsonServerQuery(this.searchVm);
     this.quickSearch = '';
     productModule.searchProducts(this.query, this.pagination);
-    // Store.dispatch('customers/searchCustomers', this.query); //, this.pagination);
   }
 
   clearSearchFilters() {

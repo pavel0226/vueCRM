@@ -166,7 +166,6 @@ export default class CustomerList extends Vue {
     this.query = buildJsonServerQuery(this.searchVm);
     this.quickSearch = '';
     customerModule.searchCustomers(this.query, this.pagination)
-    // Store.dispatch('customers/searchCustomers', this.query); //, this.pagination);
   }
 
   clearSearchFilters() {
@@ -230,7 +229,7 @@ export default class CustomerList extends Vue {
   created() {
     customerModule.getAllCustomers();
   }
-
+  
   mounted() {
     //  this.getCustomers()
   }
