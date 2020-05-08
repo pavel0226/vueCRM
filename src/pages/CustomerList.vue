@@ -27,12 +27,12 @@
     <search-panel :rightDrawer="rightDrawer" @cancelSearch="cancelSearch" @searchData="searchCustomers">
       <v-layout row>
         <v-flex xs11 offset-xs1>
-          <v-text-field name="input-1-3" label="Frist Name" light v-model="searchVm.contains.firstName"></v-text-field>
+          <v-text-field name="input-1-3" label="Frist Name" light v-model="searchFilter.contains.firstName"></v-text-field>
         </v-flex>
       </v-layout>
       <v-layout row>
         <v-flex xs11 offset-xs1>
-          <v-text-field name="input-1-3" label="Last Name" light v-model="searchVm.contains.lastName"></v-text-field>
+          <v-text-field name="input-1-3" label="Last Name" light v-model="searchFilter.contains.lastName"></v-text-field>
         </v-flex>
       </v-layout>
       <v-layout row>
@@ -42,18 +42,18 @@
       </v-layout>
       <v-layout row>
         <v-flex xs8 offset-xs1>
-          <v-slider label="Reward 1" light v-bind:max="50" v-model="searchVm.between.rewards.former"></v-slider>
+          <v-slider label="Reward 1" light v-bind:max="50" v-model="searchFilter.between.rewards.former"></v-slider>
         </v-flex>
         <v-flex xs3>
-          <v-text-field type="number" light v-model="searchVm.between.rewards.former"></v-text-field>
+          <v-text-field type="number" light v-model="searchFilter.between.rewards.former"></v-text-field>
         </v-flex>
       </v-layout>
       <v-layout row>
         <v-flex xs8 offset-xs1>
-          <v-slider label="Reward 2" light v-bind:max="100" v-model="searchVm.between.rewards.latter"></v-slider>
+          <v-slider label="Reward 2" light v-bind:max="100" v-model="searchFilter.between.rewards.latter"></v-slider>
         </v-flex>
         <v-flex xs3>
-          <v-text-field type="number" light v-model="searchVm.between.rewards.latter"></v-text-field>
+          <v-text-field type="number" light v-model="searchFilter.between.rewards.latter"></v-text-field>
         </v-flex>
       </v-layout>
     </search-panel>
@@ -111,7 +111,7 @@ export default class CustomerList extends Vue {
     { text: 'Membership', value: 'membership' },
     { text: '', value: 'actions', sortable: false }
   ];
-  private searchVm = {
+  private searchFilter = {
     contains: {
       firstName: '',
       lastName: ''
@@ -156,8 +156,8 @@ export default class CustomerList extends Vue {
   }
 
   searchCustomers() {
-    buildSearchFilters(this.searchVm);
-    this.query = buildJsonServerQuery(this.searchVm);
+    buildSearchFilters(this.searchFilter);
+    this.query = buildJsonServerQuery(this.searchFilter);
     this.quickSearch = '';
     customerModule.searchCustomers(this.query);
     this.showSearchPanel = false;
@@ -165,7 +165,7 @@ export default class CustomerList extends Vue {
 
   clearSearchFilters() {
     this.showSearchPanel = !this.showSearchPanel;
-    clearSearchFilters(this.searchVm);
+    clearSearchFilters(this.searchFilter);
     customerModule.getAllCustomers();
   }
 

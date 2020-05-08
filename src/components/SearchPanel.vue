@@ -37,7 +37,7 @@ export default class SearchPanel extends Vue {
   }
 
   public right = true;
-  public searchVm: TODO = {
+  public searchFilter: TODO = {
     contains: {
       productName: '',
       category: ''

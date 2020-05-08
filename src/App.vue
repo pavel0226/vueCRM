@@ -51,7 +51,7 @@
           </v-list-item>
         </v-list>
       </v-navigation-drawer>
-      <v-app-bar app>
+      <v-app-bar app elevation=1>
         <v-app-bar-nav-icon @click.native.stop="drawer = !drawer" light></v-app-bar-nav-icon>
         <v-spacer></v-spacer>
         <div class="text-xs-center pr-3">
@@ -78,11 +78,7 @@
       </v-app-bar>
       <v-content>
         <v-container fluid>
-          <!-- <v-layout>
-            <v-flex row=""> -->
           <router-view></router-view>
-          <!-- </v-flex>
-          </v-layout> -->
         </v-container>
       </v-content>
       <v-footer :inset="true" style="justify-content:center; text-align: center" app>

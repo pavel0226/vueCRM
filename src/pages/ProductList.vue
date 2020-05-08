@@ -72,7 +72,7 @@
             name="productName"
             label="Product"
             light
-            v-model="searchVm.contains.productName"
+            v-model="searchFilter.contains.productName"
           ></v-text-field>
         </v-flex>
       </v-layout>
@@ -88,14 +88,14 @@
             label="Price 1"
             light
             v-bind:max="100"
-            v-model="searchVm.between.unitPrice.former"
+            v-model="searchFilter.between.unitPrice.former"
           ></v-slider>
         </v-flex>
         <v-flex xs3>
           <v-text-field
             type="number"
             light
-            v-model="searchVm.between.unitPrice.former"
+            v-model="searchFilter.between.unitPrice.former"
           ></v-text-field>
         </v-flex>
       </v-layout>
@@ -106,14 +106,14 @@
             label="Price 2"
             light
             v-bind:max="999"
-            v-model="searchVm.between.unitPrice.latter"
+            v-model="searchFilter.between.unitPrice.latter"
           ></v-slider>
         </v-flex>
         <v-flex xs3>
           <v-text-field
             type="number"
             light
-            v-model="searchVm.between.unitPrice.latter"
+            v-model="searchFilter.between.unitPrice.latter"
           ></v-text-field>
         </v-flex>
       </v-layout>
@@ -173,7 +173,7 @@ export default class ProductList extends Vue {
     { text: "In Stock", value: "unitInStock" },
     { text: "", value: "actions", sortable: false }
   ];
-  searchVm = {
+  searchFilter = {
     contains: {
       productName: "",
       category: ""
@@ -219,15 +219,15 @@ export default class ProductList extends Vue {
   }
   searchProducts() {
     this.showSearchPanel = !this.showSearchPanel;
-    buildSearchFilters(this.searchVm);
-    this.query = buildJsonServerQuery(this.searchVm);
+    buildSearchFilters(this.searchFilter);
+    this.query = buildJsonServerQuery(this.searchFilter);
     this.quickSearch = "";
     productModule.searchProducts(this.query);
   }
 
   clearSearchFilters() {
     this.showSearchPanel = !this.showSearchPanel;
-    clearSearchFilters(this.searchVm);
+    clearSearchFilters(this.searchFilter);
     productModule.getAllProducts();
   }
 

@@ -56,20 +56,20 @@ export function capFirstLetter(s: string) {
   return s && s[0].toUpperCase() + s.slice(1);
 }
 
-export function clearSearchFilters(searchVm: SearchFilter) {
-  if (searchVm) {
-    if (searchVm.filters) delete searchVm.filters;
+export function clearSearchFilters(searchFilter: SearchFilter) {
+  if (searchFilter) {
+    if (searchFilter.filters) delete searchFilter.filters;
 
-    Object.keys(searchVm).forEach(filter => {
-      if (searchVm[filter]) {
+    Object.keys(searchFilter).forEach(filter => {
+      if (searchFilter[filter]) {
         if (filter !== "between") {
-          Object.keys(searchVm[filter]).forEach(prop => {
-            searchVm[filter][prop] = null;
+          Object.keys(searchFilter[filter]).forEach(prop => {
+            searchFilter[filter][prop] = null;
           });
         } else {
-          Object.keys(searchVm[filter]).forEach(prop => {
-            searchVm[filter][prop]["former"] = 0;
-            searchVm[filter][prop]["latter"] = 0;
+          Object.keys(searchFilter[filter]).forEach(prop => {
+            searchFilter[filter][prop]["former"] = 0;
+            searchFilter[filter][prop]["latter"] = 0;
           });
         }
       }

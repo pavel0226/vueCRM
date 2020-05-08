@@ -72,7 +72,7 @@
             name="reference"
             label="Reference"
             light
-            v-model="searchVm.contains.reference"
+            v-model="searchFilter.contains.reference"
           ></v-text-field>
         </v-flex>
       </v-layout>
@@ -82,7 +82,7 @@
             name="customer"
             label="Customer"
             light
-            v-model="searchVm.contains.customer"
+            v-model="searchFilter.contains.customer"
           ></v-text-field>
         </v-flex>
       </v-layout>
@@ -98,14 +98,14 @@
             label="Price 1"
             light
             v-bind:max="100"
-            v-model="searchVm.between.amount.former"
+            v-model="searchFilter.between.amount.former"
           ></v-slider>
         </v-flex>
         <v-flex xs3>
           <v-text-field
             type="number"
             light
-            v-model="searchVm.between.amount.former"
+            v-model="searchFilter.between.amount.former"
           ></v-text-field>
         </v-flex>
       </v-layout>
@@ -116,14 +116,14 @@
             label="Price 2"
             light
             v-bind:max="9999"
-            v-model="searchVm.between.amount.latter"
+            v-model="searchFilter.between.amount.latter"
           ></v-slider>
         </v-flex>
         <v-flex xs3>
           <v-text-field
             type="number"
             light
-            v-model="searchVm.between.amount.latter"
+            v-model="searchFilter.between.amount.latter"
           ></v-text-field>
         </v-flex>
       </v-layout>
@@ -190,7 +190,7 @@ export default class OrderList extends Vue {
     { text: "Shipping Date", value: "shippedDate" },
     { text: "", value: "actions", sortable: false }
   ];
-  private searchVm = {
+  private searchFilter = {
     contains: {
       reference: "",
       customer: ""
@@ -228,8 +228,8 @@ export default class OrderList extends Vue {
   }
   searchOrders() {
     this.showSearchPanel = !this.showSearchPanel;
-    buildSearchFilters(this.searchVm);
-    this.query = buildJsonServerQuery(this.searchVm);
+    buildSearchFilters(this.searchFilter);
+    this.query = buildJsonServerQuery(this.searchFilter);
     this.quickSearch = "";
     orderModule.searchOrders(this.query);
   }
