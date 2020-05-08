@@ -219,7 +219,6 @@ export default class CustomerList extends Vue {
   }
 
   mounted() {
-    //  this.getCustomers()
   }
 }
 </script>

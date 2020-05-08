@@ -22,6 +22,7 @@ export interface ProductState {
 
 @Module({ store, dynamic: true, name: "products" })
 class ProductModule extends VuexModule implements ProductState {
+
   public items: Entity[] = [];
   public pagination = getDefaultPagination();
   public loading = false;
@@ -31,10 +32,11 @@ class ProductModule extends VuexModule implements ProductState {
   @Action
   getCategories() {
     getData("categories/").then((res: TODO) => {
-      const categories = res.data.forEach((c: TODO) => {
-        const category = { ...c };
-        category.text = c.categoryName;
-        category.value = c.id;
+      debugger;
+      const categories = res.data.map((c: TODO) => {
+        c.text = c.categoryName;
+        c.value = c.id;
+        return c;
       });
       this.setCategories(categories);
     });

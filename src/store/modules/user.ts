@@ -32,11 +32,10 @@ class UserModule extends VuexModule implements UserState {
   public searching = "";
   user = getUser();
   token = getToken();
-  // public mode = "";
+
   public userInfo = {} as UserInfo;
   public signedIn = false;
-  // };updateUser
-  // const actions = {
+
 
   get isSignedIn(): boolean {
     return this.user.email && this.token ? true : false;
@@ -67,17 +66,8 @@ class UserModule extends VuexModule implements UserState {
   }
 
   @Action({ rawError: true })
-  updateUser({ user, token }: TODO) {
-    this.context.commit("setToken", token);
-    this.context.commit("setUser", user);
-    // this.setToken(token);
-    // this.setUser(user);
-  }
-
-  @Action({ rawError: true })
   public async signIn(userInfo: { username: string; password: string }) {
     const { username, password } = userInfo;
-    // username = _username.trim()
     const { data } = await login("login", { username, password });
     // debugger;
     setToken(data.accessToken);

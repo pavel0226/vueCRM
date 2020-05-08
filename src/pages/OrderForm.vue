@@ -5,13 +5,13 @@
         <v-card-title class="title">
           {{ title }}
           <v-spacer></v-spacer>
-          <v-btn fab small class="grey mr-2" @click.native="cancel()">
+          <v-btn fab small dark class="grey mr-2" @click.native="cancel()">
             <v-icon dark="">mdi-close-circle-outline</v-icon>
           </v-btn>
-          <v-btn  fab small class="purple mr-2" @click.native="save()">
+          <v-btn  fab small dark class="purple mr-2" @click.native="save()">
             <v-icon>mdi-content-save-all</v-icon>
           </v-btn>
-          <v-btn fab small class="blue" @click.native="addProduct()">
+          <v-btn fab small dark class="blue" @click.native="addProduct()">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
         </v-card-title>
@@ -213,13 +213,14 @@
 </template>
 <script lang="ts">
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
-import { Component } from 'vue-property-decorator';
+import { Component, Watch } from 'vue-property-decorator';
 import Vue from 'vue';
 import { customerModule } from '@/store/modules/customers';
 import { productModule } from '@/store/modules/products';
 import { orderModule } from '@/store/modules/orders';
 import { appModule } from '@/store/modules/app';
 import { isValidEmail, isValidRewards } from '@/utils/app-util';
+import { Product } from '@/types';
 
 @Component({
   components: {
@@ -227,7 +228,7 @@ import { isValidEmail, isValidRewards } from '@/utils/app-util';
   }
 })
 export default class OrderForm extends Vue {
-  private categoryId = null;
+ 
   private modalTitle = 'Add Product';
   private modalText = 'Select the category and product from the list';
   private addProductModal = false;
@@ -239,10 +240,18 @@ export default class OrderForm extends Vue {
   private errors = [];
   private title = '';
   private productId = null;
+  private categoryId = 0;
   private color = '';
   private selectedProduct: null;
-  private shippedDate: string;
-  private orderDate: string;
+  // private products : Product[];
+  // private shippedDate: string;
+  // private orderDate: string;
+@Watch('categoryId')
+categoryChanged(newId: number, oldId: number){
+  if(newId !== oldId){
+    orderModule.getProductsByCategory(newId)
+  }
+}
 
   get customers() {
     console.log(customerModule.customer);
@@ -254,6 +263,7 @@ export default class OrderForm extends Vue {
   }
 
   get categories() {
+    console.log(productModule.categories)
     return productModule.categories;
   }
 
@@ -353,8 +363,8 @@ export default class OrderForm extends Vue {
     if (this.$route.params.id) {
       this.title = 'Edit Order';
       this.$nextTick(() => {
-        this.shippedDate = this.order.shippedDate;
-        this.orderDate = this.order.orderDate;
+        // this.shippedDate = this.order.shippedDate;
+        // this.orderDate = this.order.orderDate;
       });
     } else this.title = 'New Order';
   }

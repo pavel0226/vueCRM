@@ -7,18 +7,6 @@
             >Orders {{ pagination ? '(' + pagination.totalItems + ')' : '' }}
           </span>
           <v-spacer></v-spacer>
-          <!-- <v-btn class="blue-grey  mr-2" fab small dark @click.native.stop="rightDrawer = !rightDrawer">
-            <v-icon>mdi-magnify</v-icon>
-          </v-btn>
-          <v-btn class="brown lighten-1  mr-2" fab small dark @click.native="reloadData()">
-            <v-icon>mdi-refresh</v-icon>
-          </v-btn>
-          <v-btn class="teal darken-2  mr-2" fab small dark @click.native="print()">
-            <v-icon>mdi-printer</v-icon>
-          </v-btn>
-          <v-btn class="deep-orange darken-3" fab small dark @click.native="add">
-            <v-icon>mdi-plus</v-icon> -->
-          <!-- </v-btn> -->
          <table-header-buttons :add="add" :reloadData="reloadData" :updateSearchPanel="updateSearchPanel"></table-header-buttons>
     
         </v-card-title>
@@ -107,7 +95,7 @@ export default class OrderList extends Vue {
     },
     { text: 'Order Items', value: 'quantity' },
     { text: 'Amount', value: 'amount' },
-    { text: 'Customer', value: 'customer' },
+    { text: 'Customer', value: 'customerName' },
     { text: 'Order Date', value: 'orderDate' },
     { text: 'Shipping Date', value: 'shippedDate' },
     { text: '', value: 'actions', sortable: false }

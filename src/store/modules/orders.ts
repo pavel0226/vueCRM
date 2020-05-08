@@ -1,5 +1,5 @@
 import { getData, putData, postData, deleteData } from "@/utils/demo-api";
-import { Customer, Order, Entity, Product, Category } from "@/types";
+import { Customer, Order, Entity, Product, Category, Address } from "@/types";
 import { getDefaultPagination, getPagination } from "@/utils/store-util";
 import { appModule } from "./app";
 import { get } from "lodash";
@@ -64,7 +64,11 @@ class OrderModule extends VuexModule implements OrderState {
         }
       );
     } else {
-      this.setOrder({} as Order);
+      const order = {} as Order
+      order.products=[];
+      order.customer = {} as Customer
+      order.shipAddress = {} as Address
+      this.setOrder(order);
     }
   }
 
@@ -94,15 +98,13 @@ class OrderModule extends VuexModule implements OrderState {
     getData("orders?_expand=customer").then((res: TODO) => {
       const orders = res.data;
 
-      orders.forEach((item: TODO) => {
+      orders.forEach((item: Order) => {
         item.amount = item.products.reduce(
-          (p: TODO, c: TODO) => p + ((c && c.unitPrice) || 0),
+          (p: number, c: Product) => p + ((c && c.unitPrice) || 0),
           0
         );
         item.quantity = item.products?.length;
-        item.customer = item.customer
-          ? item.customer.firstName + " " + item.customer.lastName
-          : "";
+        item.customerName = item.customer? item.customer.firstName + " " + item.customer.lastName : "";
       });
       this.setDataTable(orders);
       this.setLoading(false);
@@ -132,7 +134,7 @@ class OrderModule extends VuexModule implements OrderState {
     // TODO: Following solution should be replaced by DB full-text search for production
     getData("orders?_expand=customer").then((res: TODO) => {
       const orders = res.data.filter((r: TODO) =>
-        headers.some((header: TODO) => {
+        headers.some((header: TableHeader) => {
           const val = get(r, [header.value]);
           return (
             (val &&
@@ -144,16 +146,13 @@ class OrderModule extends VuexModule implements OrderState {
           );
         })
       );
-      orders.forEach((item: TODO) => {
-        let amount = 0;
-        item.products.forEach((e: TODO) => {
-          amount += e.unitPrice;
-        });
-        item.amount = amount;
+      orders.forEach((item: Order) => {
+        item.amount = item.products.reduce(
+          (p: number, c: Product) => p + ((c && c.unitPrice) || 0),
+          0
+        );;
         item.quantity = item.products?.length;
-        item.customer = item.customer
-          ? item.customer.firstName + " " + item.customer.lastName
-          : "";
+        item.customerName = item.customer ? item.customer.firstName + " " + item.customer.lastName : "";
       });
       // this.setItems(orders);
       this.setDataTable(orders);

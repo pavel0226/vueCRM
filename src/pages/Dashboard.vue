@@ -21,6 +21,7 @@
                   </v-flex>
                   <v-flex d-flex xs12>
                     <div class="silver--text display-1">{{ stat.data }}</div>
+                    <v-spacer></v-spacer>
                     <v-btn
                       outlined
                       class="darkgrey--text darken-1"

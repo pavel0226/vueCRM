@@ -19,14 +19,14 @@
       hide-default-footer
     >
       <template v-slot:item.actions="{ item }">
-        <v-btn fab class="teal mr-2" small @click.native="$emit('edit', item)">
+        <v-btn fab class="teal mr-2" small dark @click.native="$emit('edit', item)">
           <v-icon>
             mdi-pencil
           </v-icon>
         </v-btn>
-        <v-btn fab class="cyan" small @click.native="$emit('remove', item)">
+        <v-btn fab class="cyan" small  @click.native="$emit('remove', item)">
           <v-icon>
-            mdi-delete
+            mdi-trash-can-outline
           </v-icon>
         </v-btn>
       </template>
@@ -51,7 +51,7 @@ export default class Table extends Vue {
   @Prop() readonly headers: TableHeader[];
   @Prop() readonly items: Entity[];
   @Prop() readonly pagination: Pagination;
-  // @Prop() readonly search :string;
+
   search ='';
 
   editItem() {}

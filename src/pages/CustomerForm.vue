@@ -5,11 +5,11 @@
         <v-card-title class="title">
           {{ title }}
           <v-spacer></v-spacer>
-          <v-btn fab small class="grey mr-2" @click.native="cancel()">
+          <v-btn fab small dark class="grey mr-2" @click.native="cancel()">
             <v-icon dark="">mdi-close-circle-outline</v-icon>
           </v-btn>
           &nbsp;
-          <v-btn fab small class="blue" @click.native="save()">
+          <v-btn fab small dark class="blue" @click.native="save()">
             <v-icon>mdi-content-save-all</v-icon>
           </v-btn>
         </v-card-title>
@@ -178,8 +178,6 @@ export default class CustomerForm extends Vue {
     appModule.closeNotice();
   }
   created() {
-    console.log("CCCCCCCCCCCC");
-    // Store.dispatch('customers/getCustomerById', this.$route.params.id);
     customerModule.getCustomerById(this.$route.params.id);
   }
   mounted() {

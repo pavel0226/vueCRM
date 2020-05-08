@@ -165,7 +165,7 @@ export default class ProductList extends Vue {
     this.rightDrawer = !this.rightDrawer;
   }
 
-  cancelSeareloadDatarch() {
+  cancelSearch() {
     this.showSearchPanel = false;
   }
 

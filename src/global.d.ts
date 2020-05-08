@@ -21,6 +21,7 @@ declare module "vue-progressbar" {
 
 type TODO = any;
 
+
 type Pagination = {
   page: number;
   totalItems: number;
@@ -28,17 +29,6 @@ type Pagination = {
   pages: number;
 };
 
-type SearchFilterOps = {
-  Equals: "";
-  GreaterThan: "_gte";
-  LessThan: "_lte";
-  GreaterThanOrEqual: "_gte";
-  LessThanOrEqual: "_lte";
-  Contains: "_like";
-  StartsWith: "_like";
-  EndsWith: "_like";
-  Between: "";
-};
 
 type TableHeader = {
   text: string;

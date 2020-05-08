@@ -41,10 +41,12 @@ export interface Address extends Entity {
 
 export interface Order extends Entity {
   reference: string;
-  customerId: string;
+  customerId: number;
   customer: Customer;
+  customerName: string;
   products: Product[];
   amount: number;
+  quantity: number;
   orderDate: string;
   shippedDate: string;
   shipAddress: Address;
@@ -59,9 +61,9 @@ export interface Product extends Entity {
   categoryName?: string;
 }
 
-export interface State extends Entity {
-  items: TODO[];
-  pagination: TODO;
+export interface State {
+  items: Entity[];
+  pagination: Pagination;
   loading: boolean;
   mode: string;
   snackbar: boolean;
