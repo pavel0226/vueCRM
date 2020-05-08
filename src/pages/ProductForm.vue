@@ -101,9 +101,9 @@ export default class ProductForm extends Vue {
     productModule.getProductById(this.$route.params.id);
   }
 
-  getCategories() {
-    productModule.getCategories();
-  }
+  // getCategories() {
+    
+  // }
 
   cancel() {
     this.$router.push({ name: 'Products' });
@@ -137,7 +137,8 @@ export default class ProductForm extends Vue {
   }
 
   created() {
-    this.getCategories();
+    // this.getCategories();
+    productModule.getCategories();
     this.getProduct();
   }
   mounted() {

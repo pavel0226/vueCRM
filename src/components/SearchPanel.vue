@@ -7,12 +7,10 @@
       </v-list-item>
       <!-- <v-list-item-title>&nbsp;</v-list-item-title> -->
       <slot></slot>
-
       <v-layout class="pl-1 pt-3 ml-1" row>
         <v-btn class="purple" fab small @click.native="$emit('searchData')">
           <v-icon dark="">mdi-magnify</v-icon>
         </v-btn>
-        <!-- <v-btn class="grey" fab small @click.native="rightDrawer = !rightDrawer"> searchData-->  
         <v-btn class="grey" fab small @click.native="$emit('cancelSearch')">
           <v-icon dark="">mdi-close-circle-outline</v-icon>
         </v-btn>
@@ -28,6 +26,7 @@ import Vue from 'vue';
 @Component
 export default class SearchPanel extends Vue {
   @Prop({ required: true }) rightDrawer: boolean;
+  @Prop()  searchFilter: TODO;
 
   get rightDrawerVal() {
     return this.rightDrawer;
@@ -37,21 +36,23 @@ export default class SearchPanel extends Vue {
   }
 
   public right = true;
-  public searchFilter: TODO = {
-    contains: {
-      productName: '',
-      category: ''
-    },
-    between: {
-      price: {
-        former: 0,
-        latter: 0
-      }
-    }
-  };
+  // public searchFilter: TODO = {
+  //   contains: {
+  //     productName: '',
+  //     category: ''
+  //   },
+  //   between: {
+  //     price: {
+  //       former: 0,
+  //       latter: 0
+  //     }
+  //   }
+  // };
 
   created() {
     // this.rightDrawer = true
+
+
   }
   mounted() {
     this.$nextTick(() => {});

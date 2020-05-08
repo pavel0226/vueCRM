@@ -4,86 +4,36 @@
       <v-card>
         <v-card-title>
           <span class="title"
-            >Orders {{ pagination ? "(" + pagination.totalItems + ")" : "" }}
-            <v-text-field
-              append-icon="mdi-magnify"
-              label="Quick Search"
-              single-line
-              hide-details
-              v-model="quickSearch"
-            ></v-text-field>
+            >Orders {{ pagination ? '(' + pagination.totalItems + ')' : '' }}
           </span>
           <v-spacer></v-spacer>
-          <v-btn
-            class="blue-grey  mr-2"
-            fab
-            small
-            dark
-            @click.native.stop="rightDrawer = !rightDrawer"
-          >
+          <!-- <v-btn class="blue-grey  mr-2" fab small dark @click.native.stop="rightDrawer = !rightDrawer">
             <v-icon>mdi-magnify</v-icon>
           </v-btn>
-          <v-btn
-            class="brown lighten-1  mr-2"
-            fab
-            small
-            dark
-            @click.native="reloadData()"
-          >
+          <v-btn class="brown lighten-1  mr-2" fab small dark @click.native="reloadData()">
             <v-icon>mdi-refresh</v-icon>
           </v-btn>
-          <v-btn
-            class="teal darken-2  mr-2"
-            fab
-            small
-            dark
-            @click.native="print()"
-          >
+          <v-btn class="teal darken-2  mr-2" fab small dark @click.native="print()">
             <v-icon>mdi-printer</v-icon>
           </v-btn>
-          <v-btn
-            class="deep-orange darken-3"
-            fab
-            small
-            dark
-            @click.native="add"
-          >
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
+          <v-btn class="deep-orange darken-3" fab small dark @click.native="add">
+            <v-icon>mdi-plus</v-icon> -->
+          <!-- </v-btn> -->
+         <table-header-buttons :add="add" :reloadData="reloadData" :updateSearchPanel="updateSearchPanel"></table-header-buttons>
+    
         </v-card-title>
-        <Table
-          v-if="loading === false"
-          :headers="headers"
-          :items="items"
-          :pagination="pagination"
-          @edit="edit"
-          @remove="remove"
-        ></Table>
+        <Table v-if="loading === false" :headers="headers" :items="items" :pagination="pagination" @edit="edit" @remove="remove"></Table>
       </v-card>
     </v-flex>
-    <search-panel
-      :rightDrawer="showSearchPanel"
-      @cancelSearch="cancelSearch"
-      @searchData="searchOrders"
-    >
+    <search-panel :rightDrawer="rightDrawer" @cancelSearch="cancelSearch" @searchData="searchOrders">
       <v-layout row>
         <v-flex xs11 offset-xs1>
-          <v-text-field
-            name="reference"
-            label="Reference"
-            light
-            v-model="searchFilter.contains.reference"
-          ></v-text-field>
+          <v-text-field name="reference" label="Reference" light v-model="searchFilter.contains.reference"></v-text-field>
         </v-flex>
       </v-layout>
       <v-layout row>
         <v-flex xs11 offset-xs1>
-          <v-text-field
-            name="customer"
-            label="Customer"
-            light
-            v-model="searchFilter.contains.customer"
-          ></v-text-field>
+          <v-text-field name="customer" label="Customer" light v-model="searchFilter.contains.customer"></v-text-field>
         </v-flex>
       </v-layout>
       <v-layout row>
@@ -93,38 +43,18 @@
       </v-layout>
       <v-layout row>
         <v-flex xs8 offset-xs1>
-          <v-slider
-            class="text-xs-central"
-            label="Price 1"
-            light
-            v-bind:max="100"
-            v-model="searchFilter.between.amount.former"
-          ></v-slider>
+          <v-slider class="text-xs-central" label="Price 1" light v-bind:max="100" v-model="searchFilter.between.amount.former"></v-slider>
         </v-flex>
         <v-flex xs3>
-          <v-text-field
-            type="number"
-            light
-            v-model="searchFilter.between.amount.former"
-          ></v-text-field>
+          <v-text-field type="number" light v-model="searchFilter.between.amount.former"></v-text-field>
         </v-flex>
       </v-layout>
       <v-layout row>
         <v-flex xs8 offset-xs1>
-          <v-slider
-            class="text-xs-central"
-            label="Price 2"
-            light
-            v-bind:max="9999"
-            v-model="searchFilter.between.amount.latter"
-          ></v-slider>
+          <v-slider class="text-xs-central" label="Price 2" light v-bind:max="9999" v-model="searchFilter.between.amount.latter"></v-slider>
         </v-flex>
         <v-flex xs3>
-          <v-text-field
-            type="number"
-            light
-            v-model="searchFilter.between.amount.latter"
-          ></v-text-field>
+          <v-text-field type="number" light v-model="searchFilter.between.amount.latter"></v-text-field>
         </v-flex>
       </v-layout>
     </search-panel>
@@ -135,84 +65,73 @@
       @onConfirm="onConfirm"
       @onCancel="onCancel"
     ></confirm-dialog>
-    <v-snackbar
-      v-if="loading === false"
-      :right="true"
-      :timeout="timeout"
-      :color="mode"
-      v-model="snackbar"
-    >
+    <v-snackbar v-if="loading === false" :right="true" :timeout="2000" :color="mode" v-model="snackbar">
       {{ notice }}
       <v-btn dark text @click.native="closeSnackbar">Close</v-btn>
     </v-snackbar>
   </v-container>
 </template>
 <script lang="ts">
-import Table from "@/components/Table.vue";
-import SearchPanel from "@/components/SearchPanel.vue";
-import ConfirmDialog from "@/components/ConfirmDialog.vue";
-import { debounce } from "lodash";
-import {
-  buildSearchFilters,
-  buildJsonServerQuery,
-  clearSearchFilters
-} from "@/utils/app-util";
-import { Component } from "vue-property-decorator";
-import Vue from "vue";
-import { customerModule } from "@/store/modules/customers";
-import { orderModule } from "@/store/modules/orders";
-import { appModule } from "@/store/modules/app";
+import Table from '@/components/Table.vue';
+import TableHeaderButtons from '@/components/TableHeaderButtons.vue'
+import SearchPanel from '@/components/SearchPanel.vue';
+import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import { debounce } from 'lodash';
+import { buildSearchFilters, buildJsonServerQuery, clearSearchFilters } from '@/utils/app-util';
+import { Component } from 'vue-property-decorator';
+import Vue from 'vue';
+import { customerModule } from '@/store/modules/customers';
+import { orderModule } from '@/store/modules/orders';
+import { appModule } from '@/store/modules/app';
 
 @Component({
   components: {
     Table,
+    TableHeaderButtons,
     SearchPanel,
     ConfirmDialog
   }
 })
 export default class OrderList extends Vue {
   public dialog = false;
-  public dialogTitle = "Customer Delete Dialog";
-  public dialogText = "Do you want to delete this customer?";
+  public dialogTitle = 'Customer Delete Dialog';
+  public dialogText = 'Do you want to delete this customer?';
   public showSearchPanel = false;
   public right = true;
-  public search = "";
+  public search = '';
   public headers = [
     {
-      text: "Reference",
+      text: 'Reference',
       left: true,
-      value: "reference"
+      value: 'reference'
     },
-    { text: "Order Items", value: "quantity" },
-    { text: "Amount", value: "amount" },
-    { text: "Customer", value: "customer" },
-    { text: "Order Date", value: "orderDate" },
-    { text: "Shipping Date", value: "shippedDate" },
-    { text: "", value: "actions", sortable: false }
+    { text: 'Order Items', value: 'quantity' },
+    { text: 'Amount', value: 'amount' },
+    { text: 'Customer', value: 'customer' },
+    { text: 'Order Date', value: 'orderDate' },
+    { text: 'Shipping Date', value: 'shippedDate' },
+    { text: '', value: 'actions', sortable: false }
   ];
   private searchFilter = {
     contains: {
-      reference: "",
-      customer: ""
+      reference: '',
+      customer: ''
     },
     between: {
       amount: { former: 0, latter: 0 }
     }
   };
-  private orderId = "";
-  private query = "";
-  private color = "";
-  private quickSearchFilter = "";
+  private orderId = '';
+  private query = '';
+  private color = '';
+  private quickSearchFilter = '';
   private itemId = -1;
 
-  print() {
-    window.print();
-  }
   edit(item) {
-   this.$router.push(`order/${item.id}`);
+    this.$router.push(`order/${item.id}`);
   }
   add() {
-    this.$router.push("NewOrder");
+    this.$router.push('NewOrder');
   }
   remove(item) {
     this.orderId = item.id;
@@ -223,20 +142,31 @@ export default class OrderList extends Vue {
     this.dialog = false;
   }
   onCancel() {
-    this.orderId = "";
+    this.orderId = '';
     this.dialog = false;
   }
   searchOrders() {
     this.showSearchPanel = !this.showSearchPanel;
     buildSearchFilters(this.searchFilter);
     this.query = buildJsonServerQuery(this.searchFilter);
-    this.quickSearch = "";
+    this.quickSearch = '';
     orderModule.searchOrders(this.query);
   }
 
-  reloadData() {
-    this.query = "";
+
+  clearSearchFilters() {
+    this.showSearchPanel = !this.showSearchPanel;
+    clearSearchFilters(this.searchFilter);
     orderModule.getAllOrders();
+  }
+
+  reloadData() {
+    this.query = '';
+    orderModule.getAllOrders();
+  }
+
+   updateSearchPanel(){
+    this.rightDrawer=!this.rightDrawer;
   }
 
   cancelSearch() {
@@ -248,10 +178,7 @@ export default class OrderList extends Vue {
   }
 
   quickSearchCustomers = debounce(function() {
-    orderModule.quickSearch(
-      this.headers,
-      this.quickSearchFilter
-    );
+    orderModule.quickSearch(this.headers, this.quickSearchFilter);
   }, 500);
 
   get items() {
@@ -271,6 +198,14 @@ export default class OrderList extends Vue {
   }
   get notice() {
     return appModule.notice;
+  }
+
+  get rightDrawer() {
+    return this.showSearchPanel;
+  }
+
+  set rightDrawer(_showSearchPanel: boolean) {
+    this.showSearchPanel = _showSearchPanel;
   }
 
   get quickSearch() {

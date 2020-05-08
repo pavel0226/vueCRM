@@ -59,12 +59,10 @@
   </v-container>
 </template>
 <script lang="ts">
-// import auth from '../utils/auth';
-
 import { Component } from "vue-property-decorator";
 import Vue from "vue";
 import { userModule } from "@/store/modules/user";
-// import router from '@/router';
+
 
 @Component
 export default class Login extends Vue {
@@ -77,25 +75,25 @@ export default class Login extends Vue {
     this.$router.push("/");
   }
 
-  public callback = (loggedIn: boolean, err?: string) => {
-    if (err) {
-      console.log("login", err);
-      this.error = true;
-      this.text = err;
-    } else if (loggedIn === false) {
-      console.log("login", loggedIn);
-      this.error = true;
-      this.text = "Bad login information";
-    } else {
-      console.log(loggedIn, err);
-      //this.$router.push(this.$route.query.redirect || '/')
-      //   this.gotoDashboard();
-    }
-  };
+  // public callback = (loggedIn: boolean, err?: string) => {
+  //   if (err) {
+  //     console.log("login", err);
+  //     this.error = true;
+  //     this.text = err;
+  //   } else if (loggedIn === false) {
+  //     console.log("login", loggedIn);
+  //     this.error = true;
+  //     this.text = "Bad login information";
+  //   } else {
+  //     console.log(loggedIn, err);
+  //     //this.$router.push(this.$route.query.redirect || '/')
+  //     //   this.gotoDashboard();
+  //   }
+  // };
+
   public async login() {
     // debugger;
     await userModule.signIn({ username: this.email, password: this.pass });
-
     this.$router.push("/");
   }
   // }

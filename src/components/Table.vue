@@ -1,7 +1,17 @@
 <template>
   <div>
+     <v-card-text>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+        single-line
+        hide-details
+      ></v-text-field>
+    </v-card-text>
     <v-data-table
       class="elevation-1"
+      :search="search"
       :headers="headers"
       :items="items"
       :page.sync="pagination.page"
@@ -41,7 +51,8 @@ export default class Table extends Vue {
   @Prop() readonly headers: TableHeader[];
   @Prop() readonly items: Entity[];
   @Prop() readonly pagination: Pagination;
-  search = '';
+  // @Prop() readonly search :string;
+  search ='';
 
   editItem() {}
 

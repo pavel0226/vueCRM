@@ -42,12 +42,14 @@ class AppModule extends VuexModule implements AppState {
     this.setNotice(notice);
     this.setMode(SUCCESS);
     this.setSnackbar(true);
+    this.closeNoticeWithDelay();
   }
 
   @Action sendErrorNotice(notice: string): void {
     this.setNotice(notice);
     this.setMode(ERROR);
     this.setSnackbar(true);
+    this.closeNoticeWithDelay();
   }
 
   @Mutation setLoading(loading: boolean): void {

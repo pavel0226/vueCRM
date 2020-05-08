@@ -5,23 +5,11 @@
         <v-card-title>
           <span class="title"
             >Customers {{ pagination ? '(' + pagination.totalItems + ')' : '' }}
-            <v-text-field append-icon="mdi-magnify" label="Quick Search" single-line hide-details v-model="quickSearch"></v-text-field>
           </span>
           <v-spacer></v-spacer>
-          <v-btn class="blue-grey mr-2" fab small dark @click.native.stop="rightDrawer = !rightDrawer">
-            <v-icon>mdi-magnify</v-icon>
-          </v-btn>
-          <v-btn class="brown lighten-1  mr-2" fab small dark @click.native="reloadData()">
-            <v-icon>mdi-refresh</v-icon>
-          </v-btn>
-          <v-btn class="teal darken-2  mr-2" fab small dark @click.native="print()">
-            <v-icon>mdi-printer</v-icon>
-          </v-btn>
-          <v-btn class="deep-orange darken-3" fab small dark @click.native="add">
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
+          <table-header-buttons :add="add" :reloadData="reloadData" :updateSearchPanel="updateSearchPanel"></table-header-buttons>
         </v-card-title>
-        <Table v-if="loading === false" :headers="headers" :items="items" :pagination="pagination" @edit="edit" @remove="remove"></Table>
+        <Table v-if="loading === false"  :headers="headers" :items="items" :pagination="pagination" @edit="edit" @remove="remove"></Table>
       </v-card>
     </v-flex>
     <search-panel :rightDrawer="rightDrawer" @cancelSearch="cancelSearch" @searchData="searchCustomers">
@@ -65,7 +53,7 @@
       @onConfirm="onConfirm"
       @onCancel="onCancel"
     ></confirm-dialog>
-    <v-snackbar v-if="loading === false" :right="true" :timeout="timeout" :color="mode" v-model="snackbar">
+    <v-snackbar v-if="loading === false" :right="true" :timeout="2000" :color="mode" v-model="snackbar">
       {{ notice }}
       <v-btn dark text @click.native="closeSnackbar">Close</v-btn>
     </v-snackbar>
@@ -73,6 +61,7 @@
 </template>
 <script lang="ts">
 import Table from '@/components/Table.vue';
+import TableHeaderButtons from '@/components/TableHeaderButtons.vue'
 import SearchPanel from '@/components/SearchPanel.vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import { debounce } from 'lodash';
@@ -83,9 +72,11 @@ import {  Entity } from '../types';
 import { customerModule } from '@/store/modules/customers';
 import { appModule } from '@/store/modules/app';
 
+
 @Component({
   components: {
     Table,
+    TableHeaderButtons,
     SearchPanel,
     ConfirmDialog
   }
@@ -122,15 +113,11 @@ export default class CustomerList extends Vue {
   };
   private customerId = '';
   private query = '';
-  private snackbarStatus = false;
-  private timeout = 2000;
   private color = '';
   private quickSearchFilter = '';
   private itemId = -1;
 
-  print() {
-    window.print();
-  }
+
 
   edit(item: Entity) {
     this.$router.push(`customer/${item.id}`);
@@ -172,6 +159,10 @@ export default class CustomerList extends Vue {
   reloadData() {
     this.query = '';
     customerModule.getAllCustomers();
+  }
+
+  updateSearchPanel(){
+    this.rightDrawer=!this.rightDrawer;
   }
 
   cancelSearch() {

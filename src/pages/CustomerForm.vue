@@ -103,7 +103,7 @@
             <v-snackbar
               v-if="loading === false"
               :right="true"
-              :timeout="timeout"
+              :timeout="2000"
               :color="mode"
               v-model="snackbar"
             >

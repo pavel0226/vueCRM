@@ -35,11 +35,11 @@ class ProductModule extends VuexModule implements ProductState {
         const category = { ...c };
         category.text = c.categoryName;
         category.value = c.id;
-        this.categories.push(category);
       });
       this.setCategories(categories);
     });
   }
+  
   @Action getProductById(id: string) {
     this.setLoading(true);
     if (id) {

@@ -50,20 +50,6 @@ class OrderModule extends VuexModule implements OrderState {
   }
 
   @Action
-  getCategories() {
-    getData("categories/").then((res: TODO) => {
-      if (res.data && res.data.length > 0) {
-        const categories = res.data.map((c: Category) => {
-          c.text = c.categoryName;
-          c.value = c.id;
-          return c;
-        });
-        this.setCategories(categories);
-      }
-    });
-  }
-
-  @Action
   getOrderById(id: string) {
     if (id) {
       getData("orders/" + id + "?_expand=customer").then(
@@ -71,7 +57,6 @@ class OrderModule extends VuexModule implements OrderState {
           const order = res.data;
           order.products.filter((p: Product) => p !== null && p !== undefined);
           order.customerId = order.customer.id;
-          // this.setOrder(order);
           this.setOrder(order);
         },
         (err: TODO) => {

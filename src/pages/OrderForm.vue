@@ -8,11 +8,9 @@
           <v-btn fab small class="grey mr-2" @click.native="cancel()">
             <v-icon dark="">mdi-close-circle-outline</v-icon>
           </v-btn>
-          &nbsp;
-          <v-btn fab small class="purple mr-2" @click.native="save()">
+          <v-btn  fab small class="purple mr-2" @click.native="save()">
             <v-icon>mdi-content-save-all</v-icon>
           </v-btn>
-          &nbsp;
           <v-btn fab small class="blue" @click.native="addProduct()">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
@@ -45,6 +43,7 @@
               </v-flex>
               <v-flex md4 xs12>
                 <v-text-field
+                lazy
                   name="quantity"
                   label="Product Items"
                   hint="number between 1 to 100"
@@ -54,12 +53,7 @@
                 ></v-text-field>
               </v-flex>
               <v-flex md4 xs12>
-                <v-select
-                  required
-                  v-bind:items="customers"
-                  label="Customer"
-                  v-model="order.customerId"
-                ></v-select>
+                <v-select required v-bind:items="customers" label="Customer" v-model="order.customerId"></v-select>
               </v-flex>
               <v-flex md4 xs12>
                 <v-menu
@@ -72,15 +66,10 @@
                   :nudge-left="40"
                   max-width="290px"
                 >
-                  <v-text-field
-                    slot="activator"
-                    label="Order Date"
-                    v-model="order.orderDate"
-                    prepend-icon="mdi-calendar"
-                    readonly
-                  ></v-text-field>
-                  <v-date-picker v-model="order.orderDate" no-title scrollable>
-                  </v-date-picker>
+                  <template v-slot:activator="{ on }">
+                    <v-text-field lazy v-on="on" label="Order Date" v-model="order.orderDate" prepend-icon="mdi-calendar" readonly></v-text-field>
+                  </template>
+                  <v-date-picker v-model="order.orderDate" no-title scrollable> </v-date-picker>
                 </v-menu>
               </v-flex>
               <v-flex md4 xs12>
@@ -94,23 +83,22 @@
                   :nudge-left="40"
                   max-width="290px"
                 >
-                  <v-text-field
-                    slot="activator"
-                    label="Shipped Date"
-                    v-model="order.shippedDate"
-                    prepend-icon="mdi-calendar"
-                    readonly
-                  ></v-text-field>
-                  <v-date-picker
-                    v-model="order.shippedDate"
-                    no-title
-                    scrollable
-                  >
-                  </v-date-picker>
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      lazy
+                      v-on="on"
+                      label="Shipped Date"
+                      v-model="order.shippedDate"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="order.shippedDate" no-title scrollable> </v-date-picker>
                 </v-menu>
               </v-flex>
               <v-flex md4 xs12>
                 <v-text-field
+                lazy
                   name="address"
                   label="Address"
                   hint="Address is required"
@@ -122,6 +110,7 @@
               </v-flex>
               <v-flex md4 xs12>
                 <v-text-field
+                lazy
                   name="city"
                   label="City"
                   hint="City is required"
@@ -133,6 +122,7 @@
               </v-flex>
               <v-flex md4 xs12>
                 <v-text-field
+                lazy
                   name="zipcode"
                   label="Zip Code"
                   hint="Zip Code is required"
@@ -144,6 +134,7 @@
               </v-flex>
               <v-flex md4 xs12>
                 <v-text-field
+                lazy
                   name="country"
                   label="Country"
                   hint="Country is required"
@@ -155,35 +146,16 @@
               </v-flex>
               <v-flex xs12 v-if="order.products && order.products.length > 0">
                 <v-list class="transparent elevation-0" two-line>
-                  <v-list-item
-                    ripple
-                    v-for="(item, index) in order.products"
-                    v-bind:key="index"
-                    class="grey lighten-2 mt-2 mb-2 "
-                  >
+                  <v-list-item ripple v-for="(item, index) in order.products" v-bind:key="index" class="grey lighten-2 mt-2 mb-2 ">
                     <v-list-item-content dark>
-                      <v-list-item-title class="heading blue--text"
-                        >{{ item.productName }}
-                      </v-list-item-title>
-                      <v-list-item-subtitle class="grey--text text--darken-4"
-                        >AUD ${{ item.unitPrice }}</v-list-item-subtitle
-                      >
+                      <v-list-item-title class="heading blue--text">{{ item.productName }} </v-list-item-title>
+                      <v-list-item-subtitle class="grey--text text--darken-4">AUD ${{ item.unitPrice }}</v-list-item-subtitle>
                       <!--<v-list-item-subtitle>{{ item.unitInStock }}
                           </v-list-item-subtitle>-->
                     </v-list-item-content>
                     <v-list-item-action>
-                      <v-btn
-                        fab
-                        small
-                        class="navy"
-                        @click.native="remove(item)"
-                      >
-                        <v-icon
-                          v-bind:class="[
-                            item.active ? 'teal--text' : 'grey--text',
-                          ]"
-                          >mdi-delete</v-icon
-                        >
+                      <v-btn fab small  class="navy" @click.native="remove(item)">
+                        <v-icon v-bind:class="[item.active ? 'teal--text' : 'grey--text']">mdi-delete</v-icon>
                       </v-btn>
                     </v-list-item-action>
                   </v-list-item>
@@ -213,29 +185,15 @@
                   ></v-select>
                 </v-flex>
                 <v-flex md6 xs12>
-                  <v-select
-                    required
-                    v-bind:items="products"
-                    label="Product"
-                    v-model="productId"
-                  ></v-select>
+                  <v-select required v-bind:items="products" label="Product" v-model="productId"></v-select>
                 </v-flex>
               </v-layout>
             </v-container>
           </v-card-text>
           <v-card-actions>
-            <v-btn
-              class="green--text darken-1"
-              text="text"
-              @click.native="saveProduct"
-              >Confirm</v-btn
-            >
-            <v-btn
-              class="orange--text darken-1"
-              text="text"
-              @click.native="cancelAddProduct"
-              >Cancel</v-btn
-            >
+            <v-btn class="green--text darken-1" text="text" @click.native="saveProduct">Confirm</v-btn>
+
+            <v-btn class="orange--text darken-1" text="text" @click.native="cancelAddProduct">Cancel</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -247,47 +205,44 @@
       @onConfirm="onConfirm"
       @onCancel="onCancel"
     ></confirm-dialog>
-    <v-snackbar
-      v-if="loading === false"
-      :right="true"
-      :timeout="timeout"
-      :color="mode"
-      v-model="snackbar"
-    >
+    <v-snackbar v-if="loading === false" :right="true" :timeout="2000" :color="mode" v-model="snackbar">
       {{ notice }}
       <v-btn dark text @click.native="closeSnackbar">Close</v-btn>
     </v-snackbar>
   </v-container>
 </template>
 <script lang="ts">
-import ConfirmDialog from "@/components/ConfirmDialog.vue";
-import { Component } from "vue-property-decorator";
-import Vue from "vue";
-import { customerModule } from "@/store/modules/customers";
-import { orderModule } from "@/store/modules/orders";
-import { appModule } from "@/store/modules/app";
-import { isValidEmail, isValidRewards } from "@/utils/app-util";
+import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import { Component } from 'vue-property-decorator';
+import Vue from 'vue';
+import { customerModule } from '@/store/modules/customers';
+import { productModule } from '@/store/modules/products';
+import { orderModule } from '@/store/modules/orders';
+import { appModule } from '@/store/modules/app';
+import { isValidEmail, isValidRewards } from '@/utils/app-util';
 
 @Component({
   components: {
-    ConfirmDialog,
-  },
+    ConfirmDialog
+  }
 })
 export default class OrderForm extends Vue {
   private categoryId = null;
-  private modalTitle = "Add Product";
-  private modalText = "Select the category and product from the list";
+  private modalTitle = 'Add Product';
+  private modalText = 'Select the category and product from the list';
   private addProductModal = false;
   private dialog = false;
-  private dialogTitle = "Product Delete Dialog";
-  private dialogText = "Do you want to delete this product?";
+  private dialogTitle = 'Product Delete Dialog';
+  private dialogText = 'Do you want to delete this product?';
   private orderDateMenu = false;
   private shippedDateMenu = false;
   private errors = [];
-  private title = "";
+  private title = '';
   private productId = null;
-  private color = "";
+  private color = '';
   private selectedProduct: null;
+  private shippedDate: string;
+  private orderDate: string;
 
   get customers() {
     console.log(customerModule.customer);
@@ -299,7 +254,7 @@ export default class OrderForm extends Vue {
   }
 
   get categories() {
-    return orderModule.categories;
+    return productModule.categories;
   }
 
   get products() {
@@ -326,6 +281,10 @@ export default class OrderForm extends Vue {
     return appModule.notice;
   }
 
+  get productAmount() {
+    return this.order.products?.length 
+  }
+
   save() {
     const order = { ...this.order };
     delete order.customer;
@@ -342,7 +301,7 @@ export default class OrderForm extends Vue {
   }
 
   cancel() {
-    this.$router.push({ name: "Orders" });
+    this.$router.push({ name: 'Orders' });
   }
 
   remove(item) {
@@ -375,10 +334,6 @@ export default class OrderForm extends Vue {
     this.addProductModal = false;
   }
 
-  getCategories() {
-    orderModule.getCategories();
-  }
-
   getProductsByCategory() {
     orderModule.getProductsByCategory(this.categoryId);
   }
@@ -389,15 +344,19 @@ export default class OrderForm extends Vue {
 
   created() {
     // this.getCustomers();
-    orderModule.getCustomers();
-    this.getCategories();
     this.getOrderById();
+    orderModule.getCustomers();
+    productModule.getCategories();
   }
 
   mounted() {
     if (this.$route.params.id) {
-      this.title = "Edit Order";
-    } else this.title = "New Order";
+      this.title = 'Edit Order';
+      this.$nextTick(() => {
+        this.shippedDate = this.order.shippedDate;
+        this.orderDate = this.order.orderDate;
+      });
+    } else this.title = 'New Order';
   }
 }
 </script>
