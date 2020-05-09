@@ -32,7 +32,6 @@ class ProductModule extends VuexModule implements ProductState {
   @Action
   getCategories() {
     getData("categories/").then(res => {
-      debugger;
       const categories = res.data.map((c: Category) => {
         c.text = c.categoryName;
         c.value = c.id;

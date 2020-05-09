@@ -124,7 +124,6 @@ export default class CustomerList extends Vue {
   }
 
   remove(item: Entity) {
-    debugger;
     this.itemId = item.id;
     this.dialog = true;
   }
