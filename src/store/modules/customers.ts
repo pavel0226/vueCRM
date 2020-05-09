@@ -2,7 +2,6 @@ import { getData, putData, postData, deleteData } from '@/utils/demo-api';
 import { Customer, Order, Entity } from '@/types';
 import { appModule } from './app';
 import { getDefaultPagination, getPagination } from '@/utils/store-util';
-
 import { get } from 'lodash';
 import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators';
 import store from '@/store';
@@ -32,7 +31,7 @@ class CustomerModule extends VuexModule implements CustomerState {
   }
 
   @Action getOrders(): void {
-    getData('orders/').then((res: TODO) => {
+    getData('orders/').then(res => {
       if (res.data && res.data.length > 0) {
         const orderList = res.data.map((c: TODO) => {
           c.text = c.firstName + ' ' + c.lastName;
@@ -48,7 +47,7 @@ class CustomerModule extends VuexModule implements CustomerState {
     this.setLoading(true);
     if (id) {
       getData('customers/' + id).then(
-        (res: TODO) => {
+        res => {
           const customer = Object.assign({}, res.data);
           customer.avatar = `@${customer.avatar}`;
           this.setCustomer(customer);
@@ -67,7 +66,7 @@ class CustomerModule extends VuexModule implements CustomerState {
   @Action getAllCustomers(): void {
     // this.context.commit('setLoading', { loading: true });
     this.setLoading(true);
-    getData('customers?_embed=orders').then((res: TODO) => {
+    getData('customers?_embed=orders').then(res => {
       const customers = res.data;
       customers.forEach((item: Customer) => {
         item.orderAmount = item.orders && item.orders?.length; // : 0;
@@ -78,7 +77,8 @@ class CustomerModule extends VuexModule implements CustomerState {
   }
 
   @Action searchCustomers(searchQuery: string): void {
-    getData('customers?_embed=orders&' + searchQuery).then((res: TODO) => {
+    this.setLoading(true);
+    getData('customers?_embed=orders&' + searchQuery).then(res => {
       const customers = res.data;
       customers.forEach((p: TODO) => {
         p.orderAmount = p.orders?.length;
@@ -89,8 +89,9 @@ class CustomerModule extends VuexModule implements CustomerState {
   }
 
   @Action quickSearch(headers: TableHeader[], qsFilter: SeachQuery): void {
+    this.setLoading(true);
     // TODO: Following solution should be replaced by DB full-text search for production
-    getData('customers?_embed=orders').then((res: TODO) => {
+    getData('customers?_embed=orders').then(res => {
       const customers = res.data.filter((r: TODO) =>
         headers.some((header: TODO) => {
           const val = get(r, [header.value]);
@@ -104,7 +105,7 @@ class CustomerModule extends VuexModule implements CustomerState {
           );
         })
       );
-      customers.forEach((item: TODO) => {
+      customers.forEach((item: Customer) => {
         item.orderAmount = item.orders.length;
       });
       this.setDataTable(customers);
@@ -113,8 +114,8 @@ class CustomerModule extends VuexModule implements CustomerState {
   }
 
   @Action deleteCustomer(id: number): void {
-    deleteData('customers/', id.toString())
-      .then((res: TODO) => {
+    deleteData(`customers/${id.toString()}`)
+      .then(_res => {
         this.getAllCustomers();
         appModule.sendSuccessNotice('Operation is done.');
       })
@@ -128,7 +129,7 @@ class CustomerModule extends VuexModule implements CustomerState {
   @Action saveCustomer(customer: Customer): void {
     if (!customer.id) {
       postData('customers/', customer)
-        .then((res: TODO) => {
+        .then(res => {
           const customer = res.data;
           this.setCustomer(customer);
           appModule.sendSuccessNotice('New customer has been added.');
@@ -141,7 +142,7 @@ class CustomerModule extends VuexModule implements CustomerState {
         });
     } else {
       putData('customers/' + customer.id.toString(), customer)
-        .then((res: TODO) => {
+        .then(res => {
           const customer = res.data;
           this.setCustomer(customer);
           appModule.sendSuccessNotice('Customer has been updated.');

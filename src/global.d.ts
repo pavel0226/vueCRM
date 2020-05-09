@@ -30,6 +30,13 @@ type Pagination = {
 };
 
 
+type AppMenu = {
+    icon: string;
+    title: string;
+    vertical?: string;
+    link: string;
+}
+
 type TableHeader = {
   text: string;
   value: string;
@@ -37,11 +44,13 @@ type TableHeader = {
 };
 
 type SeachQuery = {
-  contains?: {};
+  contains?: {[k:string]:string};
   between?: {};
-  startsWith?: {};
-  endsWith?: {};
-  equals?: {};
-  lessThen: {};
-  greaterThan: {};
+  startsWith?: {[k:string]:string};
+  endsWith?: {[k:string]:string};
+  equals?:{[k:string]:string};
+  lessThan: {[k:string]:number};
+  greaterThan: {[k:string]:number};
+  lessThanOrEquals: {[k:string]:number};
+  greaterThanOrEquals: {[k:string]:number};
 };

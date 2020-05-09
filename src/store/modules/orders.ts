@@ -36,7 +36,7 @@ class OrderModule extends VuexModule implements OrderState {
 
   @Action
   getCustomers() {
-    getData("customers/").then((res: TODO) => {
+    getData("customers/").then(res  => {
       if (res.data) {
         const customers = res.data.map((c: Customer) => {
           c.text = c.firstName + " " + c.lastName;
@@ -53,7 +53,7 @@ class OrderModule extends VuexModule implements OrderState {
   getOrderById(id: string) {
     if (id) {
       getData("orders/" + id + "?_expand=customer").then(
-        (res: TODO) => {
+        res  => {
           const order = res.data;
           order.products.filter((p: Product) => p !== null && p !== undefined);
           order.customerId = order.customer.id;
@@ -76,7 +76,7 @@ class OrderModule extends VuexModule implements OrderState {
   getProductsByCategory(categoryId: number) {
     if (categoryId) {
       getData("products?_expand=category&categoryId=" + categoryId).then(
-        (res: TODO) => {
+        res  => {
           const products = res.data.map((p: Product) => {
             p.text = p.productName;
             p.value = p.id;
@@ -95,7 +95,7 @@ class OrderModule extends VuexModule implements OrderState {
   @Action
   getAllOrders() {
     this.setLoading(true);
-    getData("orders?_expand=customer").then((res: TODO) => {
+    getData("orders?_expand=customer").then(res => {
       const orders = res.data;
 
       orders.forEach((item: Order) => {
@@ -113,16 +113,15 @@ class OrderModule extends VuexModule implements OrderState {
 
   @Action
   searchOrders(searchQuery: string) {
-    getData("orders?_expand=customer&" + searchQuery).then((res: TODO) => {
+    getData("orders?_expand=customer&" + searchQuery).then(res => {
       const orders = res.data;
-      orders.forEach((item: TODO) => {
+      orders.forEach((item: Order) => {
         item.amount = item.products.reduce(
           (p: TODO, c: TODO) => p + c.unitPrice,
           0
         );
         item.quantity = item.products?.length;
-        item.customer = item.customer
-          ? item.customer.firstName + " " + item.customer.lastName
+        item.customerName = item.customer ? item.customer.firstName + " " + item.customer.lastName
           : "";
       });
       this.setDataTable(orders);
@@ -132,7 +131,7 @@ class OrderModule extends VuexModule implements OrderState {
 
   @Action quickSearch(headers: TableHeader[], qsFilter: SeachQuery): void {
     // TODO: Following solution should be replaced by DB full-text search for production
-    getData("orders?_expand=customer").then((res: TODO) => {
+    getData("orders?_expand=customer").then(res  => {
       const orders = res.data.filter((r: TODO) =>
         headers.some((header: TableHeader) => {
           const val = get(r, [header.value]);
@@ -150,19 +149,18 @@ class OrderModule extends VuexModule implements OrderState {
         item.amount = item.products.reduce(
           (p: number, c: Product) => p + ((c && c.unitPrice) || 0),
           0
-        );;
+        );
         item.quantity = item.products?.length;
         item.customerName = item.customer ? item.customer.firstName + " " + item.customer.lastName : "";
       });
-      // this.setItems(orders);
       this.setDataTable(orders);
       this.setLoading(false);
     });
   }
   @Action
   deleteOrder(id: number) {
-    deleteData("orders/", id.toString())
-      .then((res: TODO) => {
+    deleteData(`orders/${id.toString()}`)
+      .then(res => {
         return new Promise((resolve, reject) => {
           appModule.sendSuccessNotice("Operation is done.");
 
@@ -196,10 +194,10 @@ class OrderModule extends VuexModule implements OrderState {
     }
   }
   @Action saveOrder(order: Order) {
-    // delete order;
+
     if (!order.id) {
       postData("orders/", order)
-        .then((res: TODO) => {
+        .then(res  => {
           const order = res.data;
           this.setOrder(order);
           appModule.sendSuccessNotice("New order has been added.");
@@ -213,7 +211,7 @@ class OrderModule extends VuexModule implements OrderState {
         });
     } else {
       putData("orders/" + order.id.toString(), order)
-        .then((res: TODO) => {
+        .then(res  => {
           const order = res.data;
           this.setOrder(order);
           appModule.sendSuccessNotice("Order has been updated.");
@@ -256,7 +254,7 @@ class OrderModule extends VuexModule implements OrderState {
     this.items = orders;
   }
   @Mutation
-  setPagination(pagination: TODO) {
+  setPagination(pagination: Pagination) {
     this.pagination = pagination;
   }
   @Mutation

@@ -2,7 +2,6 @@ import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import { userModule } from "@/store/modules/user";
 import ErrorPage from "@/components/404.vue";
-
 import Dashboard from "@/pages/Dashboard.vue";
 import OrderList from "@/pages/OrderList.vue";
 import OrderForm from "@/pages/OrderForm.vue";
@@ -11,10 +10,8 @@ import CustomerList from "@/pages/CustomerList.vue";
 import CustomerForm from "@/pages/CustomerForm.vue";
 import Products from "@/pages/ProductList.vue";
 import ProductForm from "@/pages/ProductForm.vue";
-
 import Login from "@/components/Login.vue";
 import ChangePassword from "@/components/ChangePassword.vue";
-
 
 function requireAuth(to: TODO, from: TODO, next: TODO) {
   console.log(`userModule.isSignedI ${userModule.isSignedIn}`);

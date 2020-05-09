@@ -75,7 +75,6 @@ import { Component } from 'vue-property-decorator';
 import Vue from 'vue';
 import { productModule } from '@/store/modules/products';
 import { appModule } from '@/store/modules/app';
-import { isValidEmail, isValidRewards } from '@/utils/app-util';
 
 @Component
 export default class ProductForm extends Vue {
@@ -100,10 +99,6 @@ export default class ProductForm extends Vue {
   getProduct() {
     productModule.getProductById(this.$route.params.id);
   }
-
-  // getCategories() {
-    
-  // }
 
   cancel() {
     this.$router.push({ name: 'Products' });
@@ -137,10 +132,10 @@ export default class ProductForm extends Vue {
   }
 
   created() {
-    // this.getCategories();
     productModule.getCategories();
     this.getProduct();
   }
+  
   mounted() {
     if (this.$route.params.id) {
       this.title = 'Edit Product';

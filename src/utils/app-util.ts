@@ -77,48 +77,48 @@ export function clearSearchFilters(searchFilter: SearchFilter) {
   }
 }
 
-export function buildSearchFilters(searchVm: TODO) {
-  if (searchVm) {
-    searchVm.filters = [];
+export function buildSearchFilters(searchFilter: SearchFilter) {
+  if (searchFilter) {
+    searchFilter.filters = [];
 
-    Object.keys(searchVm).forEach((filter) => {
+    Object.keys(searchFilter).forEach(filter=> {
       if (filter === "between") {
-        Object.keys(searchVm[filter]).forEach(propName => {
+        Object.keys(searchFilter[filter]).forEach(propName => {
           if (
-            searchVm.between[propName]["former"] > 0 ||
-            searchVm.between[propName]["latter"] > 0
+            searchFilter.between[propName]["former"] > 0 ||
+            searchFilter.between[propName]["latter"] > 0
           ) {
-            if (searchVm.between[propName]["former"] < searchVm.between[propName]["latter"]) {
-              searchVm.filters.push({
+            if (searchFilter.between[propName]["former"] < searchFilter.between[propName]["latter"]) {
+              searchFilter.filters.push({
                 property: propName,
                 op: SearchFilterOps.greaterThanOrEqual,
-                val: searchVm.between[propName]["former"],
+                val: searchFilter.between[propName]["former"],
               });
-              searchVm.filters.push({
+              searchFilter.filters.push({
                 property: propName,
                 op: SearchFilterOps.lessThanOrEqual,
-                val: searchVm.between[propName]["latter"],
+                val: searchFilter.between[propName]["latter"],
               });
             } else {
-              searchVm.filters.push({
+              searchFilter.filters.push({
                 property: propName,
                 op: SearchFilterOps.lessThanOrEqual,
-                val: searchVm.between[propName]["former"],
+                val: searchFilter.between[propName]["former"],
               });
-              searchVm.filters.push({
+              searchFilter.filters.push({
                 property: propName,
                 op: SearchFilterOps.greaterThanOrEqual,
-                val: searchVm.between[propName]["latter"],
+                val: searchFilter.between[propName]["latter"],
               });
             }
           }
         });
       } else {
-        Object.keys(searchVm[filter]).forEach(propName => {
-          searchVm.filters.push({
+        Object.keys(searchFilter[filter]).forEach(propName => {
+          searchFilter.filters.push({
             property: propName,
             op: SearchFilterOps[filter],
-            val: searchVm[filter][propName],
+            val: searchFilter[filter][propName],
           });
         });
       }
@@ -138,21 +138,6 @@ export function buildJsonServerQuery(searchVm: TODO) {
     });
   }
   return filterQuery;
-}
-
-export function getRootComponent(vueComponent: TODO): any {
-  const root = null;
-  if (vueComponent && vueComponent._isVue) {
-    if (vueComponent.isRootComponent) {
-      return vueComponent;
-    } else if (vueComponent.$parent) {
-      return getRootComponent(vueComponent.$parent);
-    } else {
-      return root;
-    }
-  } else {
-    return root;
-  }
 }
 
 export function isValidRewards(rewards: number) {

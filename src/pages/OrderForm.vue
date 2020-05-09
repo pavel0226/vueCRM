@@ -219,8 +219,6 @@ import { customerModule } from '@/store/modules/customers';
 import { productModule } from '@/store/modules/products';
 import { orderModule } from '@/store/modules/orders';
 import { appModule } from '@/store/modules/app';
-import { isValidEmail, isValidRewards } from '@/utils/app-util';
-import { Product } from '@/types';
 
 @Component({
   components: {
@@ -289,10 +287,6 @@ categoryChanged(newId: number, oldId: number){
 
   get notice() {
     return appModule.notice;
-  }
-
-  get productAmount() {
-    return this.order.products?.length 
   }
 
   save() {

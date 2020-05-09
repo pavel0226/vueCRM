@@ -61,7 +61,6 @@
 import BarChart from "@/components/chart/Bar";
 import DoughnutChart from "@/components/chart/Doughnut";
 import LineChart from "@/components/chart/LineChart";
-
 import { Component, Prop } from "vue-property-decorator";
 import Vue from "vue";
 
@@ -116,7 +115,6 @@ export default class Dashboard extends Vue {
       }
     }
   ];
-  // };
-  // mounted(){}
+
 }
 </script>

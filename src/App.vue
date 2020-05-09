@@ -110,7 +110,7 @@ export default class App extends Vue {
   private isRootComponent = true;
   public drawer = window.innerWidth > 960;
   private fixed = false;
-  private items: TODO = [
+  private items: AppMenu[] = [
     {
       icon: 'mdi-view-dashboard',
       title: 'Dashboard',
@@ -143,7 +143,7 @@ export default class App extends Vue {
     }
   ];
 
-  private userMenus: TODO = [
+  private userMenus: AppMenu[]  = [
     {
       icon: 'bubble_chart',
       title: 'Logout',
@@ -165,7 +165,7 @@ export default class App extends Vue {
     //  [App.vue specific] When App.vue is first loaded start the progress bar
     this.$Progress.start();
     //  hook the progress bar to start before we move router-view
-    this.$router.beforeEach((to, from, next) => {
+    this.$router.beforeEach((to, _from, next) => {
       //  does the page we want to go to have a meta.progress object
       if (to.meta.progress !== undefined) {
         const meta = to.meta.progress;
@@ -208,7 +208,6 @@ export default class App extends Vue {
   }
 
   mounted() {
-    // this.$Progress.finish();
   }
 }
 </script>

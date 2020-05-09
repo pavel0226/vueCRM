@@ -31,9 +31,9 @@ class ProductModule extends VuexModule implements ProductState {
 
   @Action
   getCategories() {
-    getData("categories/").then((res: TODO) => {
+    getData("categories/").then(res => {
       debugger;
-      const categories = res.data.map((c: TODO) => {
+      const categories = res.data.map((c: Category) => {
         c.text = c.categoryName;
         c.value = c.id;
         return c;
@@ -46,7 +46,7 @@ class ProductModule extends VuexModule implements ProductState {
     this.setLoading(true);
     if (id) {
       getData("products/" + id + "?_expand=category").then(
-        (res: TODO) => {
+        res  => {
           const product = res.data;
           this.setProduct(product);
           this.setLoading(false);
@@ -63,7 +63,7 @@ class ProductModule extends VuexModule implements ProductState {
   }
   @Action getAllProducts() {
     this.setLoading(true);
-    getData("products?_expand=category").then((res: TODO) => {
+    getData("products?_expand=category").then(res  => {
       const products = res.data;
       products.forEach((p: Product) => {
         p.categoryName = p.category.categoryName;
@@ -74,7 +74,7 @@ class ProductModule extends VuexModule implements ProductState {
   }
 
   @Action searchProducts(searchQuery: string) {
-    getData("products?_expand=category&" + searchQuery).then((res: TODO) => {
+    getData("products?_expand=category&" + searchQuery).then(res  => {
       const products = res.data;
       products.forEach((p: Product) => {
         p.categoryName = p.category.categoryName;
@@ -86,7 +86,7 @@ class ProductModule extends VuexModule implements ProductState {
 
   @Action quickSearch(headers: TableHeader[], qsFilter: SeachQuery): void {
     // TODO: Following solution should be replaced by DB full-text search for production
-    getData("products?_expand=category").then((res: TODO) => {
+    getData("products?_expand=category").then(res  => {
       const products = res.data.filter((r: TODO) =>
         headers.some((header: TODO) => {
           const val = get(r, [header.value]);
@@ -109,8 +109,8 @@ class ProductModule extends VuexModule implements ProductState {
   }
 
   @Action deleteProduct(id: number) {
-    deleteData("products/", id.toString())
-      .then((res: TODO) => {
+    deleteData(`products/${id.toString()}`)
+      .then(res  => {
         return new Promise((resolve, reject) => {
           appModule.sendSuccessNotice("Operation is done.");
           resolve();
@@ -127,7 +127,7 @@ class ProductModule extends VuexModule implements ProductState {
     delete product.category;
     if (!product.id) {
       postData("products/", product)
-        .then((res: TODO) => {
+        .then(res  => {
           const product = res.data;
           this.setProduct(product);
           appModule.sendSuccessNotice("New product has been added.");
@@ -142,7 +142,7 @@ class ProductModule extends VuexModule implements ProductState {
         });
     } else {
       putData("products/" + product.id.toString(), product)
-        .then((res: TODO) => {
+        .then(res  => {
           const product = res.data;
           this.setProduct(product);
           appModule.sendSuccessNotice("Product has been updated.");

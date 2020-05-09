@@ -117,11 +117,7 @@
   </v-container>
 </template>
 <script lang="ts">
-
-
-import { debounce } from "lodash";
 import { Component } from "vue-property-decorator";
-import store from "@/store";
 import Vue from "vue";
 import { Customer, Entity } from "@/types";
 import { customerModule } from "@/store/modules/customers";
